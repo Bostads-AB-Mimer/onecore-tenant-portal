@@ -1,0 +1,33 @@
+# API keys and secrets
+.env*
+.envrc
+config.json
+
+# Build
+dist/
+
+# Dependency directory
+node_modules/
+docker-compose-local.yaml
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.eslintcache
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Thumbnails
+packages/thumbnails/*
+!packages/thumbnails/README.md
