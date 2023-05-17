@@ -1,43 +1,49 @@
 import {
-  ChatOutlined,
   ChecklistOutlined,
+  HandshakeOutlined,
   HomeOutlined,
-  MenuOutlined,
 } from '@mui/icons-material';
-import {
-  AppBar,
-  BottomNavigation,
-  BottomNavigationAction,
-  IconButton,
-  Toolbar,
-} from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
+import Home from './pages/Home';
+import Contract from './pages/Contract';
+import Progress from './pages/Progress';
 
 function App() {
+  const navigate = useNavigate();
   return (
-    // items-center justify-center
     <div className="flex h-screen w-screen flex-col ">
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start">
-            <MenuOutlined></MenuOutlined>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-
-      <BottomNavigation>
-        <BottomNavigationAction
-          label="Alt 1"
-          icon={<HomeOutlined></HomeOutlined>}
-        ></BottomNavigationAction>
-        <BottomNavigationAction
-          label="Alt 2"
-          icon={<ChatOutlined></ChatOutlined>}
-        ></BottomNavigationAction>
-        <BottomNavigationAction
-          label="Alt 3"
-          icon={<ChecklistOutlined></ChecklistOutlined>}
-        ></BottomNavigationAction>
-      </BottomNavigation>
+      <Paper className="h-screen w-screen p-7">
+        <Routes>
+          <Route path="/" element={<Home></Home>} />
+          <Route path="/kontrakt" element={<Contract></Contract>} />
+          <Route path="/att-gora" element={<Progress></Progress>} />
+        </Routes>
+      </Paper>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+        <BottomNavigation
+          onChange={(event, newValue) => {
+            navigate(newValue);
+          }}
+        >
+          <BottomNavigationAction
+            label="Hem"
+            value="/"
+            icon={<HomeOutlined></HomeOutlined>}
+          ></BottomNavigationAction>
+          <BottomNavigationAction
+            label="Mina kontrakt"
+            value="/kontrakt"
+            icon={<HandshakeOutlined></HandshakeOutlined>}
+          ></BottomNavigationAction>
+          <BottomNavigationAction
+            label="Att göra"
+            value="/att-gora"
+            icon={<ChecklistOutlined></ChecklistOutlined>}
+          ></BottomNavigationAction>
+        </BottomNavigation>
+      </Paper>
     </div>
   );
 }

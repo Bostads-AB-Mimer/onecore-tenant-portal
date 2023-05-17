@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Bostads-AB-Mimer/yggdrasil-tenant-portal/issues"
   },
-  "homepage": "https://github.com/Bostads-AB-Mimer/yggdrasil-tenant-portal#readme"
+  "homepage": "https://github.com/Bostads-AB-Mimer/yggdrasil-tenant-portal#readme",
+  "dependencies": {
+    "react-router-dom": "^6.11.1"
+  }
 }
