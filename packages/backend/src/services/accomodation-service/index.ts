@@ -24,7 +24,7 @@ const getAccommodation = async (rentalId: string) => {
  * Returns the details of the logged-in user's accomodation
  */
 export const routes = (router: KoaRouter) => {
-  router.get('/accomodation', async (ctx) => {
+  router.get('(.*)/accomodation', async (ctx) => {
     const responseData = await getAccommodation(
       Math.round(Math.random() * 100000).toString()
     )
