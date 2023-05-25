@@ -76,4 +76,4 @@ jobs:
         context: ./packages/${{ matrix.context }}
         push: true
         tags: |
-          ghcr.io/Bostads-AB-Mimer/yggdrasil-tenant-portal-${{ matrix.context }}:${{ steps.package-version.outputs.current-version}}
+          ghcr.io/bostads-ab-mimer/yggdrasil-tenant-portal-${{ matrix.context }}:${{ steps.package-version.outputs.current-version}}
