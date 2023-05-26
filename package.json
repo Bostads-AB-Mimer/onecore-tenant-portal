@@ -1,6 +1,6 @@
 {
   "name": "yggdrasil-tenant-portal",
-  "version": "1.0.11",
+  "version": "1.0.13",
   "description": "Tenant web portal",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/Bostads-AB-Mimer/yggdrasil-tenant-portal/issues"
   },
-  "homepage": "https://github.com/Bostads-AB-Mimer/yggdrasil-tenant-portal#readme"
+  "homepage": "https://github.com/Bostads-AB-Mimer/yggdrasil-tenant-portal#readme",
+  "dependencies": {}
 }
