@@ -3,7 +3,6 @@ import Koa from 'koa'
 import KoaRouter from '@koa/router'
 import bodyParser from 'koa-bodyparser'
 import { routes } from '../index'
-import * as randomDataApiAdapter from '../adapters/tenant-lease-adapter'
 
 const app = new Koa()
 const router = new KoaRouter()

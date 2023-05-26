@@ -1,8 +1,8 @@
 import KoaRouter from '@koa/router'
-import { routes as accomodationRoutes } from './services/accomodation-service'
+import { routes as leaseRoutes } from './services/lease-service'
 
 const router = new KoaRouter()
 
-accomodationRoutes(router)
+leaseRoutes(router)
 
 export default router
