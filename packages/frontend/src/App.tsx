@@ -1,15 +1,49 @@
+import {
+  ChecklistOutlined,
+  HandshakeOutlined,
+  HomeOutlined,
+} from '@mui/icons-material';
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
+import Home from './pages/Home';
+import Contract from './pages/Contract';
+import Progress from './pages/Progress';
+
 function App() {
+  const navigate = useNavigate();
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center">
-      <header className="w-full max-w-md flex flex-col items-center">
-        <h1 className="text-2xl font-bold">
-          Hello Iteam + React + Typescript!
-        </h1>
-        <img
-          src="https://cdn-assets-cloud.frontify.com/local/frontify/eyJwYXRoIjoiXC9wdWJsaWNcL3VwbG9hZFwvc2NyZWVuc1wvMTUzOTg2XC9lZWNmNjExMDg1YTI1YWM0MTIzZGE3NmY4M2EzZTdkNi0xNTEyNzI5Mzk3LnBuZyJ9:frontify:ANleqg1_q50wrm-EmaePRoqAtTkpInN90J70KGuqUbU?width=449"
-          alt="logo"
-        />
-      </header>
+    <div className="flex h-screen w-screen flex-col ">
+      <Paper className="h-screen w-screen p-7">
+        <Routes>
+          <Route path="/" element={<Home></Home>} />
+          <Route path="/kontrakt" element={<Contract></Contract>} />
+          <Route path="/att-gora" element={<Progress></Progress>} />
+        </Routes>
+      </Paper>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+        <BottomNavigation
+          onChange={(event, newValue) => {
+            navigate(newValue);
+          }}
+        >
+          <BottomNavigationAction
+            label="Hem"
+            value="/"
+            icon={<HomeOutlined></HomeOutlined>}
+          ></BottomNavigationAction>
+          <BottomNavigationAction
+            label="Mina kontrakt"
+            value="/kontrakt"
+            icon={<HandshakeOutlined></HandshakeOutlined>}
+          ></BottomNavigationAction>
+          <BottomNavigationAction
+            label="Att göra"
+            value="/att-gora"
+            icon={<ChecklistOutlined></ChecklistOutlined>}
+          ></BottomNavigationAction>
+        </BottomNavigation>
+      </Paper>
     </div>
   );
 }
