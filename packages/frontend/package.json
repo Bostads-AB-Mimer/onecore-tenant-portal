@@ -14,8 +14,11 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.1",
+    "axios": "^1.4.0",
+    "material-ui-popup-state": "^5.0.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.11.1"
   },
   "devDependencies": {
