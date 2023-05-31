@@ -74,8 +74,8 @@ const mdTheme = createTheme({
     MuiDivider: {
       styleOverrides: {
         root: {
-          marginTop: 10,
-          marginBottom: 10,
+          marginTop: 5,
+          marginBottom: 5,
         },
       },
     },
@@ -101,8 +101,8 @@ function App() {
       <ThemeProvider theme={mdTheme}>
         <CssBaseline />
         <Grid container>
-          <Grid item xs={1} />
-          <Grid item xs={10}>
+          <Grid item xs={0.5} />
+          <Grid item xs={11}>
             <SiteHeader />
             <Routes>
               <Route path="/" element={<Home></Home>} />
@@ -110,7 +110,7 @@ function App() {
               <Route path="/att-gora" element={<Progress></Progress>} />
             </Routes>
           </Grid>
-          <Grid item xs={1} />
+          <Grid item xs={0.5} />
         </Grid>
       </ThemeProvider>
     </QueryClientProvider>
