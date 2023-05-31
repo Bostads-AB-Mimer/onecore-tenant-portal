@@ -8,7 +8,7 @@ import Lease from './pages/Lease/Lease'
 import Progress from './pages/Progress'
 import SiteHeader from './components/SiteHeader'
 import BisonBold from '../assets/Bison-Bold.woff2'
-import Bison from '../assets/Bison.woff2'
+import GraphikRegular from '../assets/Graphik-Regular.woff2'
 
 const bisonBold = {
   fontFamily: 'bisonBold',
@@ -17,6 +17,15 @@ const bisonBold = {
   fontWeight: 900,
   src: `
     url(${BisonBold}) format('woff2')
+  `,
+}
+const graphikRegular = {
+  fontFamily: 'graphikRegular',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `
+    url(${GraphikRegular}) format('woff2')
   `,
 }
 
@@ -49,15 +58,17 @@ const mdTheme = createTheme({
     },
     body1: {
       fontSize: 14,
+      fontFamily: 'graphikRegular',
     },
     body2: {
       fontSize: 20,
+      fontFamily: 'graphikRegular',
     },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        html: [{ '@font-face': bisonBold }],
+        html: [{ '@font-face': bisonBold }, { '@font-face': graphikRegular }],
       },
     },
     MuiDivider: {
