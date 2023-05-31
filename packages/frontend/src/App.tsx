@@ -8,6 +8,7 @@ import Lease from './pages/Lease/Lease'
 import Progress from './pages/Progress'
 import SiteHeader from './components/SiteHeader'
 import BisonBold from '../assets/Bison-Bold.woff2'
+import Bison from '../assets/Bison.woff2'
 
 const bisonBold = {
   fontFamily: 'bisonBold',
@@ -23,8 +24,9 @@ const mdTheme = createTheme({
   palette: {
     mode: 'light',
     background: {
-      default: 'white'
+      default: 'white',
     },
+    divider: '#951B81',
   },
   typography: {
     h1: {
@@ -50,14 +52,20 @@ const mdTheme = createTheme({
     },
     body2: {
       fontSize: 20,
-    }
+    },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        html: [
-          {'@font-face': bisonBold},
-        ],
+        html: [{ '@font-face': bisonBold }],
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          marginTop: 10,
+          marginBottom: 10,
+        },
       },
     },
   },
@@ -65,24 +73,24 @@ const mdTheme = createTheme({
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: error => {
+    onError: (error) => {
       if ((error as AxiosError).response?.status === 401) {
         location.replace('/login')
       } else {
         console.log('An error occurred fetching data', error)
       }
-    }
-  })
+    },
+  }),
 })
 
 function App() {
-  const navigate = useNavigate();
-  return ( 
+  const navigate = useNavigate()
+  return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={mdTheme}>
         <CssBaseline />
         <Grid container>
-          <Grid item xs={1}/>
+          <Grid item xs={1} />
           <Grid item xs={10}>
             <SiteHeader />
             <Routes>
@@ -91,7 +99,7 @@ function App() {
               <Route path="/att-gora" element={<Progress></Progress>} />
             </Routes>
           </Grid>
-          <Grid item xs={1}/>
+          <Grid item xs={1} />
         </Grid>
       </ThemeProvider>
     </QueryClientProvider>
