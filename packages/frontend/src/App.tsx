@@ -102,7 +102,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={mdTheme}>
         <CssBaseline />
-        <Grid container>
+        <Grid container sx={{ marginBottom: 2 }}>
           <Grid item xs={0.5} />
           <Grid item xs={11}>
             <SiteHeader />

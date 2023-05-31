@@ -75,7 +75,7 @@ const Lease = () => {
             <Divider />
             <Typography variant="h2">Kontraktsinnehavare</Typography>
             <Grid container sx={{ marginLeft: 1, marginTop: 1 }}>
-              <Grid item xs={12} sx={{ marginBottom: 2 }}>
+              <Grid item xs={12}>
                 {lease.tenants &&
                   lease.tenants.map((tenant: Person) => (
                     <Box sx={{ marginBottom: 1 }} key={tenant.personId}>
@@ -84,6 +84,29 @@ const Lease = () => {
                       {tenant.nationalRegistrationNumber}
                     </Box>
                   ))}
+              </Grid>
+            </Grid>
+            <Divider sx={{ paddingTop: 0, marginTop: 0 }} />
+            <Typography variant="h2">Hyra</Typography>
+            <Grid container sx={{ marginLeft: 1, marginTop: 1 }}>
+              <Grid item xs={6}>
+                Nuvarande hyra
+              </Grid>
+              <Grid item xs={6}>
+                <b>{lease.rent.currentRent + ' kr/mån'}</b>
+              </Grid>
+              <Grid item xs={6}>
+                {lease.rent.additionalChargeDescription}
+              </Grid>
+              <Grid item xs={6}>
+                <b>{lease.rent.additionalChargeAmount + ' kr/mån'}</b>
+              </Grid>
+            </Grid>
+            <Divider />
+            <Typography variant="h2">Övrig information</Typography>
+            <Grid container sx={{ marginLeft: 1, marginTop: 1 }}>
+              <Grid item xs={12}>
+                {lease.apartment?.otherInfo}
               </Grid>
             </Grid>
             <Divider />

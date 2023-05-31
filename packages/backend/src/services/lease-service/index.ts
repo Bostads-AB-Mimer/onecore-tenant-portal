@@ -8,6 +8,7 @@
 import KoaRouter from '@koa/router'
 import { getLease } from './adapters/tenant-lease-adapter'
 import { getApartment } from './adapters/apartment-adapter'
+import { getRent } from './adapters/rent-adapter'
 
 const getAccommodation = async (rentalId: string) => {
   const lease = await getLease(rentalId)
@@ -15,6 +16,8 @@ const getAccommodation = async (rentalId: string) => {
   lease.apartment = await getApartment(lease.apartmentId, lease.leaseId)
   lease.apartment.addressId = lease.tenants?.[0].address?.addressId ?? '123'
   lease.apartment.address = lease.tenants?.[0].address
+
+  lease.rent = await getRent(lease.rentId, lease.leaseId)
 
   return lease
 }

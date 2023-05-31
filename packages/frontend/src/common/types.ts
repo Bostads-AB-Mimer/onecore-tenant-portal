@@ -21,6 +21,8 @@ interface Lease {
   tenants: Person[] | undefined
   apartmentId: string
   apartment: Apartment | undefined
+  rentId: string
+  rent: Rent
 }
 
 interface Apartment {
@@ -48,4 +50,12 @@ enum LeaseStatus {
   Active,
 }
 
-export { Person, Lease, Apartment, LeaseStatus, Address }
+interface Rent {
+  rentId: string
+  leaseId: string
+  currentRent: number
+  additionalChargeDescription: string | undefined
+  additionalChargeAmount: number | undefined
+}
+
+export { Person, Lease, Apartment, LeaseStatus, Address, Rent }

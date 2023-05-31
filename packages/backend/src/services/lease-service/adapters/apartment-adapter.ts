@@ -24,7 +24,7 @@ const getApartment = async (
     address: undefined,
     apartmentType: Math.round((Math.random() + 0.1) * 6) + ' rum och kök',
     additionsIncludedInRent: applianceNames.join(', '),
-    otherInfo: undefined,
+    otherInfo: 'Uttag stadsnät xxx123123',
   }
 }
 
