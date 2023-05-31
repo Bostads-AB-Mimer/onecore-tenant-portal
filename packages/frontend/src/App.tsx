@@ -43,12 +43,14 @@ const mdTheme = createTheme({
       textTransform: 'uppercase',
       fontFamily: 'bisonBold',
       fontWeight: 900,
+      paddingTop: 10,
     },
     h2: {
       fontSize: 20,
       textTransform: 'uppercase',
       fontFamily: 'bisonBold',
       fontWeight: 900,
+      paddingTop: 10,
     },
     h3: {
       fontSize: 20,
@@ -74,8 +76,8 @@ const mdTheme = createTheme({
     MuiDivider: {
       styleOverrides: {
         root: {
-          marginTop: 5,
-          marginBottom: 5,
+          paddingTop: 7,
+          paddingBottom: 7,
         },
       },
     },
