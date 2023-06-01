@@ -2,7 +2,7 @@ import { Typography, Divider, Grid, Box } from '@mui/material'
 
 import { useLease } from './hooks/useLease'
 import floorPlan from '../../../assets/planlosning.png'
-import { Person } from '../../common/types'
+import { Person, Rent } from '../../common/types'
 
 const Lease = () => {
   const { data } = useLease({ leaseId: '123' })
@@ -93,13 +93,38 @@ const Lease = () => {
                 Nuvarande hyra
               </Grid>
               <Grid item xs={6}>
-                <b>{lease.rent.currentRent + ' kr/mån'}</b>
+                <b>{lease.rentInfo.currentRent.currentRent + ' kr/mån'}</b>
               </Grid>
               <Grid item xs={6}>
-                {lease.rent.additionalChargeDescription}
+                {lease.rentInfo.currentRent.additionalChargeDescription}
               </Grid>
               <Grid item xs={6}>
-                <b>{lease.rent.additionalChargeAmount + ' kr/mån'}</b>
+                <b>
+                  {lease.rentInfo.currentRent.additionalChargeAmount +
+                    ' kr/mån'}
+                </b>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">
+                  Alla plusval försvinner i samband med ombyggnation.
+                </Typography>
+                <Typography variant="h3">
+                  Hyrestrappa vid ombyggnation
+                </Typography>
+                {lease.rentInfo.futureRents &&
+                  lease.rentInfo.futureRents.map((rent: Rent) => (
+                    <Grid container sx={{ marginTop: 1 }} key={rent.rentId}>
+                      <Grid item xs={4}>
+                        År {rent.rentStartDate.toString().split('-')[0]}
+                      </Grid>
+                      <Grid item xs={8}>
+                        <b>{rent.currentRent + ' kr/mån*'}</b>
+                      </Grid>
+                    </Grid>
+                  ))}
+                <Typography variant="body2">
+                  *Beräknad månadshyran kan komma att justeras.
+                </Typography>
               </Grid>
             </Grid>
             <Divider />

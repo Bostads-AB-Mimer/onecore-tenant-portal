@@ -10,6 +10,7 @@ import SiteHeader from './components/SiteHeader'
 import Bison from '../assets/Bison-Regular.woff2'
 import BisonBold from '../assets/Bison-Bold.woff2'
 import GraphikRegular from '../assets/Graphik-Regular.woff2'
+import GraphikBold from '../assets/Graphik-Bold.woff2'
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -56,6 +57,15 @@ const graphikRegular = {
     url(${GraphikRegular}) format('woff2')
   `,
 }
+const graphikBold = {
+  fontFamily: 'graphikBold',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 500,
+  src: `
+    url(${GraphikBold}) format('woff2')
+  `,
+}
 
 const mdTheme = createTheme({
   palette: {
@@ -87,7 +97,10 @@ const mdTheme = createTheme({
       paddingTop: 10,
     },
     h3: {
-      fontSize: 20,
+      fontSize: 14,
+      fontFamily: 'graphikRegular',
+      paddingTop: 10,
+      fontWeight: 900,
     },
     h4: {
       fontSize: 14,
@@ -97,17 +110,19 @@ const mdTheme = createTheme({
       fontFamily: 'graphikRegular',
     },
     body2: {
-      fontSize: 20,
+      fontSize: 12,
       fontFamily: 'graphikRegular',
+      paddingTop: 5,
     },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
         html: [
+          { '@font-face': bison },
           { '@font-face': bisonBold },
           { '@font-face': graphikRegular },
-          { '@font-face': bison },
+          { '@font-face': graphikBold },
         ],
       },
     },

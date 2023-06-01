@@ -21,8 +21,7 @@ interface Lease {
   tenants: Person[] | undefined
   apartmentId: string
   apartment: Apartment | undefined
-  rentId: string
-  rent: Rent
+  rentInfo: RentInfo
 }
 
 interface Apartment {
@@ -50,12 +49,19 @@ enum LeaseStatus {
   Active,
 }
 
+interface RentInfo {
+  currentRent: Rent
+  futureRents: Array<Rent> | undefined
+}
+
 interface Rent {
   rentId: string
   leaseId: string
   currentRent: number
   additionalChargeDescription: string | undefined
   additionalChargeAmount: number | undefined
+  rentStartDate: Date
+  rentEndDate: Date | undefined
 }
 
-export { Person, Lease, Apartment, LeaseStatus, Address, Rent }
+export type { Person, Lease, Apartment, LeaseStatus, Address, Rent, RentInfo }
