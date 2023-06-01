@@ -2,6 +2,7 @@ import { CssBaseline, Grid, ThemeProvider, createTheme } from '@mui/material'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query'
 import { AxiosError } from 'axios'
+import { alpha } from '@mui/material/styles'
 
 import Home from './pages/Home'
 import Lease from './pages/Lease/Lease'
@@ -15,11 +16,13 @@ import GraphikBold from '../assets/Graphik-Bold.woff2'
 declare module '@mui/material/styles' {
   interface TypographyVariants {
     title: React.CSSProperties
+    hMenu: React.CSSProperties
   }
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
     title?: React.CSSProperties
+    hMenu?: React.CSSProperties
   }
 }
 
@@ -27,6 +30,7 @@ declare module '@mui/material/styles' {
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     title: true
+    hMenu: true
   }
 }
 
@@ -105,6 +109,14 @@ const mdTheme = createTheme({
     h4: {
       fontSize: 14,
     },
+    hMenu: {
+      fontSize: 20,
+      fontFamily: 'bisonBold',
+      textTransform: 'uppercase',
+      color: '#007BC4',
+      paddingTop: 65,
+      paddingLeft: 15,
+    },
     body1: {
       fontSize: 14,
       fontFamily: 'graphikRegular',
@@ -138,6 +150,23 @@ const mdTheme = createTheme({
       defaultProps: {
         variantMapping: {
           title: 'h1',
+          hMenu: 'h4',
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          fontSize: 14,
+          fontFamily: 'graphikRegular',
+          color: '#000',
+        },
+      },
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: alpha('#000', 0.2),
         },
       },
     },
@@ -162,7 +191,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={mdTheme}>
         <CssBaseline />
-        <Grid container sx={{ marginBottom: 2 }}>
+        <Grid container sx={{ marginBottom: 2, marginTop: 0 }}>
           <Grid item xs={0.5} />
           <Grid item xs={11}>
             <SiteHeader />
