@@ -7,9 +7,37 @@ import Home from './pages/Home'
 import Lease from './pages/Lease/Lease'
 import Progress from './pages/Progress'
 import SiteHeader from './components/SiteHeader'
+import Bison from '../assets/Bison-Regular.woff2'
 import BisonBold from '../assets/Bison-Bold.woff2'
 import GraphikRegular from '../assets/Graphik-Regular.woff2'
 
+declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    title: React.CSSProperties
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    title?: React.CSSProperties
+  }
+}
+
+// Update the Typography's variant prop options
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    title: true
+  }
+}
+
+const bison = {
+  fontFamily: 'bison',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `
+    url(${Bison}) format('woff2')
+  `,
+}
 const bisonBold = {
   fontFamily: 'bisonBold',
   fontStyle: 'bold',
@@ -38,6 +66,12 @@ const mdTheme = createTheme({
     divider: '#951B81',
   },
   typography: {
+    title: {
+      fontSize: 36,
+      textTransform: 'uppercase',
+      fontFamily: 'bison',
+      paddingTop: 10,
+    },
     h1: {
       fontSize: 32,
       textTransform: 'uppercase',
@@ -70,7 +104,11 @@ const mdTheme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        html: [{ '@font-face': bisonBold }, { '@font-face': graphikRegular }],
+        html: [
+          { '@font-face': bisonBold },
+          { '@font-face': graphikRegular },
+          { '@font-face': bison },
+        ],
       },
     },
     MuiDivider: {
@@ -78,6 +116,13 @@ const mdTheme = createTheme({
         root: {
           paddingTop: 7,
           paddingBottom: 7,
+        },
+      },
+    },
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          title: 'h1',
         },
       },
     },
