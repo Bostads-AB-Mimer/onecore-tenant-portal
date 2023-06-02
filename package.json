@@ -1,6 +1,6 @@
 {
   "name": "yggdrasil-tenant-portal",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Tenant web portal",
   "main": "index.js",
   "scripts": {
