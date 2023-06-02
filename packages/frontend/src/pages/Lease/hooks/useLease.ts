@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 
 import { Lease } from '../../../common/types'
 
-const backendUrl = 'http://localhost:5001'
+const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5001'
 
 export interface LeaseResponse {
   data: {

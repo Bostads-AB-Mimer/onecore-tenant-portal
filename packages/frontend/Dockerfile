@@ -4,6 +4,10 @@ WORKDIR /app
 ADD package*.json .
 RUN npm ci
 ADD . .
+
+ARG BACKEND_URL
+ENV VITE_BACKEND_URL=${BACKEND_URL}
+
 RUN npm run build
 
 FROM nginx:alpine AS runner

@@ -73,6 +73,8 @@ jobs:
     - name: 🔧 Build and push Docker Image
       uses: docker/build-push-action@v4
       with:
+        build-args: |
+            SEARCH_URL=/api
         context: ./packages/${{ matrix.context }}
         push: true
         tags: |
