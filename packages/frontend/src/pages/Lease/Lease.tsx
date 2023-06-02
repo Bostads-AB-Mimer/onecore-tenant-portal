@@ -93,14 +93,14 @@ const Lease = () => {
                 Nuvarande hyra
               </Grid>
               <Grid item xs={6}>
-                <b>{lease.rentInfo.currentRent.currentRent + ' kr/mån'}</b>
+                <b>{lease.rentInfo?.currentRent.currentRent + ' kr/mån'}</b>
               </Grid>
               <Grid item xs={6}>
-                {lease.rentInfo.currentRent.additionalChargeDescription}
+                {lease.rentInfo?.currentRent.additionalChargeDescription}
               </Grid>
               <Grid item xs={6}>
                 <b>
-                  {lease.rentInfo.currentRent.additionalChargeAmount +
+                  {lease.rentInfo?.currentRent.additionalChargeAmount +
                     ' kr/mån'}
                 </b>
               </Grid>
@@ -111,8 +111,8 @@ const Lease = () => {
                 <Typography variant="h3">
                   Hyrestrappa vid ombyggnation
                 </Typography>
-                {lease.rentInfo.futureRents &&
-                  lease.rentInfo.futureRents.map((rent: Rent) => (
+                {lease.rentInfo?.futureRents &&
+                  lease.rentInfo?.futureRents.map((rent: Rent) => (
                     <Grid container sx={{ marginTop: 1 }} key={rent.rentId}>
                       <Grid item xs={4}>
                         År {rent.rentStartDate.toString().split('-')[0]}

@@ -21,7 +21,7 @@ interface Lease {
   tenants: Person[] | undefined
   apartmentId: string
   apartment: Apartment | undefined
-  rentInfo: RentInfo
+  rentInfo: RentInfo | undefined
 }
 
 interface Apartment {
