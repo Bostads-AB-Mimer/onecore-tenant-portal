@@ -64,4 +64,4 @@ interface Rent {
   rentEndDate: Date | undefined
 }
 
-export { Person, Lease, Apartment, LeaseStatus, Address, Rent, RentInfo }
+export type { Person, Lease, Apartment, LeaseStatus, Address, Rent, RentInfo }

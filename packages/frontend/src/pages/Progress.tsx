@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 
 const Progress = () => (
   <div>
-    <Typography variant="h2">Saker att tänka på</Typography>
+    <Typography variant="h1">Saker att tänka på</Typography>
     <ul>
       <li>
         <DoneOutlined></DoneOutlined> Ombyggnation startar
