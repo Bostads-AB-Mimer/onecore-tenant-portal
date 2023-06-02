@@ -13,6 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 
 import mimerLogo from '../../assets/mimer-logo.png'
+import MenuLink from './MenuLink'
 
 const SiteHeader = () => (
   <Stack
@@ -51,7 +52,7 @@ const SiteHeader = () => (
               </IconButton>
               <Typography variant="hMenu">Aktuellt</Typography>
               <MenuItem onClick={popupState.close} sx={styles.menuItem}>
-                <Link href="/">Dags för materialval</Link>
+                <MenuLink href="/" title="Dags för materialval" />
               </MenuItem>
               <Divider
                 sx={{
@@ -61,10 +62,10 @@ const SiteHeader = () => (
                 }}
               />
               <MenuItem onClick={popupState.close} sx={styles.menuItem}>
-                <Link href="/">Hem</Link>
+                <MenuLink href="/" title="Hem" />
               </MenuItem>
               <MenuItem onClick={popupState.close} sx={styles.menuItem}>
-                <Link href="/mitt-boende">Mitt boende</Link>
+                <MenuLink href="/mitt-boende" title="Mitt boende" />
               </MenuItem>
             </Menu>
           </Backdrop>

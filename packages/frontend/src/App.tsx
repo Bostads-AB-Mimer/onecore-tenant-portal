@@ -157,9 +157,11 @@ const mdTheme = createTheme({
     MuiLink: {
       styleOverrides: {
         root: {
-          fontSize: 14,
+          fontSize: 12,
           fontFamily: 'graphikRegular',
-          color: '#000',
+          color: '#951B81',
+          fontWeight: 900,
+          textDecoration: 'none',
         },
       },
     },
@@ -167,6 +169,35 @@ const mdTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: alpha('#000', 0.2),
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          marginTop: 15,
+          backgroundColor: '#F4EFE9',
+          borderWidth: 0,
+          borderRadius: 0,
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          paddingLeft: 43,
+          paddingRight: 10,
+          paddingTop: 0,
+          paddingBottom: 0,
+          marginBottom: 0,
+        },
+      },
+    },
+    MuiCardActions: {
+      styleOverrides: {
+        root: {
+          paddingTop: 5,
+          justifyContent: 'right',
         },
       },
     },
