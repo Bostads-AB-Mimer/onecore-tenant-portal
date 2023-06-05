@@ -7,6 +7,7 @@ import { alpha } from '@mui/material/styles'
 import Home from './pages/Home'
 import Lease from './pages/Lease/Lease'
 import Progress from './pages/Progress'
+import MaterialChoice from './pages/MaterialChoice/MaterialChoice'
 import SiteHeader from './components/SiteHeader'
 import Bison from '../assets/Bison-Regular.woff2'
 import BisonBold from '../assets/Bison-Bold.woff2'
@@ -120,6 +121,7 @@ const mdTheme = createTheme({
     body1: {
       fontSize: 14,
       fontFamily: 'graphikRegular',
+      paddingTop: 5,
     },
     body2: {
       fontSize: 12,
@@ -230,6 +232,10 @@ function App() {
               <Route path="/" element={<Home></Home>} />
               <Route path="/mitt-boende" element={<Lease></Lease>} />
               <Route path="/att-gora" element={<Progress></Progress>} />
+              <Route
+                path="/materialval"
+                element={<MaterialChoice></MaterialChoice>}
+              />
             </Routes>
           </Grid>
           <Grid item xs={0.5} />

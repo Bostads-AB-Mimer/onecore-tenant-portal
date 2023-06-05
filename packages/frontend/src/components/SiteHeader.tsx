@@ -22,7 +22,9 @@ const SiteHeader = () => (
     justifyContent="space-between"
     alignItems="center"
   >
-    <img src={mimerLogo} width="160" />
+    <Link href="/">
+      <img src={mimerLogo} width="160" />
+    </Link>
 
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
@@ -52,7 +54,7 @@ const SiteHeader = () => (
               </IconButton>
               <Typography variant="hMenu">Aktuellt</Typography>
               <MenuItem onClick={popupState.close} sx={styles.menuItem}>
-                <MenuLink href="/" title="Dags för materialval" />
+                <MenuLink href="/materialval" title="Dags för materialval" />
               </MenuItem>
               <Divider
                 sx={{

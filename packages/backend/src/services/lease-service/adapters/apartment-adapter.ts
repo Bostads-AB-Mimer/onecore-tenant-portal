@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { Apartment } from '../types'
+import { Apartment, RoomType } from '../types'
 
 const getApartment = async (
   apartmentId: string,
@@ -28,4 +28,14 @@ const getApartment = async (
   }
 }
 
-export { getApartment }
+const getRoomTypes = async (aparmentId: string): Promise<Array<RoomType>> => {
+  /*Get real data*/
+  return [
+    { roomTypeId: '1', name: 'Kök' },
+    { roomTypeId: '2', name: 'Badrum' },
+    { roomTypeId: '3', name: 'Vardagsrum' },
+    { roomTypeId: '4', name: 'Sovrum 1' },
+  ]
+}
+
+export { getApartment, getRoomTypes }

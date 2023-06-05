@@ -64,4 +64,48 @@ interface Rent {
   rentEndDate: Date | undefined
 }
 
-export type { Person, Lease, Apartment, LeaseStatus, Address, Rent, RentInfo }
+interface MaterialOption {
+  apartmentMaterialOptionId: string
+  roomTypeId: string
+  caption: string
+  shortDescription: string
+  image: string
+  detailsUrL: string
+  type: string
+  status: string
+}
+
+interface MaterialOption {
+  materialOptionId: string
+  roomTypeId: string
+  caption: string
+  shortDescription: string
+  image: string
+  detailsUrL: string
+  type: string
+  status: string
+}
+
+interface RoomType {
+  roomTypeId: string
+  name: string
+}
+
+interface MaterialOptions {
+  roomTypeId: string
+  roomTypeName: string
+  concepts: Array<MaterialOption>
+  addOns: Array<MaterialOption>
+}
+
+export type {
+  Person,
+  Lease,
+  Apartment,
+  LeaseStatus,
+  Address,
+  Rent,
+  RentInfo,
+  MaterialOption,
+  MaterialOptions,
+}

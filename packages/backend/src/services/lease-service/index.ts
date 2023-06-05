@@ -7,8 +7,10 @@
  */
 import KoaRouter from '@koa/router'
 import { getLease } from './adapters/tenant-lease-adapter'
-import { getApartment } from './adapters/apartment-adapter'
+import { getApartment, getRoomTypes } from './adapters/apartment-adapter'
 import { getRentsForLease } from './adapters/rent-adapter'
+import { MaterialOption, RoomType } from './types'
+import { getMaterialOptionsByRoomType } from './adapters/material-options-adapter'
 
 const getAccommodation = async (rentalId: string) => {
   const lease = await getLease(rentalId)
@@ -20,6 +22,31 @@ const getAccommodation = async (rentalId: string) => {
   lease.rentInfo = await getRentsForLease(lease.leaseId)
 
   return lease
+}
+
+const getMaterialOptions = async (apartmentId: string) => {
+  const roomTypes = await getRoomTypes(apartmentId)
+
+  const materialOptions = await Promise.all(
+    roomTypes.map(async (room: RoomType) => {
+      const materialOptions = await getMaterialOptionsByRoomType(
+        room.roomTypeId
+      )
+
+      return {
+        roomTypeId: room.roomTypeId,
+        roomTypeName: room.name,
+        concepts: materialOptions.filter(
+          (materialOption: MaterialOption) => materialOption.type === 'Concept'
+        ),
+        addOns: materialOptions.filter(
+          (materialOption: MaterialOption) => materialOption.type === 'AddOn'
+        ),
+      }
+    })
+  )
+
+  return materialOptions
 }
 
 /**
@@ -34,6 +61,16 @@ export const routes = (router: KoaRouter) => {
 
     ctx.body = {
       data: { lease },
+    }
+  })
+
+  router.get('(.*)/material-options', async (ctx) => {
+    const materialOptions = await getMaterialOptions(
+      Math.round(Math.random() * 100000).toString()
+    )
+
+    ctx.body = {
+      data: { materialOptions },
     }
   })
 }
