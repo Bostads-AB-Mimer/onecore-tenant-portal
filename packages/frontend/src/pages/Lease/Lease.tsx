@@ -6,7 +6,7 @@ import { Person, Rent } from '../../common/types'
 
 const Lease = () => {
   const { data } = useLease({ leaseId: '123' })
-  const lease = data?.data?.lease
+  const lease = data?.data
 
   return (
     <>

@@ -28,12 +28,10 @@ const getAccommodation = async (rentalId: string) => {
  */
 export const routes = (router: KoaRouter) => {
   router.get('(.*)/my-lease', async (ctx) => {
-    const lease = await getAccommodation(
-      Math.round(Math.random() * 100000).toString()
-    )
+    const lease = await getAccommodation('L81178')
 
     ctx.body = {
-      data: { lease },
+      data: lease,
     }
   })
 }
