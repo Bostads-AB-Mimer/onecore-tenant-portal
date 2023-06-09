@@ -6,13 +6,7 @@ const getApartment = async (
   apartmentId: string,
   leaseId: string
 ): Promise<Apartment> => {
-  const appliances = await axios(
-    'https://random-data-api.com/api/v2/appliances?size=3'
-  )
-  const applianceNames = appliances.data.reduce((list: string[], item: any) => {
-    list.push(item.equipment)
-    return list
-  }, [])
+  const applianceNames = ['Tvättmaskin', 'Centraldammsugare']
 
   return {
     apartmentId,

@@ -6,9 +6,7 @@ import { Lease } from '../../../common/types'
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5001'
 
 export interface LeaseResponse {
-  data: {
-    lease: Lease | undefined
-  }
+  data: Lease | undefined
 }
 
 export const useLease = ({ leaseId }: { leaseId: string | null }) =>
@@ -29,9 +27,7 @@ export const useLease = ({ leaseId }: { leaseId: string | null }) =>
         return data
       } else {
         return {
-          data: {
-            lease: undefined,
-          },
+          data: undefined,
         }
       }
     },
