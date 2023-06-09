@@ -64,15 +64,13 @@ interface Rent {
   rentEndDate: Date | undefined
 }
 
-interface MaterialOption {
-  apartmentMaterialOptionId: string
+interface MaterialChoice {
+  materialChoiceId?: string
+  materialOptionId: string
   roomTypeId: string
-  caption: string
-  shortDescription: string
-  image: string
-  detailsUrL: string
-  type: string
   status: string
+  dateOfSubmission?: Date
+  dateOfCancellation?: Date
 }
 
 interface MaterialOption {
@@ -108,4 +106,5 @@ export type {
   RentInfo,
   MaterialOption,
   MaterialOptions,
+  MaterialChoice,
 }

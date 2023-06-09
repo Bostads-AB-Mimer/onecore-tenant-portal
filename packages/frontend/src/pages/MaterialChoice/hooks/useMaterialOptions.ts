@@ -29,7 +29,6 @@ export const useMaterialOptions = ({
             },
           }
         )
-        console.log('data', data)
         return data
       } else {
         return {
