@@ -37,13 +37,13 @@ const MaterialChoice = () => {
         </Typography>
         <Divider />
         {conceptChoices &&
-          roomTypes?.map((roomType: RoomType) => (
-            <>
+          roomTypes?.map((roomType: RoomType, i) => (
+            <Box key={i}>
               <Typography variant="h2">{roomType.name}</Typography>
               {roomType.materialOptionGroups
                 ?.filter((group) => group.type == 'Concept')
-                .map((materialOptionGroup: MaterialOptionGroup) => (
-                  <>
+                .map((materialOptionGroup: MaterialOptionGroup, i) => (
+                  <Box key={i}>
                     <Typography variant="body1">
                       {materialOptionGroup.name}
                     </Typography>
@@ -102,12 +102,12 @@ const MaterialChoice = () => {
                           }}
                         />
                       )}
-                  </>
+                  </Box>
                 ))}
               {roomType.materialOptionGroups
                 ?.filter((group) => group.type == 'SingleChoice')
-                .map((materialOptionGroup: MaterialOptionGroup) => (
-                  <>
+                .map((materialOptionGroup: MaterialOptionGroup, i) => (
+                  <Box key={i}>
                     <Typography variant="body1">
                       {materialOptionGroup.actionName}
                     </Typography>
@@ -117,24 +117,24 @@ const MaterialChoice = () => {
                       name="radio-buttons-group"
                     >
                       {materialOptionGroup.materialOptions?.map(
-                        (materialOption: MaterialOption) => (
-                          <>
+                        (materialOption: MaterialOption, i) => (
+                          <Box key={i}>
                             <FormControlLabel
                               control={<Radio />}
                               label={materialOption.caption}
                               value={materialOption.materialOptionId}
                             ></FormControlLabel>
                             {materialOption.shortDescription}
-                          </>
+                          </Box>
                         )
                       )}
                     </RadioGroup>
-                  </>
+                  </Box>
                 ))}
               {roomType.materialOptionGroups
                 ?.filter((group) => group.type == 'AddOn')
-                .map((materialOptionGroup: MaterialOptionGroup) => (
-                  <>
+                .map((materialOptionGroup: MaterialOptionGroup, i) => (
+                  <Box key={i}>
                     <Typography variant="body1">
                       {materialOptionGroup.actionName}
                     </Typography>
@@ -151,10 +151,10 @@ const MaterialChoice = () => {
                         ></FormControlLabel>
                       )
                     )}
-                  </>
+                  </Box>
                 ))}
               <Divider />
-            </>
+            </Box>
           ))}
       </Box>
     </>
