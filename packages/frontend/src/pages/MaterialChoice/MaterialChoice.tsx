@@ -7,18 +7,18 @@ import {
   RadioGroup,
   Radio,
 } from '@mui/material'
+import { useState } from 'react'
 
 import { useMaterialOptions } from './hooks/useMaterialOptions'
 import {
   MaterialOptionGroup,
   MaterialOption,
-  MaterialChoice,
   RoomType,
 } from '../../common/types'
-import { useState } from 'react'
 import DropDown from '../../components/DropDown'
+import Carousel from '../../components/Carousel'
 
-const Lease = () => {
+const MaterialChoice = () => {
   const [conceptChoices, setConceptChoices] = useState(
     Array<{ materialOptionId: string; materialOptionGroupId: string }>
   )
@@ -47,16 +47,17 @@ const Lease = () => {
                     <Typography variant="body1">
                       {materialOptionGroup.name}
                     </Typography>
-                    {materialOptionGroup.materialOptions?.map(
-                      (materialOption: MaterialOption) => (
-                        <>
-                          <img src={materialOption.coverImage} width="75%" />
-                          <Typography variant="body1">
-                            {materialOption.caption}
-                          </Typography>
-                        </>
-                      )
-                    )}
+                    <Carousel
+                      links={materialOptionGroup.materialOptions?.map(
+                        (materialOption: MaterialOption) => {
+                          return {
+                            link: '/materialval',
+                            image: materialOption.coverImage,
+                            caption: materialOption.caption,
+                          }
+                        }
+                      )}
+                    ></Carousel>
                     {materialOptionGroup.materialOptions &&
                       materialOptionGroup.materialOptions.length > 1 && (
                         <DropDown
@@ -116,24 +117,16 @@ const Lease = () => {
                       name="radio-buttons-group"
                     >
                       {materialOptionGroup.materialOptions?.map(
-                        (materialOption: MaterialOption) => {
-                          const label = materialOption.shortDescription
-                            ? materialOption.caption +
-                              ' (' +
-                              materialOption.shortDescription +
-                              ')'
-                            : materialOption.caption
-                          return (
-                            <>
-                              <FormControlLabel
-                                control={<Radio />}
-                                label={materialOption.caption}
-                                value={materialOption.materialOptionId}
-                              ></FormControlLabel>
-                              {materialOption.shortDescription}
-                            </>
-                          )
-                        }
+                        (materialOption: MaterialOption) => (
+                          <>
+                            <FormControlLabel
+                              control={<Radio />}
+                              label={materialOption.caption}
+                              value={materialOption.materialOptionId}
+                            ></FormControlLabel>
+                            {materialOption.shortDescription}
+                          </>
+                        )
                       )}
                     </RadioGroup>
                   </>
@@ -146,8 +139,9 @@ const Lease = () => {
                       {materialOptionGroup.actionName}
                     </Typography>
                     {materialOptionGroup.materialOptions?.map(
-                      (materialOption: MaterialOption) => (
+                      (materialOption: MaterialOption, i) => (
                         <FormControlLabel
+                          key={i}
                           control={<Checkbox />}
                           label={
                             materialOption.caption +
@@ -159,49 +153,6 @@ const Lease = () => {
                     )}
                   </>
                 ))}
-              {/* {options.concepts?.map((materialOption: MaterialOption) => (
-                <Typography variant="body1">
-                  Bild på {materialOption.caption}
-                </Typography>
-              ))}
-              <DropDown
-                id={options.roomTypeId + '_concept'}
-                label="Välj koncept"
-                defaultValue={defaultValue}
-                options={options.concepts.map(
-                  (materialOption: MaterialOption) => {
-                    return {
-                      value: materialOption.materialOptionId,
-                      label: materialOption.caption,
-                    }
-                  }
-                )}
-                onSelect={(value: string) => {
-                  //create new array to remove any old choice
-                  const newChoices = conceptChoices.filter(
-                    (choice) => choice.roomTypeId != options.roomTypeId
-                  )
-
-                  if (value != defaultValue) {
-                    newChoices.push({
-                      materialOptionId: value,
-                      roomTypeId: options.roomTypeId,
-                      status: 'Draft',
-                      dateOfSubmission: new Date(),
-                    })
-                  }
-
-                  setConceptChoices(newChoices)
-                }}
-              />
-
-              <Typography variant="body1">Tillval</Typography>
-              {options.addOns?.map((materialOption: MaterialOption) => (
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label={materialOption.caption}
-                ></FormControlLabel>
-              ))} */}
               <Divider />
             </>
           ))}
@@ -210,4 +161,4 @@ const Lease = () => {
   )
 }
 
-export default Lease
+export default MaterialChoice

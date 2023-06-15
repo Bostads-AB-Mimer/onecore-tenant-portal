@@ -11,7 +11,7 @@ export interface DropDownOption {
   label: string
 }
 
-export const DropDown = ({
+const DropDown = ({
   id,
   label,
   defaultValue,

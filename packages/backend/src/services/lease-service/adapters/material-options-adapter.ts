@@ -13,13 +13,13 @@ const getMaterialOptionGroupsByRoomType = async (
     materialOptions: [
       {
         materialOptionId: '1',
-        caption: 'Som en sommardröm',
+        caption: 'Koncept 1',
         coverImage: '../../../assets/images/kok_koncept1.png',
       },
       {
         materialOptionId: '2',
-        caption: 'Ljust och fräscht',
-        coverImage: '../../../assets/images/kok_koncept1.png',
+        caption: 'Koncept 2',
+        coverImage: '../../../assets/images/kok_koncept2.png',
       },
     ],
   })
@@ -46,12 +46,12 @@ const getMaterialOptionGroupsByRoomType = async (
     materialOptions: [
       {
         materialOptionId: '1',
-        caption: 'Blue dream',
+        caption: 'Koncept 1',
         coverImage: '../../../assets/images/bad_koncept1.png',
       },
       {
         materialOptionId: '2',
-        caption: 'Sommarregn',
+        caption: 'Koncept 2',
         coverImage: '../../../assets/images/bad_koncept1.png',
       },
     ],
@@ -120,13 +120,13 @@ const getMaterialOptionGroupsByRoomType = async (
         materialOptionId: '1',
         caption: 'Ljusgrå',
         shortDescription: '10002Y',
-        coverImage: '',
+        coverImage: '../../../assets/images/vagg_ljusgra.png',
       },
       {
         materialOptionId: '2',
-        caption: 'Beige',
+        caption: 'Varmvit',
         shortDescription: '20002Y',
-        coverImage: '',
+        coverImage: '../../../assets/images/vagg_varmvit.png',
       },
     ],
   })
@@ -141,12 +141,12 @@ const getMaterialOptionGroupsByRoomType = async (
       {
         materialOptionId: '1',
         caption: 'Ljusgrå linoleum',
-        coverImage: '',
+        coverImage: '../../../assets/images/golv_ljusgra.png',
       },
       {
         materialOptionId: '2',
-        caption: 'Grå linoleum',
-        coverImage: '',
+        caption: 'Beige linoleum',
+        coverImage: '../../../assets/images/golv_beige.png',
       },
     ],
   })
@@ -162,13 +162,13 @@ const getMaterialOptionGroupsByRoomType = async (
         materialOptionId: '1',
         caption: 'Ljusgrå',
         shortDescription: '10002Y',
-        coverImage: '',
+        coverImage: '../../../assets/images/vagg_ljusgra.png',
       },
       {
         materialOptionId: '2',
-        caption: 'Beige',
+        caption: 'Varmvit',
         shortDescription: '20002Y',
-        coverImage: '',
+        coverImage: '../../../assets/images/vagg_varmvit.png',
       },
     ],
   })
