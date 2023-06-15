@@ -4,23 +4,27 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
+  RadioGroup,
+  Radio,
 } from '@mui/material'
 
 import { useMaterialOptions } from './hooks/useMaterialOptions'
 import {
-  MaterialOptions,
+  MaterialOptionGroup,
   MaterialOption,
   MaterialChoice,
+  RoomType,
 } from '../../common/types'
 import { useState } from 'react'
 import DropDown from '../../components/DropDown'
-import { CheckBox } from '@mui/icons-material'
 
 const Lease = () => {
-  const [conceptChoices, setConceptChoices] = useState(Array<MaterialChoice>)
+  const [conceptChoices, setConceptChoices] = useState(
+    Array<{ materialOptionId: string; materialOptionGroupId: string }>
+  )
 
   const { data } = useMaterialOptions({ apartmentId: '123' })
-  const materialOptionsList = data?.data?.materialOptions
+  const roomTypes = data?.data?.roomTypes
 
   const defaultValue = '0'
 
@@ -33,10 +37,129 @@ const Lease = () => {
         </Typography>
         <Divider />
         {conceptChoices &&
-          materialOptionsList?.map((options: MaterialOptions) => (
+          roomTypes?.map((roomType: RoomType) => (
             <>
-              <Typography variant="h2">{options.roomTypeName}</Typography>
-              {options.concepts?.map((materialOption: MaterialOption) => (
+              <Typography variant="h2">{roomType.name}</Typography>
+              {roomType.materialOptionGroups
+                ?.filter((group) => group.type == 'Concept')
+                .map((materialOptionGroup: MaterialOptionGroup) => (
+                  <>
+                    <Typography variant="body1">
+                      {materialOptionGroup.name}
+                    </Typography>
+                    {materialOptionGroup.materialOptions?.map(
+                      (materialOption: MaterialOption) => (
+                        <>
+                          <img src={materialOption.coverImage} width="75%" />
+                          <Typography variant="body1">
+                            {materialOption.caption}
+                          </Typography>
+                        </>
+                      )
+                    )}
+                    {materialOptionGroup.materialOptions &&
+                      materialOptionGroup.materialOptions.length > 1 && (
+                        <DropDown
+                          id={
+                            roomType.roomTypeId +
+                            '_' +
+                            materialOptionGroup.materialOptionGroupId +
+                            '_concept'
+                          }
+                          label={
+                            materialOptionGroup.actionName ?? 'Välj alternativ'
+                          }
+                          defaultValue={defaultValue}
+                          options={
+                            materialOptionGroup.materialOptions?.map(
+                              (materialOption: MaterialOption) => {
+                                return {
+                                  value: materialOption.materialOptionId,
+                                  label: materialOption.caption,
+                                }
+                              }
+                            ) ?? []
+                          }
+                          onSelect={(value: string) => {
+                            //create new array to remove any old choice
+                            const newChoices =
+                              conceptChoices.filter(
+                                (choice) =>
+                                  choice.materialOptionGroupId !=
+                                  materialOptionGroup.materialOptionGroupId
+                              ) ?? []
+
+                            if (value != defaultValue) {
+                              newChoices.push({
+                                materialOptionId: value,
+                                materialOptionGroupId:
+                                  materialOptionGroup.materialOptionGroupId,
+                              })
+                            }
+
+                            setConceptChoices(newChoices)
+                          }}
+                        />
+                      )}
+                  </>
+                ))}
+              {roomType.materialOptionGroups
+                ?.filter((group) => group.type == 'SingleChoice')
+                .map((materialOptionGroup: MaterialOptionGroup) => (
+                  <>
+                    <Typography variant="body1">
+                      {materialOptionGroup.actionName}
+                    </Typography>
+                    <RadioGroup
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      // defaultValue="female"
+                      name="radio-buttons-group"
+                    >
+                      {materialOptionGroup.materialOptions?.map(
+                        (materialOption: MaterialOption) => {
+                          const label = materialOption.shortDescription
+                            ? materialOption.caption +
+                              ' (' +
+                              materialOption.shortDescription +
+                              ')'
+                            : materialOption.caption
+                          return (
+                            <>
+                              <FormControlLabel
+                                control={<Radio />}
+                                label={materialOption.caption}
+                                value={materialOption.materialOptionId}
+                              ></FormControlLabel>
+                              {materialOption.shortDescription}
+                            </>
+                          )
+                        }
+                      )}
+                    </RadioGroup>
+                  </>
+                ))}
+              {roomType.materialOptionGroups
+                ?.filter((group) => group.type == 'AddOn')
+                .map((materialOptionGroup: MaterialOptionGroup) => (
+                  <>
+                    <Typography variant="body1">
+                      {materialOptionGroup.actionName}
+                    </Typography>
+                    {materialOptionGroup.materialOptions?.map(
+                      (materialOption: MaterialOption) => (
+                        <FormControlLabel
+                          control={<Checkbox />}
+                          label={
+                            materialOption.caption +
+                            ' ' +
+                            materialOption.shortDescription
+                          }
+                        ></FormControlLabel>
+                      )
+                    )}
+                  </>
+                ))}
+              {/* {options.concepts?.map((materialOption: MaterialOption) => (
                 <Typography variant="body1">
                   Bild på {materialOption.caption}
                 </Typography>
@@ -78,7 +201,7 @@ const Lease = () => {
                   control={<Checkbox />}
                   label={materialOption.caption}
                 ></FormControlLabel>
-              ))}
+              ))} */}
               <Divider />
             </>
           ))}

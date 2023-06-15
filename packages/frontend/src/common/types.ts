@@ -35,6 +35,7 @@ interface Apartment {
   apartmentType: string
   additionsIncludedInRent: string
   otherInfo: string | undefined
+  roomTypes: Array<RoomType> | undefined
 }
 
 interface Address {
@@ -65,35 +66,38 @@ interface Rent {
 }
 
 interface MaterialChoice {
-  materialChoiceId?: string
+  materialChoiceId: string
   materialOptionId: string
+  apartmentId: string
   roomTypeId: string
-  status: string
+  status: string //TODO enum of Draft/Submitted/Cancelled
   dateOfSubmission?: Date
   dateOfCancellation?: Date
 }
 
+interface MaterialOptionGroup {
+  materialOptionGroupId: string
+  roomTypeId: string
+  roomTypeName?: string
+  name?: string
+  actionName?: string
+  materialOptions?: Array<MaterialOption>
+  type: string //TODO enum of Concept/AddOn/SingleChoice
+}
+
 interface MaterialOption {
   materialOptionId: string
-  roomTypeId: string
   caption: string
-  shortDescription: string
-  image: string
-  detailsUrL: string
-  type: string
-  status: string
+  shortDescription?: string
+  description?: string
+  coverImage?: string
+  images?: Array<string>
 }
 
 interface RoomType {
   roomTypeId: string
   name: string
-}
-
-interface MaterialOptions {
-  roomTypeId: string
-  roomTypeName: string
-  concepts: Array<MaterialOption>
-  addOns: Array<MaterialOption>
+  materialOptionGroups?: Array<MaterialOptionGroup>
 }
 
 export type {
@@ -104,7 +108,8 @@ export type {
   Address,
   Rent,
   RentInfo,
+  RoomType,
   MaterialOption,
-  MaterialOptions,
+  MaterialOptionGroup,
   MaterialChoice,
 }

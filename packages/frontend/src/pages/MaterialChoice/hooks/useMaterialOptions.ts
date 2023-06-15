@@ -1,13 +1,14 @@
 import axios, { AxiosError } from 'axios'
 import { useQuery } from 'react-query'
 
-import { MaterialOptions } from '../../../common/types'
+import { RoomType } from '../../../common/types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5001'
 
 export interface MaterialOptionResponse {
   data: {
-    materialOptions: Array<MaterialOptions> | undefined
+    // materialOptionGroups: Array<MaterialOptionGroup> | undefined
+    roomTypes: Array<RoomType> | undefined
   }
 }
 
@@ -33,7 +34,7 @@ export const useMaterialOptions = ({
       } else {
         return {
           data: {
-            materialOptions: undefined,
+            roomTypes: undefined,
           },
         }
       }
