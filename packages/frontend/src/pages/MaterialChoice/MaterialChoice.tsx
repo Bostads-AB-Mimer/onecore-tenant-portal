@@ -6,8 +6,9 @@ import {
   FormControlLabel,
   RadioGroup,
   Radio,
+  Button,
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useMaterialOptions } from './hooks/useMaterialOptions'
 import {
@@ -20,13 +21,55 @@ import Carousel from '../../components/Carousel'
 
 const MaterialChoice = () => {
   const [conceptChoices, setConceptChoices] = useState(
-    Array<{ materialOptionId: string; materialOptionGroupId: string }>
+    Array<{
+      materialOptionId: string
+      materialOptionGroupId: string
+      roomTypeId: string
+    }>
   )
 
   const { data } = useMaterialOptions({ apartmentId: '123' })
   const roomTypes = data?.data?.roomTypes
 
   const defaultValue = '0'
+
+  useEffect(() => {
+    console.log('conceptChoices', conceptChoices)
+  }, [conceptChoices])
+
+  const save = () => {
+    console.log('conceptChoices', conceptChoices)
+  }
+
+  //TODO:
+  //* Save all choices to state, also create removeChoiceFromState to use for when "0" is selected in any dropdowns
+  //* Simple validation??
+
+  const saveChoiceToState = ({
+    materialOptionId,
+    materialOptionGroupId,
+    roomTypeId,
+  }: {
+    materialOptionId: string
+    materialOptionGroupId: string
+    roomTypeId: string
+  }) => {
+    const newChoices =
+      conceptChoices.filter(
+        (choice) => choice.materialOptionGroupId != materialOptionGroupId
+      ) ?? []
+
+    // console.log('newChoices', newChoices)
+    newChoices.push({
+      materialOptionId: materialOptionId,
+      materialOptionGroupId: materialOptionGroupId,
+      roomTypeId: roomTypeId,
+    })
+
+    setConceptChoices(newChoices)
+  }
+
+  // const removeChoiceFromState()
 
   return (
     <>
@@ -35,10 +78,10 @@ const MaterialChoice = () => {
         <Typography variant="body1">
           Det har nu blivit dags att göra materialval för ditt kommande boende!
         </Typography>
-        <Divider />
         {conceptChoices &&
           roomTypes?.map((roomType: RoomType, i) => (
             <Box key={i}>
+              <Divider />
               <Typography variant="h2">{roomType.name}</Typography>
               {roomType.materialOptionGroups
                 ?.filter((group) => group.type == 'Concept')
@@ -101,6 +144,7 @@ const MaterialChoice = () => {
                                 materialOptionId: value,
                                 materialOptionGroupId:
                                   materialOptionGroup.materialOptionGroupId,
+                                roomTypeId: materialOptionGroup.roomTypeId,
                               })
                             }
 
@@ -121,13 +165,31 @@ const MaterialChoice = () => {
                       aria-labelledby="demo-radio-buttons-group-label"
                       // defaultValue="female"
                       name="radio-buttons-group"
+                      onChange={(
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        const materialOptionId = (
+                          event.target as HTMLInputElement
+                        ).value
+
+                        saveChoiceToState({
+                          materialOptionId: materialOptionId,
+                          materialOptionGroupId:
+                            materialOptionGroup.materialOptionGroupId,
+                          roomTypeId: roomType.roomTypeId,
+                        })
+                      }}
                     >
                       {materialOptionGroup.materialOptions?.map(
                         (materialOption: MaterialOption, i) => (
                           <Box key={i}>
                             <FormControlLabel
                               control={<Radio />}
-                              label={materialOption.caption}
+                              label={
+                                materialOption.caption +
+                                ' - ' +
+                                materialOption.materialOptionId
+                              }
                               value={materialOption.materialOptionId}
                             ></FormControlLabel>
                             {materialOption.shortDescription}
@@ -159,12 +221,23 @@ const MaterialChoice = () => {
                     )}
                   </Box>
                 ))}
-              <Divider />
             </Box>
           ))}
+        <Box sx={styles.actionContainer}>
+          <Button variant="contained" onClick={save}>
+            Spara materialval
+          </Button>
+        </Box>
       </Box>
     </>
   )
+}
+
+const styles = {
+  actionContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
 }
 
 export default MaterialChoice

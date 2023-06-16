@@ -157,6 +157,23 @@ const mdTheme = createTheme({
         },
       },
     },
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
+      styleOverrides: {
+        root: {
+          marginTop: 20,
+          marginBottom: 20,
+          textTransform: 'initial',
+          backgroundColor: '#00578A',
+          borderRadius: '100px',
+          fontFamily: 'graphikRegular',
+          fontSize: 14,
+          fontWeight: 500,
+        },
+      },
+    },
     MuiLink: {
       styleOverrides: {
         root: {
