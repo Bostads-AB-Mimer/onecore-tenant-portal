@@ -92,6 +92,8 @@ interface MaterialOption {
   description?: string
   coverImage?: string
   images?: Array<string>
+  roomTypeName?: string
+  materialOptionGroupName?: string
 }
 
 interface RoomType {

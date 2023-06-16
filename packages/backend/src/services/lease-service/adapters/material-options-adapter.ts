@@ -1,4 +1,38 @@
-import { MaterialOptionGroup } from '../types'
+import { MaterialOption, MaterialOptionGroup } from '../types'
+
+const getMaterialOption = async (
+  roomTypeId: string,
+  materialOptionGroupId: string,
+  materialOptionId: string
+): Promise<MaterialOption | undefined> => {
+  let materialOption: MaterialOption | undefined
+  let groups = await getMaterialOptionGroupsByRoomType(roomTypeId)
+
+  groups
+    .filter(
+      (group: MaterialOptionGroup) =>
+        group.materialOptionGroupId == materialOptionGroupId
+    )
+    .forEach((group: MaterialOptionGroup) => {
+      materialOption = group.materialOptions?.find(
+        (option: MaterialOption) => option.materialOptionId == materialOptionId
+      )
+    })
+
+  return materialOption
+}
+
+const getMaterialOptionGroup = async (
+  roomTypeId: string,
+  materialOptionGroupId: string
+): Promise<MaterialOptionGroup | undefined> => {
+  let groups = await getMaterialOptionGroupsByRoomType(roomTypeId)
+
+  return groups.find(
+    (materialOptionGroup: MaterialOptionGroup) =>
+      materialOptionGroup.materialOptionGroupId == materialOptionGroupId
+  )
+}
 
 const getMaterialOptionGroupsByRoomType = async (
   roomTypeId: string
@@ -179,4 +213,8 @@ const getMaterialOptionGroupsByRoomType = async (
   )
 }
 
-export { getMaterialOptionGroupsByRoomType }
+export {
+  getMaterialOptionGroupsByRoomType,
+  getMaterialOptionGroup,
+  getMaterialOption,
+}

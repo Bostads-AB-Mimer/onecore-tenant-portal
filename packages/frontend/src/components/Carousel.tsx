@@ -4,7 +4,7 @@ import { useSnapCarousel } from 'react-snap-carousel'
 const Carousel = ({
   links,
 }: {
-  links: Array<{
+  links?: Array<{
     link: string
     image?: string | undefined
     caption?: string | undefined
@@ -13,7 +13,7 @@ const Carousel = ({
   const { scrollRef, snapPointIndexes } = useSnapCarousel()
   return (
     <ul className="flex snap-x snap-mandatory overflow-x-auto" ref={scrollRef}>
-      {links.map((link, i) => (
+      {links?.map((link, i) => (
         <li
           key={i}
           className="flex-shrink-0"

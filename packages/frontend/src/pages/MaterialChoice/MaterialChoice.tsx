@@ -51,7 +51,13 @@ const MaterialChoice = () => {
                       links={materialOptionGroup.materialOptions?.map(
                         (materialOption: MaterialOption) => {
                           return {
-                            link: '/materialval',
+                            link:
+                              '/materialval/detaljer/' +
+                              roomType.roomTypeId +
+                              '/' +
+                              materialOptionGroup.materialOptionGroupId +
+                              '/' +
+                              materialOption.materialOptionId,
                             image: materialOption.coverImage,
                             caption: materialOption.caption,
                           }

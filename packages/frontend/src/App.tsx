@@ -13,6 +13,7 @@ import Bison from '../assets/Bison-Regular.woff2'
 import BisonBold from '../assets/Bison-Bold.woff2'
 import GraphikRegular from '../assets/Graphik-Regular.woff2'
 import GraphikBold from '../assets/Graphik-Bold.woff2'
+import MaterialChoiceDetails from './pages/MaterialChoice/MaterialChoiceDetails'
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -219,7 +220,6 @@ const queryClient = new QueryClient({
 })
 
 function App() {
-  const navigate = useNavigate()
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={mdTheme}>
@@ -235,6 +235,10 @@ function App() {
               <Route
                 path="/materialval"
                 element={<MaterialChoice></MaterialChoice>}
+              />
+              <Route
+                path="/materialval/detaljer/:roomTypeId/:materialOptionGroupId/:materialOptionId"
+                element={<MaterialChoiceDetails></MaterialChoiceDetails>}
               />
             </Routes>
           </Grid>

@@ -7,10 +7,18 @@
  */
 import KoaRouter from '@koa/router'
 import { getLease } from './adapters/tenant-lease-adapter'
-import { getApartment, getRoomTypes } from './adapters/apartment-adapter'
+import {
+  getApartment,
+  getRoomTypes,
+  getRoomType,
+} from './adapters/apartment-adapter'
 import { getRentsForLease } from './adapters/rent-adapter'
-import { MaterialOptionGroup, RoomType } from './types'
-import { getMaterialOptionGroupsByRoomType } from './adapters/material-options-adapter'
+import { RoomType } from './types'
+import {
+  getMaterialOptionGroupsByRoomType,
+  getMaterialOption,
+  getMaterialOptionGroup,
+} from './adapters/material-options-adapter'
 
 const getAccommodation = async (rentalId: string) => {
   const lease = await getLease(rentalId)
@@ -24,7 +32,7 @@ const getAccommodation = async (rentalId: string) => {
   return lease
 }
 
-const getMaterialOptionGroupsByRoomTypes = async (apartmentId: string) => {
+const getRoomTypeWithMaterialOptions = async (apartmentId: string) => {
   const roomTypes = await getRoomTypes(apartmentId)
 
   roomTypes.forEach(async (roomType: RoomType) => {
@@ -34,22 +42,28 @@ const getMaterialOptionGroupsByRoomTypes = async (apartmentId: string) => {
   })
 
   return roomTypes
+}
 
-  // const materialOptions = await Promise.all(
-  //   roomTypes.map(async (room: RoomType) => {
-  //     const materialOptionGroups = await getMaterialOptionGroupsByRoomType(
-  //       room.roomTypeId
-  //     )
-  //     return materialOptionGroups.map(
-  //       (materialOptionGroup: MaterialOptionGroup) => {
-  //         materialOptionGroup.roomTypeName = room.name
-  //         return materialOptionGroup
-  //       }
-  //     )
-  //   })
-  // )
+const getSingleMaterialOption = async (
+  apartmentId: string,
+  roomTypeId: string,
+  materialOptionGroupId: string,
+  materialOptionId: string
+) => {
+  const roomType = await getRoomType(apartmentId, roomTypeId)
+  const group = await getMaterialOptionGroup(roomTypeId, materialOptionGroupId)
+  const option = await getMaterialOption(
+    roomTypeId,
+    materialOptionGroupId,
+    materialOptionId
+  )
 
-  // return materialOptions
+  if (option) {
+    option.roomTypeName = roomType && roomType.name
+    option.materialOptionGroupName = option && group && group.name
+  }
+
+  return option
 }
 
 /**
@@ -68,12 +82,35 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/material-options', async (ctx) => {
-    const roomTypes = await getMaterialOptionGroupsByRoomTypes(
+    const roomTypes = await getRoomTypeWithMaterialOptions(
       Math.round(Math.random() * 100000).toString()
     )
 
     ctx.body = {
       data: { roomTypes },
+    }
+  })
+  router.get('(.*)/material-option-details', async (ctx) => {
+    if (
+      ctx.request.query.roomTypeId &&
+      ctx.request.query.materialOptionGroupId &&
+      ctx.request.query.materialOptionId
+    ) {
+      const option = await getSingleMaterialOption(
+        Math.round(Math.random() * 100000).toString(),
+        ctx.request.query.roomTypeId[0],
+        ctx.request.query.materialOptionGroupId[0],
+        ctx.request.query.materialOptionId[0]
+      )
+
+      ctx.body = {
+        data: { materialOption: option },
+      }
+      return
+    }
+
+    ctx.body = {
+      error: 'No material option found',
     }
   })
 }

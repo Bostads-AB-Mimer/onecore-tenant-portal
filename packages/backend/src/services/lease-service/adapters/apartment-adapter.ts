@@ -38,4 +38,16 @@ const getRoomTypes = async (aparmentId: string): Promise<Array<RoomType>> => {
   ]
 }
 
-export { getApartment, getRoomTypes }
+const getRoomType = async (
+  aparmentId: string,
+  roomTypeId: string
+): Promise<RoomType | undefined> => {
+  /*Get real data*/
+  const roomTypes = await getRoomTypes(aparmentId)
+
+  return roomTypes.find(
+    (roomType: RoomType) => roomType.roomTypeId == roomTypeId
+  )
+}
+
+export { getApartment, getRoomTypes, getRoomType }
