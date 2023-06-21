@@ -20,12 +20,12 @@ const DropDown = ({
 }: {
   id: string
   label: string
-  defaultValue: string
+  defaultValue?: string
   options: Array<DropDownOption>
-  onSelect: (value: string) => void
+  onSelect?: (value: string) => void
 }) => {
   const handleSelection = (event: SelectChangeEvent) => {
-    onSelect(event.target.value)
+    if (onSelect) onSelect(event.target.value)
   }
 
   return (

@@ -18,6 +18,7 @@ import {
   getMaterialOptionGroupsByRoomType,
   getMaterialOption,
   getMaterialOptionGroup,
+  getMaterialChoices,
 } from './adapters/material-options-adapter'
 
 const getAccommodation = async (rentalId: string) => {
@@ -106,11 +107,25 @@ export const routes = (router: KoaRouter) => {
       ctx.body = {
         data: { materialOption: option },
       }
-      return
     }
+  })
 
+  router.get('(.*)/material-choices', async (ctx) => {
+    let roomTypes = new Array<RoomType>()
+    if (ctx.request.query.apartmentId && ctx.request.query.apartmentId[0]) {
+      const apartmentId = ctx.request.query.apartmentId[0]
+      roomTypes = await getRoomTypes(apartmentId)
+
+      for (const roomType of roomTypes) {
+        const materialGroups = await getMaterialChoices({
+          apartmentId: apartmentId,
+          roomTypeId: roomType.roomTypeId,
+        })
+        roomType.materialOptionGroups = materialGroups
+      }
+    }
     ctx.body = {
-      error: 'No material option found',
+      data: { roomTypes: roomTypes },
     }
   })
 }

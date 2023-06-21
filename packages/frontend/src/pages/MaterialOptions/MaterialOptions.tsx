@@ -8,7 +8,7 @@ import {
   Radio,
   Button,
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useMaterialOptions } from './hooks/useMaterialOptions'
 import {
@@ -19,7 +19,7 @@ import {
 import DropDown from '../../components/DropDown'
 import Carousel from '../../components/Carousel'
 
-const MaterialChoice = () => {
+const MaterialOptions = () => {
   const [conceptChoices, setConceptChoices] = useState(
     Array<{
       materialOptionId: string
@@ -33,33 +33,29 @@ const MaterialChoice = () => {
 
   const defaultValue = '0'
 
-  useEffect(() => {
-    console.log('conceptChoices', conceptChoices)
-  }, [conceptChoices])
-
   const save = () => {
+    /* TODO: Save choices to apartment */
     console.log('conceptChoices', conceptChoices)
   }
 
-  //TODO:
-  //* Save all choices to state, also create removeChoiceFromState to use for when "0" is selected in any dropdowns
-  //* Simple validation??
-
   const saveChoiceToState = ({
+    multipleChoice,
     materialOptionId,
     materialOptionGroupId,
     roomTypeId,
   }: {
+    multipleChoice: boolean
     materialOptionId: string
     materialOptionGroupId: string
     roomTypeId: string
   }) => {
     const newChoices =
       conceptChoices.filter(
-        (choice) => choice.materialOptionGroupId != materialOptionGroupId
+        (choice) =>
+          multipleChoice ||
+          choice.materialOptionGroupId != materialOptionGroupId
       ) ?? []
 
-    // console.log('newChoices', newChoices)
     newChoices.push({
       materialOptionId: materialOptionId,
       materialOptionGroupId: materialOptionGroupId,
@@ -69,7 +65,25 @@ const MaterialChoice = () => {
     setConceptChoices(newChoices)
   }
 
-  // const removeChoiceFromState()
+  const removeChoiceFromState = ({
+    materialOptionGroupId,
+    materialOptionId,
+  }: {
+    materialOptionGroupId?: string
+    materialOptionId?: string
+  }) => {
+    const newChoices =
+      conceptChoices.filter(
+        (choice) =>
+          (choice.materialOptionGroupId &&
+            choice.materialOptionGroupId != materialOptionGroupId) ||
+          (choice.materialOptionId &&
+            choice.materialOptionId != materialOptionId)
+      ) ?? []
+
+    // console.log('newChoices', newChoices)
+    setConceptChoices(newChoices)
+  }
 
   return (
     <>
@@ -131,24 +145,38 @@ const MaterialChoice = () => {
                             ) ?? []
                           }
                           onSelect={(value: string) => {
-                            //create new array to remove any old choice
-                            const newChoices =
-                              conceptChoices.filter(
-                                (choice) =>
-                                  choice.materialOptionGroupId !=
-                                  materialOptionGroup.materialOptionGroupId
-                              ) ?? []
+                            // const newChoices =
+                            //   conceptChoices.filter(
+                            //     (choice) =>
+                            //       choice.materialOptionGroupId !=
+                            //       materialOptionGroup.materialOptionGroupId
+                            //   ) ?? []
 
-                            if (value != defaultValue) {
-                              newChoices.push({
+                            if (value == defaultValue) {
+                              removeChoiceFromState({
+                                materialOptionGroupId:
+                                  materialOptionGroup.materialOptionGroupId,
+                              })
+                            } else {
+                              saveChoiceToState({
+                                multipleChoice: false,
                                 materialOptionId: value,
                                 materialOptionGroupId:
                                   materialOptionGroup.materialOptionGroupId,
-                                roomTypeId: materialOptionGroup.roomTypeId,
+                                roomTypeId: roomType.roomTypeId,
                               })
                             }
 
-                            setConceptChoices(newChoices)
+                            // if (value != defaultValue) {
+                            //   newChoices.push({
+                            //     materialOptionId: value,
+                            //     materialOptionGroupId:
+                            //       materialOptionGroup.materialOptionGroupId,
+                            //     roomTypeId: materialOptionGroup.roomTypeId,
+                            //   })
+                            // }
+
+                            // setConceptChoices(newChoices)
                           }}
                         />
                       )}
@@ -173,6 +201,7 @@ const MaterialChoice = () => {
                         ).value
 
                         saveChoiceToState({
+                          multipleChoice: false,
                           materialOptionId: materialOptionId,
                           materialOptionGroupId:
                             materialOptionGroup.materialOptionGroupId,
@@ -210,7 +239,27 @@ const MaterialChoice = () => {
                       (materialOption: MaterialOption, i) => (
                         <FormControlLabel
                           key={i}
-                          control={<Checkbox />}
+                          control={
+                            <Checkbox
+                              onChange={(event, checked) => {
+                                if (checked) {
+                                  saveChoiceToState({
+                                    multipleChoice: true,
+                                    materialOptionId:
+                                      materialOption.materialOptionId,
+                                    materialOptionGroupId:
+                                      materialOptionGroup.materialOptionGroupId,
+                                    roomTypeId: roomType.roomTypeId,
+                                  })
+                                } else {
+                                  removeChoiceFromState({
+                                    materialOptionId:
+                                      materialOption.materialOptionId,
+                                  })
+                                }
+                              }}
+                            />
+                          }
                           label={
                             materialOption.caption +
                             ' ' +
@@ -240,4 +289,4 @@ const styles = {
   },
 }
 
-export default MaterialChoice
+export default MaterialOptions

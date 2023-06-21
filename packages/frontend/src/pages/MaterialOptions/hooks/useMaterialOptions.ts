@@ -52,6 +52,41 @@ export const useMaterialOptions = ({
     },
   })
 
+export const useMaterialChoices = ({ apartmentId }: { apartmentId: string }) =>
+  useQuery<RoomTypesResponse, AxiosError>({
+    queryKey: ['materialChoices', apartmentId],
+    queryFn: async () => {
+      if (apartmentId) {
+        const { data } = await axios.get<RoomTypesResponse>(
+          `${backendUrl}/material-choices`,
+          {
+            headers: {
+              Accept: 'application/json',
+              Authorization: 'Bearer sometoken',
+            },
+            params: {
+              apartmentId: apartmentId,
+            },
+          }
+        )
+        return data
+      } else {
+        return {
+          data: {
+            roomTypes: undefined,
+          },
+        }
+      }
+    },
+    retry: (failureCount: number, error: AxiosError) => {
+      if (error.response?.status === 401) {
+        return false
+      } else {
+        return failureCount < 3
+      }
+    },
+  })
+
 export const useMaterialOptionDetails = ({
   roomTypeId,
   materialOptionGroupId,

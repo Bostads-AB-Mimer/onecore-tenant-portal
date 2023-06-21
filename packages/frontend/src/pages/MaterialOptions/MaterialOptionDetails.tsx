@@ -1,8 +1,8 @@
 import { Link, Typography } from '@mui/material'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useMaterialOptionDetails } from './hooks/useMaterialOptions'
 
-const MaterialChoiceDetails = () => {
+const MaterialOptionDetails = () => {
   const { roomTypeId, materialOptionGroupId, materialOptionId } = useParams()
   const navigate = useNavigate()
   //const [materialOption, setMaterialOption] = useState({} as MaterialOption)
@@ -33,4 +33,4 @@ const MaterialChoiceDetails = () => {
   )
 }
 
-export default MaterialChoiceDetails
+export default MaterialOptionDetails

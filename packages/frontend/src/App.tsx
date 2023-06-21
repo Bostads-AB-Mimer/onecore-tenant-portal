@@ -1,5 +1,5 @@
 import { CssBaseline, Grid, ThemeProvider, createTheme } from '@mui/material'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query'
 import { AxiosError } from 'axios'
 import { alpha } from '@mui/material/styles'
@@ -7,13 +7,14 @@ import { alpha } from '@mui/material/styles'
 import Home from './pages/Home'
 import Lease from './pages/Lease/Lease'
 import Progress from './pages/Progress'
-import MaterialChoice from './pages/MaterialChoice/MaterialChoice'
+import MaterialOptions from './pages/MaterialOptions/MaterialOptions'
 import SiteHeader from './components/SiteHeader'
 import Bison from '../assets/Bison-Regular.woff2'
 import BisonBold from '../assets/Bison-Bold.woff2'
 import GraphikRegular from '../assets/Graphik-Regular.woff2'
 import GraphikBold from '../assets/Graphik-Bold.woff2'
-import MaterialChoiceDetails from './pages/MaterialChoice/MaterialChoiceDetails'
+import MaterialOptionDetails from './pages/MaterialOptions/MaterialOptionDetails'
+import MaterialChoices from './pages/MaterialOptions/MaterialChoices'
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -251,11 +252,15 @@ function App() {
               <Route path="/att-gora" element={<Progress></Progress>} />
               <Route
                 path="/materialval"
-                element={<MaterialChoice></MaterialChoice>}
+                element={<MaterialOptions></MaterialOptions>}
               />
               <Route
                 path="/materialval/detaljer/:roomTypeId/:materialOptionGroupId/:materialOptionId"
-                element={<MaterialChoiceDetails></MaterialChoiceDetails>}
+                element={<MaterialOptionDetails></MaterialOptionDetails>}
+              />
+              <Route
+                path="/materialval/val"
+                element={<MaterialChoices></MaterialChoices>}
               />
             </Routes>
           </Grid>

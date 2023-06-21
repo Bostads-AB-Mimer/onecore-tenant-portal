@@ -67,9 +67,13 @@ interface Rent {
 
 interface MaterialChoice {
   materialChoiceId: string
-  materialOptionId: string
+  // materialOptionId: string
+  // materialOptionGroupId: string
   apartmentId: string
-  roomTypeId: string
+  // roomTypeId: string
+  materialOption?: MaterialOption | undefined
+  materialOptionGroup?: MaterialOptionGroup | undefined
+  roomType?: RoomType | undefined
   status: string //TODO enum of Draft/Submitted/Cancelled
   dateOfSubmission?: Date
   dateOfCancellation?: Date
@@ -82,6 +86,7 @@ interface MaterialOptionGroup {
   name?: string
   actionName?: string
   materialOptions?: Array<MaterialOption>
+  materialChoices?: Array<MaterialChoice>
   type: string //TODO enum of Concept/AddOn/SingleChoice
 }
 

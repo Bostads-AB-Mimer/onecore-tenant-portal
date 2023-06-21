@@ -69,6 +69,12 @@ const SiteHeader = () => (
               <MenuItem onClick={popupState.close} sx={styles.menuItem}>
                 <MenuLink href="/mitt-boende" title="Mitt boende" />
               </MenuItem>
+              <MenuItem onClick={popupState.close} sx={styles.menuItem}>
+                <MenuLink
+                  href="/materialval/val"
+                  title="Beställda materialval"
+                />
+              </MenuItem>
             </Menu>
           </Backdrop>
         </>

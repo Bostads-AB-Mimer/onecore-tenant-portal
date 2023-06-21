@@ -1,4 +1,4 @@
-import { MaterialOption, MaterialOptionGroup } from '../types'
+import { MaterialOption, MaterialOptionGroup, MaterialChoice } from '../types'
 
 const getMaterialOption = async (
   roomTypeId: string,
@@ -34,6 +34,151 @@ const getMaterialOptionGroup = async (
   )
 }
 
+const getMaterialChoice = async ({
+  roomTypeId,
+  materialOptionGroupId,
+  materialOptionId,
+  apartmentId,
+}: {
+  roomTypeId: string
+  materialOptionGroupId: string
+  materialOptionId: string
+  apartmentId: string
+}): Promise<MaterialChoice> => {
+  return {
+    materialOptionId: materialOptionId,
+    materialOptionGroupId: materialOptionGroupId,
+    roomTypeId: roomTypeId,
+    apartmentId: apartmentId,
+    materialChoiceId: '1',
+    status: 'Submitted',
+    dateOfSubmission: new Date(),
+  }
+}
+
+/*TODO get real material choices */
+const getMaterialChoices = async ({
+  apartmentId,
+  roomTypeId,
+}: {
+  apartmentId: string
+  roomTypeId: string
+}): Promise<Array<MaterialOptionGroup>> => {
+  const materialChoices = new Array<MaterialChoice>()
+
+  /*Adds somewhat random material choices */
+  materialChoices.push(
+    await getMaterialChoice({
+      roomTypeId: '1',
+      materialOptionGroupId: '1',
+      materialOptionId: Math.round(Math.random() * 1 + 1).toString(),
+      apartmentId: apartmentId,
+    })
+  )
+
+  if (Math.round(Math.random()) == 0) {
+    materialChoices.push(
+      await getMaterialChoice({
+        roomTypeId: '1',
+        materialOptionGroupId: '2',
+        materialOptionId: '3',
+        apartmentId: apartmentId,
+      })
+    )
+  }
+
+  materialChoices.push(
+    await getMaterialChoice({
+      roomTypeId: '2',
+      materialOptionGroupId: '3',
+      materialOptionId: Math.round(Math.random() + 1).toString(),
+      apartmentId: apartmentId,
+    })
+  )
+
+  materialChoices.push(
+    await getMaterialChoice({
+      roomTypeId: '2',
+      materialOptionGroupId: '4',
+      materialOptionId: Math.round(Math.random() + 1).toString(),
+      apartmentId: apartmentId,
+    })
+  )
+
+  if (Math.round(Math.random()) == 0) {
+    materialChoices.push(
+      await getMaterialChoice({
+        roomTypeId: '2',
+        materialOptionGroupId: '5',
+        materialOptionId: '1',
+        apartmentId: apartmentId,
+      })
+    )
+  }
+
+  if (Math.round(Math.random()) == 0) {
+    materialChoices.push(
+      await getMaterialChoice({
+        roomTypeId: '2',
+        materialOptionGroupId: '5',
+        materialOptionId: '2',
+        apartmentId: apartmentId,
+      })
+    )
+  }
+
+  materialChoices.push(
+    await getMaterialChoice({
+      roomTypeId: '3',
+      materialOptionGroupId: '7',
+      materialOptionId: Math.round(Math.random() + 1).toString(),
+      apartmentId: apartmentId,
+    })
+  )
+
+  materialChoices.push(
+    await getMaterialChoice({
+      roomTypeId: '4',
+      materialOptionGroupId: '8',
+      materialOptionId: Math.round(Math.random() + 1).toString(),
+      apartmentId: apartmentId,
+    })
+  )
+
+  const materialOptionGroups = new Array<MaterialOptionGroup>()
+
+  for (const materialChoice of materialChoices.filter(
+    (materialChoice: MaterialChoice) => materialChoice.roomTypeId == roomTypeId
+  )) {
+    let group = materialOptionGroups.find(
+      (materialOptionGroup: MaterialOptionGroup) =>
+        materialOptionGroup.materialOptionGroupId ==
+        materialChoice.materialOptionGroupId
+    )
+    if (!group) {
+      group = await getMaterialOptionGroup(
+        materialChoice.roomTypeId,
+        materialChoice.materialOptionGroupId
+      )
+      if (group) {
+        group.materialChoices = new Array<MaterialChoice>()
+        materialOptionGroups.push(group)
+      }
+    }
+
+    if (group) {
+      group.materialChoices?.push(materialChoice)
+      materialChoice.materialOption = group.materialOptions?.find(
+        (materialOption: MaterialOption) =>
+          materialOption.materialOptionId == materialChoice.materialOptionId
+      )
+    }
+  }
+
+  return materialOptionGroups
+}
+
+/*TODO get real material options */
 const getMaterialOptionGroupsByRoomType = async (
   roomTypeId: string
 ): Promise<Array<MaterialOptionGroup>> => {
@@ -217,4 +362,5 @@ export {
   getMaterialOptionGroupsByRoomType,
   getMaterialOptionGroup,
   getMaterialOption,
+  getMaterialChoices,
 }
