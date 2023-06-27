@@ -1,36 +1,68 @@
-import { Link, Typography } from '@mui/material'
+import { Box, Divider, Link, Typography } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
+
 import { useMaterialOptionDetails } from './hooks/useMaterialOptions'
 
 const MaterialOptionDetails = () => {
   const { roomTypeId, materialOptionGroupId, materialOptionId } = useParams()
   const navigate = useNavigate()
-  //const [materialOption, setMaterialOption] = useState({} as MaterialOption)
 
-  let materialOption
-
-  if (roomTypeId && materialOptionGroupId && materialOptionId) {
-    materialOption = useMaterialOptionDetails({
-      roomTypeId,
-      materialOptionGroupId,
-      materialOptionId,
-    })?.data?.data.materialOption
-  }
+  const materialOption = useMaterialOptionDetails({
+    roomTypeId,
+    materialOptionGroupId,
+    materialOptionId,
+  })?.data?.data.materialOption
 
   return (
     <>
       <Link onClick={() => navigate(-1)}>&lt; Materialval</Link>
       <Typography variant="h2">{materialOption?.roomTypeName}</Typography>
       <Typography variant="h1">{materialOption?.caption}</Typography>
-      <Typography variant="body1">
-        RoomTypeId: {roomTypeId}
-        <br />
-        MaterialOptionGroupId: {materialOptionGroupId}
-        <br />
-        MaterialOptionId: {materialOptionId}
-      </Typography>
+      <Box sx={styles.infoBox}>
+        <Typography variant="body2">
+          Kom ihåg! Färgåtergivning på bilder av material och väggfärger kan
+          variera beroende på dina skärminställningar. För exakta färger
+          hänvisar vi till vår utställning.
+        </Typography>
+      </Box>
+      <Divider />
+
+      {materialOption?.images && materialOption.images[0] && (
+        <Box sx={styles.imageBox}>
+          <img
+            src={materialOption.images[0]}
+            alt={materialOption.caption}
+            width="85%"
+          />
+        </Box>
+      )}
+
+      <Typography variant="body1">{materialOption?.description}</Typography>
+
+      {materialOption?.images?.map((image, index) => {
+        if (index > 0) {
+          return (
+            <Box key={index} sx={styles.imageBox}>
+              <img src={image} alt="" width="85%" />
+            </Box>
+          )
+        }
+      })}
     </>
   )
+}
+
+const styles = {
+  infoBox: {
+    backgroundColor: '#F4EFE9',
+    marginTop: 2,
+    marginBottom: 1,
+    padding: 1,
+  },
+  imageBox: {
+    marginTop: 2.5,
+    marginBottom: 1.5,
+  },
 }
 
 export default MaterialOptionDetails

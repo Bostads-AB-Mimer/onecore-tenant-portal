@@ -193,12 +193,18 @@ const getMaterialOptionGroupsByRoomType = async (
       {
         materialOptionId: '1',
         caption: 'Koncept 1',
-        coverImage: '../../../assets/images/kok_koncept1.png',
+        coverImage: '/assets/images/kok_koncept1.png',
+        description:
+          'I det första alternativet får du ett vitt och ljust kök med en betonggrå bänkskiva och ett matchande linoleumgolv. Ovanför diskbänken sitter ett vitt blankt kakel i formatet 15x15 centimeter.',
+        images: [
+          '/assets/images/kok_koncept1_2.png',
+          '/assets/images/kok_koncept1_3.png',
+        ],
       },
       {
         materialOptionId: '2',
         caption: 'Koncept 2',
-        coverImage: '../../../assets/images/kok_koncept2.png',
+        coverImage: '/assets/images/kok_koncept2.png',
       },
     ],
   })
@@ -226,12 +232,12 @@ const getMaterialOptionGroupsByRoomType = async (
       {
         materialOptionId: '1',
         caption: 'Koncept 1',
-        coverImage: '../../../assets/images/bad_koncept1.png',
+        coverImage: '/assets/images/bad_koncept1.png',
       },
       {
         materialOptionId: '2',
         caption: 'Koncept 2',
-        coverImage: '../../../assets/images/bad_koncept1.png',
+        coverImage: '/assets/images/bad_koncept1.png',
       },
     ],
   })
@@ -299,13 +305,13 @@ const getMaterialOptionGroupsByRoomType = async (
         materialOptionId: '1',
         caption: 'Ljusgrå',
         shortDescription: '10002Y',
-        coverImage: '../../../assets/images/vagg_ljusgra.png',
+        coverImage: '/assets/images/vagg_ljusgra.png',
       },
       {
         materialOptionId: '2',
         caption: 'Varmvit',
         shortDescription: '20002Y',
-        coverImage: '../../../assets/images/vagg_varmvit.png',
+        coverImage: '/assets/images/vagg_varmvit.png',
       },
     ],
   })
@@ -320,12 +326,12 @@ const getMaterialOptionGroupsByRoomType = async (
       {
         materialOptionId: '1',
         caption: 'Ljusgrå linoleum',
-        coverImage: '../../../assets/images/golv_ljusgra.png',
+        coverImage: '/assets/images/golv_ljusgra.png',
       },
       {
         materialOptionId: '2',
         caption: 'Beige linoleum',
-        coverImage: '../../../assets/images/golv_beige.png',
+        coverImage: '/assets/images/golv_beige.png',
       },
     ],
   })
@@ -341,13 +347,13 @@ const getMaterialOptionGroupsByRoomType = async (
         materialOptionId: '1',
         caption: 'Ljusgrå',
         shortDescription: '10002Y',
-        coverImage: '../../../assets/images/vagg_ljusgra.png',
+        coverImage: '/assets/images/vagg_ljusgra.png',
       },
       {
         materialOptionId: '2',
         caption: 'Varmvit',
         shortDescription: '20002Y',
-        coverImage: '../../../assets/images/vagg_varmvit.png',
+        coverImage: '/assets/images/vagg_varmvit.png',
       },
     ],
   })

@@ -109,12 +109,15 @@ const MaterialOptions = () => {
                         (materialOption: MaterialOption) => {
                           return {
                             link:
-                              '/materialval/detaljer/' +
-                              roomType.roomTypeId +
-                              '/' +
-                              materialOptionGroup.materialOptionGroupId +
-                              '/' +
-                              materialOption.materialOptionId,
+                              materialOption.images ||
+                              materialOption.description
+                                ? '/materialval/detaljer/' +
+                                  roomType.roomTypeId +
+                                  '/' +
+                                  materialOptionGroup.materialOptionGroupId +
+                                  '/' +
+                                  materialOption.materialOptionId
+                                : '',
                             image: materialOption.coverImage,
                             caption: materialOption.caption,
                           }

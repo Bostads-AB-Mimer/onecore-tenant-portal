@@ -92,9 +92,9 @@ export const useMaterialOptionDetails = ({
   materialOptionGroupId,
   materialOptionId,
 }: {
-  roomTypeId: string
-  materialOptionGroupId: string
-  materialOptionId: string
+  roomTypeId?: string
+  materialOptionGroupId?: string
+  materialOptionId?: string
 }) =>
   useQuery<MaterialOptionResponse, AxiosError>({
     queryKey: [

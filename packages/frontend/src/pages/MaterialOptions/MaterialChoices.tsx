@@ -126,11 +126,4 @@ const MaterialChoices = () => {
   )
 }
 
-const styles = {
-  actionContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-}
-
 export default MaterialChoices

@@ -28,13 +28,19 @@ const Carousel = ({
               marginRight: 2,
             }}
           >
-            <Link href={link.link}>
-              {link.image ? (
-                <img src={link.image} width="240" alt={link.caption} />
-              ) : (
-                <Typography variant="body1">{link.caption}</Typography>
-              )}
-            </Link>
+            {link.link ? (
+              <Link href={link.link}>
+                {link.image ? (
+                  <img src={link.image} width="240" alt={link.caption} />
+                ) : (
+                  <Typography variant="body1">{link.caption}</Typography>
+                )}
+              </Link>
+            ) : link.image ? (
+              <img src={link.image} width="240" alt={link.caption} />
+            ) : (
+              <Typography variant="body1">{link.caption}</Typography>
+            )}
           </Box>
         </li>
       ))}
