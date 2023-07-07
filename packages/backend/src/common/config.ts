@@ -21,7 +21,7 @@ export interface Config {
     expiresIn: string
     maxFailedLoginAttempts: number
     cookieDomain: string
-    testAccounts: [Account]
+    testAccount: Account
   }
 }
 
