@@ -3,6 +3,8 @@ import { Typography, Divider, Grid, Box } from '@mui/material'
 import { useLease } from './hooks/useLease'
 import { Contact, Rent } from '../../common/types'
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
+
 const Lease = () => {
   const { data } = useLease({ leaseId: '123' })
   const lease = data?.data
@@ -51,7 +53,7 @@ const Lease = () => {
                 sx={{ marginTop: 2, marginBottom: 2, marginRight: 3 }}
               >
                 <img
-                  src={`http://localhost:5001/my-lease/floorplan`}
+                  src={`${backendUrl}/my-lease/floorplan`}
                   width="90%"
                   alt="Planritning för lägenhet"
                   style={{ maxWidth: 400 }}
