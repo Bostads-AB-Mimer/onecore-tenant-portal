@@ -1,10 +1,10 @@
-import { Link } from '@mui/material'
+import { Box } from '@mui/material'
+import { Link } from 'react-router-dom'
 const MenuLink = ({ href, title }: { href: string; title: string }) => (
-  <Link
-    sx={{ fontSize: 14, fontFamily: 'graphikRegular', color: '#000' }}
-    href={href}
-  >
-    {title}
+  <Link to={href}>
+    <Box sx={{ fontSize: 14, fontFamily: 'graphikRegular', color: '#000' }}>
+      {title}
+    </Box>
   </Link>
 )
 export default MenuLink
