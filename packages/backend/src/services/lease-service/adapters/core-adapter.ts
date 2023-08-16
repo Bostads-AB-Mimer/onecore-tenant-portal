@@ -63,6 +63,8 @@ const getLease = async (nationalRegistrationNumber: string): Promise<Lease> => {
     url: coreBaseUrl + '/leases/for/' + nationalRegistrationNumber,
   })
 
+  console.log('get lease', leaseResponse)
+
   return leaseResponse.data.data[0]
 }
 

@@ -29,7 +29,7 @@ interface MockCookie {
 }
 
 const mockedCookie: MockCookie = {
-  nationalRegistrationNumber: '194712306903' /*'200403017809'*/,
+  nationalRegistrationNumber: '194808075577',
 }
 
 export const routes = (router: KoaRouter) => {
