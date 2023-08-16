@@ -7,11 +7,14 @@ import { alpha } from '@mui/material/styles'
 import Home from './pages/Home'
 import Lease from './pages/Lease/Lease'
 import Progress from './pages/Progress'
+import MaterialOptions from './pages/MaterialOptions/MaterialOptions'
 import SiteHeader from './components/SiteHeader'
 import Bison from '../assets/Bison-Regular.woff2'
 import BisonBold from '../assets/Bison-Bold.woff2'
 import GraphikRegular from '../assets/Graphik-Regular.woff2'
 import GraphikBold from '../assets/Graphik-Bold.woff2'
+import MaterialOptionDetails from './pages/MaterialOptions/MaterialOptionDetails'
+import MaterialChoices from './pages/MaterialOptions/MaterialChoices'
 import Login from './pages/Login/Login'
 
 declare module '@mui/material/styles' {
@@ -121,6 +124,7 @@ const mdTheme = createTheme({
     body1: {
       fontSize: 14,
       fontFamily: 'graphikRegular',
+      paddingTop: 5,
     },
     body2: {
       fontSize: 12,
@@ -152,6 +156,23 @@ const mdTheme = createTheme({
         variantMapping: {
           title: 'h1',
           hMenu: 'h4',
+        },
+      },
+    },
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
+      styleOverrides: {
+        root: {
+          marginTop: 20,
+          marginBottom: 20,
+          textTransform: 'initial',
+          backgroundColor: '#00578A',
+          borderRadius: '100px',
+          fontFamily: 'graphikRegular',
+          fontSize: 14,
+          fontWeight: 500,
         },
       },
     },
@@ -240,6 +261,18 @@ function App() {
               <Route path="/login" element={<Login></Login>} />
               <Route path="/mitt-boende" element={<Lease></Lease>} />
               <Route path="/att-gora" element={<Progress></Progress>} />
+              <Route
+                path="/materialval"
+                element={<MaterialOptions></MaterialOptions>}
+              />
+              <Route
+                path="/materialval/detaljer/:roomTypeId/:materialOptionGroupId/:materialOptionId"
+                element={<MaterialOptionDetails></MaterialOptionDetails>}
+              />
+              <Route
+                path="/materialval/val"
+                element={<MaterialChoices></MaterialChoices>}
+              />
             </Routes>
           </Grid>
           <Grid item xs={0.5} />

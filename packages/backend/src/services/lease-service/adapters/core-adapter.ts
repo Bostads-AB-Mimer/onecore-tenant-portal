@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Lease } from '../types'
 import Config from '../../../common/config'
-import { RentalProperty } from '../types'
+import { RentalProperty, RoomType } from '../types'
 
 const coreBaseUrl = Config.core.url
 const coreUsername = Config.core.username
@@ -91,4 +91,26 @@ const getFloorPlanStream = async (rentalPropertyId: string) => {
   return response
 }
 
-export { getApartment, getFloorPlanStream, getLease }
+const getRoomTypes = async (aparmentId: string): Promise<Array<RoomType>> => {
+  /*Get real data*/
+  return [
+    { roomTypeId: '1', name: 'Kök & Hall' },
+    { roomTypeId: '2', name: 'Badrum' },
+    { roomTypeId: '3', name: 'Vardagsrum' },
+    { roomTypeId: '4', name: 'Sovrum 1' },
+  ]
+}
+
+const getRoomType = async (
+  aparmentId: string,
+  roomTypeId: string
+): Promise<RoomType | undefined> => {
+  /*Get real data*/
+  const roomTypes = await getRoomTypes(aparmentId)
+
+  return roomTypes.find(
+    (roomType: RoomType) => roomType.roomTypeId == roomTypeId
+  )
+}
+
+export { getApartment, getFloorPlanStream, getLease, getRoomType, getRoomTypes }

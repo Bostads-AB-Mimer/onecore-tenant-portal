@@ -39,6 +39,7 @@ interface RentalProperty {
   rentalPropertyType: string
   additionsIncludedInRent: string
   otherInfo: string | undefined
+  roomTypes: Array<RoomType> | undefined
   lastUpdated: Date | undefined
 }
 
@@ -67,6 +68,48 @@ enum LeaseStatus {
   Active,
 }
 
+interface MaterialChoice {
+  materialChoiceId: string
+  // materialOptionId: string
+  // materialOptionGroupId: string
+  apartmentId: string
+  // roomTypeId: string
+  materialOption?: MaterialOption | undefined
+  materialOptionGroup?: MaterialOptionGroup | undefined
+  roomType?: RoomType | undefined
+  status: string //TODO enum of Draft/Submitted/Cancelled
+  dateOfSubmission?: Date
+  dateOfCancellation?: Date
+}
+
+interface MaterialOptionGroup {
+  materialOptionGroupId: string
+  roomTypeId: string
+  roomTypeName?: string
+  name?: string
+  actionName?: string
+  materialOptions?: Array<MaterialOption>
+  materialChoices?: Array<MaterialChoice>
+  type: string //TODO enum of Concept/AddOn/SingleChoice
+}
+
+interface MaterialOption {
+  materialOptionId: string
+  caption: string
+  shortDescription?: string
+  description?: string
+  coverImage?: string
+  images?: Array<string>
+  roomTypeName?: string
+  materialOptionGroupName?: string
+}
+
+interface RoomType {
+  roomTypeId: string
+  name: string
+  materialOptionGroups?: Array<MaterialOptionGroup>
+}
+
 export type {
   Contact,
   Lease,
@@ -75,4 +118,8 @@ export type {
   Address,
   Rent,
   RentInfo,
+  RoomType,
+  MaterialOption,
+  MaterialOptionGroup,
+  MaterialChoice,
 }

@@ -10,10 +10,10 @@ import {
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
-
-import mimerLogo from '../../assets/mimer-logo.png'
-import MenuLink from './MenuLink'
 import { Link } from 'react-router-dom'
+
+import MenuLink from './MenuLink'
+import mimerLogo from '../../assets/mimer-logo.png'
 
 const SiteHeader = () => (
   <Stack
@@ -54,7 +54,7 @@ const SiteHeader = () => (
               </IconButton>
               <Typography variant="hMenu">Aktuellt</Typography>
               <MenuItem onClick={popupState.close} sx={styles.menuItem}>
-                <MenuLink href="/" title="Dags för materialval" />
+                <MenuLink href="/materialval" title="Dags för materialval" />
               </MenuItem>
               <Divider
                 sx={{
@@ -68,6 +68,12 @@ const SiteHeader = () => (
               </MenuItem>
               <MenuItem onClick={popupState.close} sx={styles.menuItem}>
                 <MenuLink href="/mitt-boende" title="Mitt boende" />
+              </MenuItem>
+              <MenuItem onClick={popupState.close} sx={styles.menuItem}>
+                <MenuLink
+                  href="/materialval/val"
+                  title="Beställda materialval"
+                />
               </MenuItem>
             </Menu>
           </Backdrop>
