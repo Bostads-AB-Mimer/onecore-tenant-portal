@@ -1,5 +1,6 @@
-import { Box, Link, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useSnapCarousel } from 'react-snap-carousel'
+import { Link } from 'react-router-dom'
 
 const Carousel = ({
   links,
@@ -29,7 +30,7 @@ const Carousel = ({
             }}
           >
             {link.link ? (
-              <Link href={link.link}>
+              <Link to={link.link}>
                 {link.image ? (
                   <img src={link.image} width="240" alt={link.caption} />
                 ) : (

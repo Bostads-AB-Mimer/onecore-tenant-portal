@@ -68,7 +68,6 @@ enum LeaseStatus {
   Active,
 }
 
-<<<<<<< HEAD
 interface MaterialChoice {
   materialChoiceId: string
   // materialOptionId: string

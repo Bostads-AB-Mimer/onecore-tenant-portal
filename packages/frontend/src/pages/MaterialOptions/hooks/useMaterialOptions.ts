@@ -3,13 +3,14 @@ import { useQuery } from 'react-query'
 
 import { MaterialOption, RoomType } from '../../../common/types'
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5001'
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
 export interface RoomTypesResponse {
   data: {
     roomTypes: Array<RoomType> | undefined
   }
 }
+
 export interface MaterialOptionResponse {
   data: {
     materialOption: MaterialOption | undefined

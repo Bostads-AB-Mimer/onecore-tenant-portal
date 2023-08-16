@@ -1,4 +1,4 @@
-import { Box, Card, CardActions, CardContent, Typography } from '@mui/material'
+import { Card, CardActions, CardContent, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined'
 

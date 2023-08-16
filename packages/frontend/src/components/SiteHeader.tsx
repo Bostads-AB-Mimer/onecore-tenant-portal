@@ -10,10 +10,10 @@ import {
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
-
-import mimerLogo from '../../assets/mimer-logo.png'
-import MenuLink from './MenuLink'
 import { Link } from 'react-router-dom'
+
+import MenuLink from './MenuLink'
+import mimerLogo from '../../assets/mimer-logo.png'
 
 const SiteHeader = () => (
   <Stack

@@ -1,10 +1,5 @@
-import {
-  Box,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material'
+import { Box, InputLabel, MenuItem, Select } from '@mui/material'
+import { SelectChangeEvent } from '@mui/material/Select'
 
 export interface DropDownOption {
   value: string
