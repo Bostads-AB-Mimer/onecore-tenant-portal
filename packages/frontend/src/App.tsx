@@ -15,6 +15,7 @@ import GraphikRegular from '../assets/Graphik-Regular.woff2'
 import GraphikBold from '../assets/Graphik-Bold.woff2'
 import MaterialOptionDetails from './pages/MaterialOptions/MaterialOptionDetails'
 import MaterialChoices from './pages/MaterialOptions/MaterialChoices'
+import Login from './pages/Login/Login'
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -226,6 +227,12 @@ const mdTheme = createTheme({
 })
 
 const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 15 * (60 * 1000), // 15 mins
+      cacheTime: 30 * (60 * 1000), // 30 mins
+    },
+  },
   queryCache: new QueryCache({
     onError: (error) => {
       if ((error as AxiosError).response?.status === 401) {
@@ -242,12 +249,16 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={mdTheme}>
         <CssBaseline />
-        <Grid container sx={{ marginBottom: 2, marginTop: 0 }}>
+        <Grid
+          container
+          sx={{ marginBottom: 2, marginTop: 0, maxWidth: '450px' }}
+        >
           <Grid item xs={0.5} />
           <Grid item xs={11}>
             <SiteHeader />
             <Routes>
               <Route path="/" element={<Home></Home>} />
+              <Route path="/login" element={<Login></Login>} />
               <Route path="/mitt-boende" element={<Lease></Lease>} />
               <Route path="/att-gora" element={<Progress></Progress>} />
               <Route

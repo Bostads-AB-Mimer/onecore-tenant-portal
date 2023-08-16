@@ -1,11 +1,5 @@
-import {
-  Box,
-  Card,
-  CardActions,
-  CardContent,
-  Link,
-  Typography,
-} from '@mui/material'
+import { Box, Card, CardActions, CardContent, Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
 import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined'
 
 import materialChoiceCover from '../../assets/images/Materialval.png'
@@ -37,10 +31,11 @@ const HomePage = () => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Link href="/mitt-boende">Läs mer...</Link>
+          <Link to="/mitt-boende">Läs mer...</Link>
         </CardActions>
       </Card>
     </div>
   )
 }
+
 export default HomePage

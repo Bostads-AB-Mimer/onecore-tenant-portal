@@ -1,12 +1,13 @@
 import { Typography, Divider, Grid, Box } from '@mui/material'
 
 import { useLease } from './hooks/useLease'
-import floorPlan from '../../../assets/planlosning.png'
-import { Person, Rent } from '../../common/types'
+import { Contact, Rent } from '../../common/types'
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
 const Lease = () => {
   const { data } = useLease({ leaseId: '123' })
-  const lease = data?.data?.lease
+  const lease = data?.data
 
   return (
     <>
@@ -21,7 +22,7 @@ const Lease = () => {
                 Kontraktsnummer <b>{lease.leaseId}</b>
                 <br />
                 Lantmäteriets lägenhetsnummer{' '}
-                <b>{lease.apartment?.apartmentNumber}</b>
+                <b>{lease.rentalProperty?.apartmentNumber}</b>
                 <br />
               </Grid>
               <Grid item xs={4}>
@@ -29,35 +30,40 @@ const Lease = () => {
               </Grid>
               <Grid item xs={8}>
                 <b>
-                  {lease.apartment?.address?.street +
+                  {lease.rentalProperty?.address?.street +
                     ' ' +
-                    lease.apartment?.address?.number}
+                    lease.rentalProperty?.address?.number}
                 </b>
               </Grid>
               <Grid item xs={4}>
                 Typ
               </Grid>
               <Grid item xs={8}>
-                <b>{lease.apartment?.apartmentType}</b>
+                <b>{lease.rentalProperty?.rentalPropertyType}</b>
               </Grid>
               <Grid item xs={4}>
                 Storlek
               </Grid>
               <Grid item xs={8}>
-                <b>{lease.apartment?.size} m2</b>
+                <b>{lease.rentalProperty?.size} m2</b>
               </Grid>
               <Grid
                 item
                 xs={12}
                 sx={{ marginTop: 2, marginBottom: 2, marginRight: 3 }}
               >
-                <img src={floorPlan} width="75%" />
+                <img
+                  src={`${backendUrl}/my-lease/floorplan`}
+                  width="90%"
+                  alt="Planritning för lägenhet"
+                  style={{ maxWidth: 400 }}
+                />
               </Grid>
               <Grid item xs={6}>
                 Inflyttningsdatum
               </Grid>
               <Grid item xs={6}>
-                <b>{lease.leaseStartDate.toString().split('T')[0]}</b>
+                <b>{lease.leaseStartDate?.toString().split('T')[0]}</b>
               </Grid>
               <Grid item xs={6}>
                 Status kontrakt
@@ -69,7 +75,7 @@ const Lease = () => {
                 Gäller till och med
               </Grid>
               <Grid item xs={6}>
-                <b>{lease.leaseEndDate.toString().split('T')[0]}</b>
+                <b>{lease.leaseEndDate?.toString().split('T')[0]}</b>
               </Grid>
             </Grid>
             <Divider />
@@ -77,8 +83,8 @@ const Lease = () => {
             <Grid container sx={{ marginLeft: 1, marginTop: 1 }}>
               <Grid item xs={12}>
                 {lease.tenants &&
-                  lease.tenants.map((tenant: Person) => (
-                    <Box sx={{ marginBottom: 1 }} key={tenant.personId}>
+                  lease.tenants.map((tenant: Contact) => (
+                    <Box sx={{ marginBottom: 1 }} key={tenant.contactId}>
                       {tenant.firstName + ' ' + tenant.lastName}
                       <br />
                       {tenant.nationalRegistrationNumber}
@@ -131,7 +137,7 @@ const Lease = () => {
             <Typography variant="h2">Övrig information</Typography>
             <Grid container sx={{ marginLeft: 1, marginTop: 1 }}>
               <Grid item xs={12}>
-                {lease.apartment?.otherInfo}
+                {lease.rentalProperty?.otherInfo}
               </Grid>
             </Grid>
             <Divider />

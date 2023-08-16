@@ -1,53 +1,53 @@
-interface Person {
-  personId: string
+interface Contact {
+  contactId: string
+  leaseId: string | undefined
+  lease: Lease | undefined
   firstName: string
   lastName: string
+  fullName: string
+  type: string
   nationalRegistrationNumber: string
-  birthDate: string
-  addressId: string
+  birthDate: Date
   address: Address | undefined
   mobilePhone: string
   phoneNumber: string
   emailAddress: string
+  lastUpdated: Date | undefined
 }
 
 interface Lease {
   leaseId: string
   leaseNumber: string
   leaseStartDate: Date
-  leaseEndDate: Date
+  leaseEndDate: Date | undefined
   status: LeaseStatus
-  tenantPersonIds: string[]
-  tenants: Person[] | undefined
-  apartmentId: string
-  apartment: Apartment | undefined
+  tenantContactIds: string[] | undefined
+  tenants: Contact[] | undefined
+  rentalPropertyId: string
+  rentalProperty: RentalProperty | undefined
+  type: string
   rentInfo: RentInfo | undefined
+  lastUpdated: Date | undefined
 }
 
-interface Apartment {
-  apartmentId: string
-  leaseId: string
-  lease: Lease | undefined
+interface RentalProperty {
+  rentalPropertyId: string
   apartmentNumber: number
   size: number
-  addressId: string
+  type: string
   address: Address | undefined
-  apartmentType: string
+  rentalPropertyType: string
   additionsIncludedInRent: string
   otherInfo: string | undefined
   roomTypes: Array<RoomType> | undefined
+  lastUpdated: Date | undefined
 }
 
 interface Address {
-  addressId: string
   street: string
   number: string
   postalCode: string
   city: string
-}
-
-enum LeaseStatus {
-  Active,
 }
 
 interface RentInfo {
@@ -64,7 +64,11 @@ interface Rent {
   rentStartDate: Date
   rentEndDate: Date | undefined
 }
+enum LeaseStatus {
+  Active,
+}
 
+<<<<<<< HEAD
 interface MaterialChoice {
   materialChoiceId: string
   // materialOptionId: string
@@ -108,9 +112,9 @@ interface RoomType {
 }
 
 export type {
-  Person,
+  Contact,
   Lease,
-  Apartment,
+  RentalProperty,
   LeaseStatus,
   Address,
   Rent,

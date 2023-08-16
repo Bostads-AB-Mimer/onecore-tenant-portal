@@ -6,12 +6,13 @@
  * course, there are always exceptions).
  */
 import KoaRouter from '@koa/router'
-import { getLease } from './adapters/tenant-lease-adapter'
 import {
+  getLease,
   getApartment,
+  getFloorPlanStream,
   getRoomTypes,
   getRoomType,
-} from './adapters/apartment-adapter'
+} from './adapters/core-adapter'
 import { getRentsForLease } from './adapters/rent-adapter'
 import { RoomType } from './types'
 import {
@@ -21,12 +22,10 @@ import {
   getMaterialChoices,
 } from './adapters/material-options-adapter'
 
-const getAccommodation = async (rentalId: string) => {
-  const lease = await getLease(rentalId)
+const getAccommodation = async (nationalRegistrationNumber: string) => {
+  const lease = await getLease(nationalRegistrationNumber)
 
-  lease.apartment = await getApartment(lease.apartmentId, lease.leaseId)
-  lease.apartment.addressId = lease.tenants?.[0].address?.addressId ?? '123'
-  lease.apartment.address = lease.tenants?.[0].address
+  lease.rentalProperty = await getApartment(lease.rentalPropertyId)
 
   lease.rentInfo = await getRentsForLease(lease.leaseId)
 
@@ -71,14 +70,27 @@ const getSingleMaterialOption = async (
  * Returns the details of the logged-in user's lease with populated
  * sub objects
  */
+interface MockCookie {
+  nationalRegistrationNumber: string
+  rentalPropertyId?: string
+}
+
+const mockedCookie: MockCookie = {
+  nationalRegistrationNumber: '194712306903' /*'200403017809'*/,
+}
+
 export const routes = (router: KoaRouter) => {
+  /**
+   * Returns the details of the logged-in user's lease with populated
+   * sub objects such as rental property, other tenants and rent.
+   */
   router.get('(.*)/my-lease', async (ctx) => {
     const lease = await getAccommodation(
-      Math.round(Math.random() * 100000).toString()
+      mockedCookie.nationalRegistrationNumber
     )
 
     ctx.body = {
-      data: { lease },
+      data: lease,
     }
   })
 
@@ -91,6 +103,7 @@ export const routes = (router: KoaRouter) => {
       data: { roomTypes },
     }
   })
+
   router.get('(.*)/material-option-details', async (ctx) => {
     if (
       ctx.request.query.roomTypeId &&
@@ -127,5 +140,21 @@ export const routes = (router: KoaRouter) => {
     ctx.body = {
       data: { roomTypes: roomTypes },
     }
+  })
+
+  /**
+   * Streams the floor plan of the logged in user as an image binary
+   */
+  router.get('(.*)/my-lease/floorplan', async (ctx) => {
+    if (!mockedCookie.rentalPropertyId) {
+      mockedCookie.rentalPropertyId = (
+        await getAccommodation(mockedCookie.nationalRegistrationNumber)
+      ).rentalPropertyId
+    }
+
+    const response = await getFloorPlanStream(mockedCookie.rentalPropertyId)
+    ctx.type = response.headers['content-type']?.toString() ?? 'image/jpeg'
+    ctx.headers['cache-control'] = 'public, max-age=600'
+    ctx.body = response.data
   })
 }

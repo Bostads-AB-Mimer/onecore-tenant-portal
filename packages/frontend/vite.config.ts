@@ -1,9 +1,9 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
 
-import react from '@vitejs/plugin-react';
-import eslintPlugin from '@nabla/vite-plugin-eslint';
+import react from '@vitejs/plugin-react'
+import eslintPlugin from '@nabla/vite-plugin-eslint'
 
 export default defineConfig({
   plugins: [react(), eslintPlugin()],
@@ -14,5 +14,12 @@ export default defineConfig({
   },
   server: {
     port: 5000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
-});
+})

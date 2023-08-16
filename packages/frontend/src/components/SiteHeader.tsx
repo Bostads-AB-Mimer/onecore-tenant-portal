@@ -3,7 +3,6 @@ import {
   IconButton,
   MenuItem,
   Menu,
-  Link,
   Typography,
   Divider,
   Backdrop,
@@ -14,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close'
 
 import mimerLogo from '../../assets/mimer-logo.png'
 import MenuLink from './MenuLink'
+import { Link } from 'react-router-dom'
 
 const SiteHeader = () => (
   <Stack
@@ -22,8 +22,8 @@ const SiteHeader = () => (
     justifyContent="space-between"
     alignItems="center"
   >
-    <Link href="/">
-      <img src={mimerLogo} width="160" />
+    <Link to={'/'}>
+      <img src={mimerLogo} width="160" alt="Mimer logotyp" />
     </Link>
 
     <PopupState variant="popover" popupId="demo-popup-menu">
