@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { Lease } from '../types'
+import { Contact, Lease } from '../types'
 import Config from '../../../common/config'
 import { RentalProperty, RoomType } from '../types'
 
@@ -55,6 +55,17 @@ const getFromCore = async (
 
     throw error
   }
+}
+
+const getContact = async (
+  nationalRegistrationNumber: string
+): Promise<Contact> => {
+  const contactResponse = await getFromCore({
+    method: 'get',
+    url: coreBaseUrl + '/contact/' + nationalRegistrationNumber,
+  })
+
+  return contactResponse.data.data
 }
 
 const getLease = async (nationalRegistrationNumber: string): Promise<Lease> => {
@@ -113,4 +124,11 @@ const getRoomType = async (
   )
 }
 
-export { getApartment, getFloorPlanStream, getLease, getRoomType, getRoomTypes }
+export {
+  getApartment,
+  getFloorPlanStream,
+  getLease,
+  getRoomType,
+  getRoomTypes,
+  getContact,
+}

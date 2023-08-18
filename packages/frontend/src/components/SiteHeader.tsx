@@ -70,6 +70,9 @@ const SiteHeader = () => (
                 <MenuLink href="/mitt-boende" title="Mitt boende" />
               </MenuItem>
               <MenuItem onClick={popupState.close} sx={styles.menuItem}>
+                <MenuLink href="/mina-uppgifter" title="Mina uppgifter" />
+              </MenuItem>
+              <MenuItem onClick={popupState.close} sx={styles.menuItem}>
                 <MenuLink
                   href="/materialval/val"
                   title="Beställda materialval"

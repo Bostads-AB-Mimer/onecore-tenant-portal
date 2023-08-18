@@ -12,6 +12,7 @@ import {
   getFloorPlanStream,
   getRoomTypes,
   getRoomType,
+  getContact,
 } from './adapters/core-adapter'
 import { getRentsForLease } from './adapters/rent-adapter'
 import { RoomType } from './types'
@@ -92,6 +93,12 @@ export const routes = (router: KoaRouter) => {
     ctx.body = {
       data: lease,
     }
+  })
+
+  router.get('(.*)/my-details', async (ctx: any) => {
+    const contact = await getContact(mockedCookie.nationalRegistrationNumber)
+
+    ctx.body = { data: contact }
   })
 
   router.get('(.*)/material-options', async (ctx) => {
