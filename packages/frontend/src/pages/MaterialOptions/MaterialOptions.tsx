@@ -81,7 +81,6 @@ const MaterialOptions = () => {
             choice.materialOptionId != materialOptionId)
       ) ?? []
 
-    // console.log('newChoices', newChoices)
     setConceptChoices(newChoices)
   }
 
