@@ -84,7 +84,8 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/my-details', async (ctx: any) => {
-    const contact = await getContact(mockedCookie.nationalRegistrationNumber)
+    const nationalRegistrationNumber = ctx.state.user.username
+    const contact = await getContact(nationalRegistrationNumber)
 
     ctx.body = { data: contact }
   })
