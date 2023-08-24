@@ -100,7 +100,7 @@ export const useMaterialOptionDetails = ({
   useQuery<MaterialOptionResponse, AxiosError>({
     queryKey: [
       'materialOptionDetails',
-      roomTypeId + materialOptionGroupId + materialOptionId,
+      roomTypeId ?? '' + materialOptionGroupId + materialOptionId,
     ],
     queryFn: async () => {
       if (roomTypeId && materialOptionGroupId && materialOptionId) {

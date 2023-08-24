@@ -81,7 +81,6 @@ const MaterialOptions = () => {
             choice.materialOptionId != materialOptionId)
       ) ?? []
 
-    // console.log('newChoices', newChoices)
     setConceptChoices(newChoices)
   }
 
@@ -118,7 +117,9 @@ const MaterialOptions = () => {
                                   '/' +
                                   materialOption.materialOptionId
                                 : '',
-                            image: materialOption.coverImage,
+                            image:
+                              '/api/material-options/assets/' +
+                              materialOption.coverImage,
                             caption: materialOption.caption,
                           }
                         }

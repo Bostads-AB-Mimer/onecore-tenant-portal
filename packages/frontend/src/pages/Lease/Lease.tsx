@@ -6,7 +6,7 @@ import { Contact, Rent } from '../../common/types'
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
 const Lease = () => {
-  const { data } = useLease({ leaseId: '123' })
+  const { data } = useLease()
   const lease = data?.data
 
   return (

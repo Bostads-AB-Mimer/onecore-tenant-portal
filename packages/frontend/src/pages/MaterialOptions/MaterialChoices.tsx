@@ -51,7 +51,10 @@ const MaterialChoices = () => {
                             materialOptionGroup.materialOptionGroupId +
                             '/' +
                             materialChoice.materialOption?.materialOptionId,
-                          image: materialChoice.materialOption?.coverImage,
+                          image: materialChoice.materialOption?.coverImage
+                            ? '/api/material-options/assets/' +
+                              materialChoice.materialOption?.coverImage
+                            : undefined,
                           caption: materialChoice.materialOption?.caption,
                         }
                       }

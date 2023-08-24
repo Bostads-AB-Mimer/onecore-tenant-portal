@@ -22,6 +22,7 @@ import {
   getMaterialOptionGroup,
   getMaterialChoices,
 } from './adapters/material-options-adapter'
+import fs from 'fs/promises'
 
 const getAccommodation = async (nationalRegistrationNumber: string) => {
   const lease = await getLease(nationalRegistrationNumber)
@@ -67,28 +68,15 @@ const getSingleMaterialOption = async (
   return option
 }
 
-/**
- * Returns the details of the logged-in user's lease with populated
- * sub objects
- */
-interface MockCookie {
-  nationalRegistrationNumber: string
-  rentalPropertyId?: string
-}
-
-const mockedCookie: MockCookie = {
-  nationalRegistrationNumber: '194808075577',
-}
-
 export const routes = (router: KoaRouter) => {
   /**
    * Returns the details of the logged-in user's lease with populated
    * sub objects such as rental property, other tenants and rent.
    */
   router.get('(.*)/my-lease', async (ctx) => {
-    const lease = await getAccommodation(
-      mockedCookie.nationalRegistrationNumber
-    )
+    const nationalRegistrationNumber = ctx.state.user.username
+
+    const lease = await getAccommodation(nationalRegistrationNumber)
 
     ctx.body = {
       data: lease,
@@ -130,6 +118,14 @@ export const routes = (router: KoaRouter) => {
     }
   })
 
+  router.get('(.*)/material-options/assets/:id', async (ctx) => {
+    const filename = ctx.params.id
+    const path = process.cwd() + '/assets/' + filename
+    const data = await fs.readFile(path)
+
+    ctx.body = data
+  })
+
   router.get('(.*)/material-choices', async (ctx) => {
     let roomTypes = new Array<RoomType>()
     if (ctx.request.query.apartmentId && ctx.request.query.apartmentId[0]) {
@@ -153,13 +149,12 @@ export const routes = (router: KoaRouter) => {
    * Streams the floor plan of the logged in user as an image binary
    */
   router.get('(.*)/my-lease/floorplan', async (ctx) => {
-    if (!mockedCookie.rentalPropertyId) {
-      mockedCookie.rentalPropertyId = (
-        await getAccommodation(mockedCookie.nationalRegistrationNumber)
-      ).rentalPropertyId
-    }
+    const nationalRegistrationNumber = ctx.state.user.username
+    const rentalPropertyId = (
+      await getAccommodation(nationalRegistrationNumber)
+    ).rentalPropertyId
 
-    const response = await getFloorPlanStream(mockedCookie.rentalPropertyId)
+    const response = await getFloorPlanStream(rentalPropertyId)
     ctx.type = response.headers['content-type']?.toString() ?? 'image/jpeg'
     ctx.headers['cache-control'] = 'public, max-age=600'
     ctx.body = response.data

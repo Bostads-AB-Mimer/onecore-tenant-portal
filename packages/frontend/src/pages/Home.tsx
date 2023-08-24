@@ -4,8 +4,12 @@ import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined'
 
 import materialChoiceCover from '../../assets/images/Materialval.png'
 import Carousel from '../components/Carousel'
+import { useLease } from '../pages/Lease/hooks/useLease'
 
 const HomePage = () => {
+  const { data } = useLease()
+  const lease = data?.data
+
   return (
     <div>
       <Typography variant="title">Välkommen!</Typography>
@@ -26,8 +30,11 @@ const HomePage = () => {
         </Typography>
         <CardContent>
           <Typography variant="body2">
-            Gravida egestas rhoncus nulla vehicula amet. Enim lacus auctor
-            mauris faucibus eu blandit ut.
+            {lease?.leaseId}
+            <br />
+            {lease?.rentalProperty?.address?.street +
+              ' ' +
+              lease?.rentalProperty?.address?.number}
           </Typography>
         </CardContent>
         <CardActions>

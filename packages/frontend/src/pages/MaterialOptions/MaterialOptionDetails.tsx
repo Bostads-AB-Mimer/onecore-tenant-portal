@@ -1,5 +1,6 @@
-import { Box, Divider, Link, Typography } from '@mui/material'
+import { Box, Divider, Typography } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { useMaterialOptionDetails } from './hooks/useMaterialOptions'
 
@@ -15,7 +16,7 @@ const MaterialOptionDetails = () => {
 
   return (
     <>
-      <Link onClick={() => navigate(-1)}>&lt; Materialval</Link>
+      <Link to={'..'}>&lt; Materialval</Link>
       <Typography variant="h2">{materialOption?.roomTypeName}</Typography>
       <Typography variant="h1">{materialOption?.caption}</Typography>
       <Box sx={styles.infoBox}>
@@ -30,7 +31,7 @@ const MaterialOptionDetails = () => {
       {materialOption?.images && materialOption.images[0] && (
         <Box sx={styles.imageBox}>
           <img
-            src={materialOption.images[0]}
+            src={'/api/material-options/assets/' + materialOption.images[0]}
             alt={materialOption.caption}
             width="85%"
           />
@@ -43,7 +44,11 @@ const MaterialOptionDetails = () => {
         if (index > 0) {
           return (
             <Box key={index} sx={styles.imageBox}>
-              <img src={image} alt="" width="85%" />
+              <img
+                src={'/api/material-options/assets/' + image}
+                alt=""
+                width="85%"
+              />
             </Box>
           )
         }

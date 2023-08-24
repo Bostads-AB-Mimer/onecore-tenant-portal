@@ -1,5 +1,4 @@
 import { Box, InputLabel, MenuItem, Select } from '@mui/material'
-import { SelectChangeEvent } from '@mui/material/Select'
 
 export interface DropDownOption {
   value: string
@@ -19,7 +18,7 @@ const DropDown = ({
   options: Array<DropDownOption>
   onSelect?: (value: string) => void
 }) => {
-  const handleSelection = (event: SelectChangeEvent) => {
+  const handleSelection = (event: any) => {
     if (onSelect) onSelect(event.target.value)
   }
 
