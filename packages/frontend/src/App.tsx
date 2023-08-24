@@ -16,6 +16,7 @@ import GraphikBold from '../assets/Graphik-Bold.woff2'
 import MaterialOptionDetails from './pages/MaterialOptions/MaterialOptionDetails'
 import MaterialChoices from './pages/MaterialOptions/MaterialChoices'
 import Login from './pages/Login/Login'
+import Details from './pages/Details/Details'
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -260,6 +261,7 @@ function App() {
               <Route path="/" element={<Home></Home>} />
               <Route path="/login" element={<Login></Login>} />
               <Route path="/mitt-boende" element={<Lease></Lease>} />
+              <Route path="/mina-uppgifter" element={<Details></Details>} />
               <Route path="/att-gora" element={<Progress></Progress>} />
               <Route
                 path="/materialval"
