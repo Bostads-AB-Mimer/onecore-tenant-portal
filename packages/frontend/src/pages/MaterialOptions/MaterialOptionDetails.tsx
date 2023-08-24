@@ -30,7 +30,7 @@ const MaterialOptionDetails = () => {
       {materialOption?.images && materialOption.images[0] && (
         <Box sx={styles.imageBox}>
           <img
-            src={materialOption.images[0]}
+            src={'/api/material-options/assets/' + materialOption.images[0]}
             alt={materialOption.caption}
             width="85%"
           />
@@ -43,7 +43,11 @@ const MaterialOptionDetails = () => {
         if (index > 0) {
           return (
             <Box key={index} sx={styles.imageBox}>
-              <img src={image} alt="" width="85%" />
+              <img
+                src={'/api/material-options/assets/' + image}
+                alt=""
+                width="85%"
+              />
             </Box>
           )
         }

@@ -117,7 +117,9 @@ const MaterialOptions = () => {
                                   '/' +
                                   materialOption.materialOptionId
                                 : '',
-                            image: materialOption.coverImage,
+                            image:
+                              '/api/material-options/assets/' +
+                              materialOption.coverImage,
                             caption: materialOption.caption,
                           }
                         }

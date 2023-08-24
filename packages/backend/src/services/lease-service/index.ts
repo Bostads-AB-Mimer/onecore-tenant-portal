@@ -21,6 +21,7 @@ import {
   getMaterialOptionGroup,
   getMaterialChoices,
 } from './adapters/material-options-adapter'
+import fs from 'fs/promises'
 
 const getAccommodation = async (nationalRegistrationNumber: string) => {
   const lease = await getLease(nationalRegistrationNumber)
@@ -108,6 +109,14 @@ export const routes = (router: KoaRouter) => {
         data: { materialOption: option },
       }
     }
+  })
+
+  router.get('(.*)/material-options/assets/:id', async (ctx) => {
+    const filename = ctx.params.id
+    const path = process.cwd() + '/assets/' + filename
+    const data = await fs.readFile(path)
+
+    ctx.body = data
   })
 
   router.get('(.*)/material-choices', async (ctx) => {
