@@ -268,7 +268,7 @@ function App() {
                 element={<MaterialOptions></MaterialOptions>}
               />
               <Route
-                path="/materialval/detaljer/:roomTypeId/:materialOptionGroupId/:materialOptionId"
+                path="/materialval/detaljer/:materialOptionId"
                 element={<MaterialOptionDetails></MaterialOptionDetails>}
               />
               <Route

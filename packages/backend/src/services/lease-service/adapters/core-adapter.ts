@@ -101,76 +101,75 @@ const getFloorPlanStream = async (rentalPropertyId: string) => {
 }
 
 const getMaterialOptions = async (
-  apartmentId: string
+  rentalPropertyId: string
 ): Promise<Array<MaterialOptionGroup>> => {
   const materialOptionsResponse = await getFromCore({
     method: 'get',
-    url: `${coreBaseUrl}/rentalproperties/${apartmentId}/material-options`,
+    url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/material-options`,
   })
 
   return materialOptionsResponse.data
 }
 
-const getMaterialOptionGroup = async (
-  roomTypeId: string,
-  materialOptionGroupId: string
-): Promise<MaterialOptionGroup | undefined> => {
-  const materialOptionGroupResponse = await getFromCore({
-    method: 'get',
-    url: `${coreBaseUrl}/room-types/${roomTypeId}/material-option-groups/${materialOptionGroupId}`,
-  })
+// const getMaterialOptionGroup = async (
+//   roomTypeId: string,
+//   materialOptionGroupId: string
+// ): Promise<MaterialOptionGroup | undefined> => {
+//   const materialOptionGroupResponse = await getFromCore({
+//     method: 'get',
+//     url: `${coreBaseUrl}/room-types/${roomTypeId}/material-option-groups/${materialOptionGroupId}`,
+//   })
 
-  return materialOptionGroupResponse.data
-}
+//   return materialOptionGroupResponse.data
+// }
 
 const getMaterialOption = async (
-  roomTypeId: string,
-  materialOptionGroupId: string,
+  rentalPropertyId: string,
   materialOptionId: string
 ): Promise<MaterialOption | undefined> => {
-  const materialOptionResponse = await getFromCore({
+  const materialOptionsResponse = await getFromCore({
     method: 'get',
-    url: `${coreBaseUrl}/room-types/${roomTypeId}/material-option-groups/${materialOptionGroupId}/options/${materialOptionId}`,
+    url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/material-option/${materialOptionId}`,
   })
 
-  return materialOptionResponse.data
+  return materialOptionsResponse.data
 }
 
-const getRoomTypes = async (apartmentId: string): Promise<Array<RoomType>> => {
-  const roomTypesResponse = await getFromCore({
-    method: 'get',
-    url: `${coreBaseUrl}/rentalproperties/${apartmentId}/room-types`,
-  })
+// const getRoomTypes = async (apartmentId: string): Promise<Array<RoomType>> => {
+//   const roomTypesResponse = await getFromCore({
+//     method: 'get',
+//     url: `${coreBaseUrl}/rentalproperties/${apartmentId}/room-types`,
+//   })
 
-  return roomTypesResponse.data
-}
+//   return roomTypesResponse.data
+// }
 
-const getRoomType = async (
-  apartmentId: string,
-  roomTypeId: string
-): Promise<RoomType | undefined> => {
-  const roomTypes = await getRoomTypes(apartmentId)
+// const getRoomType = async (
+//   apartmentId: string,
+//   roomTypeId: string
+// ): Promise<RoomType | undefined> => {
+//   const roomTypes = await getRoomTypes(apartmentId)
 
-  return roomTypes.find(
-    (roomType: RoomType) => roomType.roomTypeId == roomTypeId
-  )
-}
+//   return roomTypes.find(
+//     (roomType: RoomType) => roomType.roomTypeId == roomTypeId
+//   )
+// }
 
-const getMaterialOptionGroupsByRoomType = async (
-  roomTypeId: string
-): Promise<Array<MaterialOptionGroup>> => {
-  const roomTypesResponse = await getFromCore({
-    method: 'get',
-    url: `${coreBaseUrl}/room-types/${roomTypeId}/material-option-groups`,
-  })
+// const getMaterialOptionGroupsByRoomType = async (
+//   roomTypeId: string
+// ): Promise<Array<MaterialOptionGroup>> => {
+//   const roomTypesResponse = await getFromCore({
+//     method: 'get',
+//     url: `${coreBaseUrl}/room-types/${roomTypeId}/material-option-groups`,
+//   })
 
-  return roomTypesResponse.data
-}
+//   return roomTypesResponse.data
+// }
 
-const getMaterialChoices = async (apartmentId: string) => {
+const getMaterialChoices = async (rentalPropertyId: string) => {
   const materialChoicesResponse = await getFromCore({
     method: 'get',
-    url: `${coreBaseUrl}/rentalproperties/${apartmentId}/material-choices`,
+    url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/material-choices`,
   })
 
   return materialChoicesResponse.data
@@ -180,12 +179,10 @@ export {
   getApartment,
   getFloorPlanStream,
   getLease,
-  getRoomType,
-  getRoomTypes,
+  // getRoomType,
+  // getRoomTypes,
   getContact,
   getMaterialOptions,
-  getMaterialOptionGroup,
   getMaterialOption,
-  getMaterialOptionGroupsByRoomType,
   getMaterialChoices,
 }

@@ -12,9 +12,7 @@ export interface RoomTypesResponse {
 }
 
 export interface MaterialOptionResponse {
-  data: {
-    materialOption: MaterialOption | undefined
-  }
+  data: MaterialOption | undefined
 }
 
 export const useMaterialOptions = ({
@@ -89,21 +87,14 @@ export const useMaterialChoices = ({ apartmentId }: { apartmentId: string }) =>
   })
 
 export const useMaterialOptionDetails = ({
-  roomTypeId,
-  materialOptionGroupId,
   materialOptionId,
 }: {
-  roomTypeId?: string
-  materialOptionGroupId?: string
   materialOptionId?: string
 }) =>
   useQuery<MaterialOptionResponse, AxiosError>({
-    queryKey: [
-      'materialOptionDetails',
-      roomTypeId ?? '' + materialOptionGroupId + materialOptionId,
-    ],
+    queryKey: ['materialOptionDetails', materialOptionId],
     queryFn: async () => {
-      if (roomTypeId && materialOptionGroupId && materialOptionId) {
+      if (materialOptionId) {
         const { data } = await axios.get<MaterialOptionResponse>(
           `${backendUrl}/material-option-details`,
           {
@@ -112,18 +103,15 @@ export const useMaterialOptionDetails = ({
               Authorization: 'Bearer sometoken',
             },
             params: {
-              roomTypeId: roomTypeId,
-              materialOptionGroupId: materialOptionGroupId,
               materialOptionId: materialOptionId,
             },
           }
         )
+        console.log('result', data)
         return data
       } else {
         return {
-          data: {
-            materialOption: undefined,
-          },
+          data: undefined,
         }
       }
     },

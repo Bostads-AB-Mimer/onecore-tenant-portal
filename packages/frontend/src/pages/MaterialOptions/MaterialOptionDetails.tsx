@@ -5,19 +5,22 @@ import { Link } from 'react-router-dom'
 import { useMaterialOptionDetails } from './hooks/useMaterialOptions'
 
 const MaterialOptionDetails = () => {
-  const { roomTypeId, materialOptionGroupId, materialOptionId } = useParams()
+  const { materialOptionId } = useParams()
   const navigate = useNavigate()
 
-  const materialOption = useMaterialOptionDetails({
-    roomTypeId,
-    materialOptionGroupId,
+  const result = useMaterialOptionDetails({
     materialOptionId,
-  })?.data?.data.materialOption
+  })
 
+  // console.log(result)
+
+  const materialOption = result?.data?.data
   return (
     <>
       <Link to={'..'}>&lt; Materialval</Link>
-      <Typography variant="h2">{materialOption?.roomTypeName}</Typography>
+      <Typography variant="h2">
+        {materialOption?.materialOptionGroupName}
+      </Typography>
       <Typography variant="h1">{materialOption?.caption}</Typography>
       <Box sx={styles.infoBox}>
         <Typography variant="body2">

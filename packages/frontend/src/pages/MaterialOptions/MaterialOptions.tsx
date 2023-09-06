@@ -111,10 +111,6 @@ const MaterialOptions = () => {
                               materialOption.images ||
                               materialOption.description
                                 ? '/materialval/detaljer/' +
-                                  roomType.roomTypeId +
-                                  '/' +
-                                  materialOptionGroup.materialOptionGroupId +
-                                  '/' +
                                   materialOption.materialOptionId
                                 : '',
                             image:
@@ -139,7 +135,7 @@ const MaterialOptions = () => {
                           }
                           defaultValue={defaultValue}
                           options={
-                            materialOptionGroup.materialOptions?.map(
+                            materialOptionGroup.materialOptions.map(
                               (materialOption: MaterialOption) => {
                                 return {
                                   value: materialOption.materialOptionId,
@@ -218,11 +214,7 @@ const MaterialOptions = () => {
                           <Box key={i}>
                             <FormControlLabel
                               control={<Radio />}
-                              label={
-                                materialOption.caption +
-                                ' - ' +
-                                materialOption.materialOptionId
-                              }
+                              label={materialOption.caption}
                               value={materialOption.materialOptionId}
                             ></FormControlLabel>
                             {materialOption.shortDescription}
