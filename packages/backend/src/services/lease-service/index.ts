@@ -14,9 +14,11 @@ import {
   getMaterialOption,
   getMaterialChoices,
   getMaterialOptions,
+  saveMaterialChoice,
 } from './adapters/core-adapter'
 import { getRentsForLease } from './adapters/rent-adapter'
 import fs from 'fs/promises'
+import { MaterialChoice } from './types'
 
 const getAccommodation = async (nationalRegistrationNumber: string) => {
   const lease = await getLease(nationalRegistrationNumber)
@@ -62,12 +64,7 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/material-option-details', async (ctx) => {
-    console.log('backend materail-option-details')
     if (ctx.request.query.materialOptionId) {
-      console.log(
-        'ctx.request.query.materialOptionId',
-        ctx.request.query.materialOptionId
-      )
       const nationalRegistrationNumber = ctx.state.user.username
       const lease = await getAccommodation(nationalRegistrationNumber)
 
@@ -76,7 +73,6 @@ export const routes = (router: KoaRouter) => {
         ctx.request.query.materialOptionId.toString()
       )
 
-      // console.log('option', option)
       ctx.body = {
         data: option,
       }
@@ -99,6 +95,28 @@ export const routes = (router: KoaRouter) => {
 
     ctx.body = {
       data: { roomTypes: roomTypes },
+    }
+  })
+
+  router.post('(.*)/material-choices', async (ctx) => {
+    const nationalRegistrationNumber = ctx.state.user.username
+    const lease = await getAccommodation(nationalRegistrationNumber)
+
+    if (ctx.request.body) {
+      const choices: Array<MaterialChoice> = ctx.request.body?.choices.map(
+        (choice: any) => {
+          return {
+            materialOptionId: choice.materialOptionId,
+            roomTypeId: choice.roomTypeId,
+            apartmentId: lease.rentalPropertyId,
+          }
+        }
+      )
+      await saveMaterialChoice(lease.rentalPropertyId, choices)
+
+      ctx.body = { message: 'Save successful' }
+    } else {
+      ctx.body = { message: 'No choices proviced' }
     }
   })
 

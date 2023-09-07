@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { Contact, Lease, MaterialOption } from '../types'
+import { Contact, Lease, MaterialChoice, MaterialOption } from '../types'
 import Config from '../../../common/config'
 import { RentalProperty, RoomType, MaterialOptionGroup } from '../types'
 
@@ -175,6 +175,18 @@ const getMaterialChoices = async (rentalPropertyId: string) => {
   return materialChoicesResponse.data
 }
 
+const saveMaterialChoice = async (
+  rentalPropertyId: string,
+  materialChoices: Array<MaterialChoice>
+) => {
+  const result = await getFromCore({
+    method: 'post',
+    url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/material-choices`,
+    data: materialChoices,
+  })
+  return result
+}
+
 export {
   getApartment,
   getFloorPlanStream,
@@ -185,4 +197,5 @@ export {
   getMaterialOptions,
   getMaterialOption,
   getMaterialChoices,
+  saveMaterialChoice,
 }

@@ -7,8 +7,9 @@ import {
   RadioGroup,
   Radio,
   Button,
+  Alert,
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useMaterialOptions } from './hooks/useMaterialOptions'
 import {
@@ -18,6 +19,10 @@ import {
 } from '../../common/types'
 import DropDown from '../../components/DropDown'
 import Carousel from '../../components/Carousel'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
 const MaterialOptions = () => {
   const [conceptChoices, setConceptChoices] = useState(
@@ -27,15 +32,86 @@ const MaterialOptions = () => {
       roomTypeId: string
     }>
   )
+  const [errorMessage, setErrorMessage] = useState('')
+  const [validationMessage, setValidationMessage] = useState('')
+  const navigate = useNavigate()
 
   const { data } = useMaterialOptions({ apartmentId: '123' })
   const roomTypes = data?.data?.roomTypes
 
   const defaultValue = '0'
 
+  useEffect(() => {
+    // console.log('choices', conceptChoices)
+  }, [conceptChoices])
+
+  /* TODO:
+   * Add extra confirm before save to make it clear this is final. BankID?
+   */
+
   const save = () => {
-    /* TODO: Save choices to apartment */
-    console.log('conceptChoices', conceptChoices)
+    if (!validateChoices(conceptChoices)) return
+
+    axios(`${backendUrl}/material-choices`, {
+      method: 'post',
+      data: {
+        choices: conceptChoices,
+      },
+    })
+      .then((result) => {
+        if (result.status === 200) {
+          navigate('/materialval/val')
+          // console.log('Tjohoo ditt materialval har sparats')
+          setErrorMessage('')
+        } else {
+          setErrorMessage('Ditt materialval kunde tyvärr inte sparas')
+        }
+      })
+      .catch((error) => {
+        setErrorMessage('Ditt materialval kunde tyvärr inte sparas')
+        console.error(error)
+      })
+  }
+
+  const validateChoices = (choices: Array<any>) => {
+    let valid = true
+
+    roomTypes?.forEach((roomType) => {
+      roomType.materialOptionGroups?.forEach((materialOptionGroup) => {
+        let groupIsValid = false
+
+        //valid oavsett om typ är tillval
+        if (materialOptionGroup.type == 'AddOn') groupIsValid = true
+
+        //valid om det inte finns alternativ eller bara ett alternativ
+        if (
+          !materialOptionGroup.materialOptions ||
+          materialOptionGroup.materialOptions.length <= 1
+        )
+          groupIsValid = true
+
+        if (!groupIsValid) {
+          //valid = om choices innehåller en matchande materialOptionGroupId
+          groupIsValid =
+            choices.filter(
+              (choice) =>
+                choice.materialOptionGroupId ==
+                materialOptionGroup.materialOptionGroupId
+            ).length > 0
+
+          if (!groupIsValid) valid = false
+        }
+      })
+    })
+
+    if (!valid) {
+      setValidationMessage(
+        'Oj det verkar som du missat något val, se över dina val innan du sparar'
+      )
+      return false
+    }
+    setValidationMessage('')
+    return true
   }
 
   const saveChoiceToState = ({
@@ -63,6 +139,8 @@ const MaterialOptions = () => {
     })
 
     setConceptChoices(newChoices)
+
+    if (validationMessage != '') validateChoices(newChoices)
   }
 
   const removeChoiceFromState = ({
@@ -75,10 +153,10 @@ const MaterialOptions = () => {
     const newChoices =
       conceptChoices.filter(
         (choice) =>
-          (choice.materialOptionGroupId &&
-            choice.materialOptionGroupId != materialOptionGroupId) ||
-          (choice.materialOptionId &&
-            choice.materialOptionId != materialOptionId)
+          choice.materialOptionGroupId &&
+          choice.materialOptionGroupId != materialOptionGroupId &&
+          choice.materialOptionId &&
+          choice.materialOptionId != materialOptionId
       ) ?? []
 
     setConceptChoices(newChoices)
@@ -145,13 +223,6 @@ const MaterialOptions = () => {
                             ) ?? []
                           }
                           onSelect={(value: string) => {
-                            // const newChoices =
-                            //   conceptChoices.filter(
-                            //     (choice) =>
-                            //       choice.materialOptionGroupId !=
-                            //       materialOptionGroup.materialOptionGroupId
-                            //   ) ?? []
-
                             if (value == defaultValue) {
                               removeChoiceFromState({
                                 materialOptionGroupId:
@@ -166,17 +237,6 @@ const MaterialOptions = () => {
                                 roomTypeId: roomType.roomTypeId,
                               })
                             }
-
-                            // if (value != defaultValue) {
-                            //   newChoices.push({
-                            //     materialOptionId: value,
-                            //     materialOptionGroupId:
-                            //       materialOptionGroup.materialOptionGroupId,
-                            //     roomTypeId: materialOptionGroup.roomTypeId,
-                            //   })
-                            // }
-
-                            // setConceptChoices(newChoices)
                           }}
                         />
                       )}
@@ -191,7 +251,6 @@ const MaterialOptions = () => {
                     </Typography>
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"
-                      // defaultValue="female"
                       name="radio-buttons-group"
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>
@@ -268,6 +327,16 @@ const MaterialOptions = () => {
                 ))}
             </Box>
           ))}
+        {validationMessage != '' && (
+          <Box sx={{ marginTop: 2 }}>
+            <Alert severity="warning">{validationMessage}</Alert>
+          </Box>
+        )}
+        {errorMessage != '' && (
+          <Box sx={{ marginTop: 2 }}>
+            <Alert severity="error">{errorMessage}</Alert>
+          </Box>
+        )}
         <Box sx={styles.actionContainer}>
           <Button variant="contained" onClick={save}>
             Spara materialval
