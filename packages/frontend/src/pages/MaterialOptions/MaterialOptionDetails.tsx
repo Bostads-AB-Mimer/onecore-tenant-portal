@@ -1,12 +1,10 @@
 import { Box, Divider, Typography } from '@mui/material'
-import { useNavigate, useParams } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 
 import { useMaterialOptionDetails } from './hooks/useMaterialOptions'
 
 const MaterialOptionDetails = () => {
   const { roomTypeId, materialOptionGroupId, materialOptionId } = useParams()
-  const navigate = useNavigate()
 
   const materialOption = useMaterialOptionDetails({
     roomTypeId,
