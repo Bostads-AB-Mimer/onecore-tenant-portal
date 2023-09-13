@@ -13,8 +13,6 @@ const Carousel = ({
 }) => {
   const { scrollRef, snapPointIndexes } = useSnapCarousel()
 
-  console.log(links)
-
   return (
     <ul className="flex snap-x snap-mandatory overflow-x-auto" ref={scrollRef}>
       {links?.map((link, i) => (

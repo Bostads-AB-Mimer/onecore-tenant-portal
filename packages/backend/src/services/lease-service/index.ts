@@ -10,19 +10,15 @@ import {
   getLease,
   getApartment,
   getFloorPlanStream,
-  getRoomTypes,
-  getRoomType,
   getContact,
+  getMaterialOption,
+  getMaterialChoices,
+  getMaterialOptions,
+  saveMaterialChoice,
 } from './adapters/core-adapter'
 import { getRentsForLease } from './adapters/rent-adapter'
-import { RoomType } from './types'
-import {
-  getMaterialOptionGroupsByRoomType,
-  getMaterialOption,
-  getMaterialOptionGroup,
-  getMaterialChoices,
-} from './adapters/material-options-adapter'
 import fs from 'fs/promises'
+import { MaterialChoice } from './types'
 
 const getAccommodation = async (nationalRegistrationNumber: string) => {
   const lease = await getLease(nationalRegistrationNumber)
@@ -32,40 +28,6 @@ const getAccommodation = async (nationalRegistrationNumber: string) => {
   lease.rentInfo = await getRentsForLease(lease.leaseId)
 
   return lease
-}
-
-const getRoomTypeWithMaterialOptions = async (apartmentId: string) => {
-  const roomTypes = await getRoomTypes(apartmentId)
-
-  roomTypes.forEach(async (roomType: RoomType) => {
-    roomType.materialOptionGroups = await getMaterialOptionGroupsByRoomType(
-      roomType.roomTypeId
-    )
-  })
-
-  return roomTypes
-}
-
-const getSingleMaterialOption = async (
-  apartmentId: string,
-  roomTypeId: string,
-  materialOptionGroupId: string,
-  materialOptionId: string
-) => {
-  const roomType = await getRoomType(apartmentId, roomTypeId)
-  const group = await getMaterialOptionGroup(roomTypeId, materialOptionGroupId)
-  const option = await getMaterialOption(
-    roomTypeId,
-    materialOptionGroupId,
-    materialOptionId
-  )
-
-  if (option) {
-    option.roomTypeName = roomType && roomType.name
-    option.materialOptionGroupName = option && group && group.name
-  }
-
-  return option
 }
 
 export const routes = (router: KoaRouter) => {
@@ -91,30 +53,28 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/material-options', async (ctx) => {
-    const roomTypes = await getRoomTypeWithMaterialOptions(
-      Math.round(Math.random() * 100000).toString()
-    )
+    const nationalRegistrationNumber = ctx.state.user.username
+    const lease = await getAccommodation(nationalRegistrationNumber)
+
+    const materialOptions = await getMaterialOptions(lease.rentalPropertyId)
 
     ctx.body = {
-      data: { roomTypes },
+      data: materialOptions,
     }
   })
 
   router.get('(.*)/material-option-details', async (ctx) => {
-    if (
-      ctx.request.query.roomTypeId &&
-      ctx.request.query.materialOptionGroupId &&
-      ctx.request.query.materialOptionId
-    ) {
-      const option = await getSingleMaterialOption(
-        Math.round(Math.random() * 100000).toString(),
-        ctx.request.query.roomTypeId[0],
-        ctx.request.query.materialOptionGroupId[0],
-        ctx.request.query.materialOptionId[0]
+    if (ctx.request.query.materialOptionId) {
+      const nationalRegistrationNumber = ctx.state.user.username
+      const lease = await getAccommodation(nationalRegistrationNumber)
+
+      const option = await getMaterialOption(
+        lease.rentalPropertyId,
+        ctx.request.query.materialOptionId.toString()
       )
 
       ctx.body = {
-        data: { materialOption: option },
+        data: option,
       }
     }
   })
@@ -128,21 +88,33 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/material-choices', async (ctx) => {
-    let roomTypes = new Array<RoomType>()
-    if (ctx.request.query.apartmentId && ctx.request.query.apartmentId[0]) {
-      const apartmentId = ctx.request.query.apartmentId[0]
-      roomTypes = await getRoomTypes(apartmentId)
+    const nationalRegistrationNumber = ctx.state.user.username
+    const lease = await getAccommodation(nationalRegistrationNumber)
 
-      for (const roomType of roomTypes) {
-        const materialGroups = await getMaterialChoices({
-          apartmentId: apartmentId,
-          roomTypeId: roomType.roomTypeId,
-        })
-        roomType.materialOptionGroups = materialGroups
-      }
-    }
-    ctx.body = {
-      data: { roomTypes: roomTypes },
+    const roomTypes = await getMaterialChoices(lease.rentalPropertyId)
+
+    ctx.body = { data: roomTypes }
+  })
+
+  router.post('(.*)/material-choices', async (ctx) => {
+    const nationalRegistrationNumber = ctx.state.user.username
+    const lease = await getAccommodation(nationalRegistrationNumber)
+
+    if (ctx.request.body) {
+      const choices: Array<MaterialChoice> = ctx.request.body?.choices.map(
+        (choice: MaterialChoice) => {
+          return {
+            materialOptionId: choice.materialOptionId,
+            roomTypeId: choice.roomTypeId,
+            apartmentId: lease.rentalPropertyId,
+          }
+        }
+      )
+      await saveMaterialChoice(lease.rentalPropertyId, choices)
+
+      ctx.body = { message: 'Save successful' }
+    } else {
+      ctx.body = { message: 'No choices proviced' }
     }
   })
 

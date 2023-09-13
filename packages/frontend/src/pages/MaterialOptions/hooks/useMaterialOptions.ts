@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { useQuery } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 
 import { MaterialOption, RoomType } from '../../../common/types'
 
@@ -12,9 +12,11 @@ export interface RoomTypesResponse {
 }
 
 export interface MaterialOptionResponse {
-  data: {
-    materialOption: MaterialOption | undefined
-  }
+  data: MaterialOption | undefined
+}
+
+export interface MaterialChoiceResponse {
+  status: number
 }
 
 export const useMaterialOptions = ({
@@ -53,31 +55,20 @@ export const useMaterialOptions = ({
     },
   })
 
-export const useMaterialChoices = ({ apartmentId }: { apartmentId: string }) =>
+export const useMaterialChoices = () =>
   useQuery<RoomTypesResponse, AxiosError>({
-    queryKey: ['materialChoices', apartmentId],
+    queryKey: ['materialChoices'],
     queryFn: async () => {
-      if (apartmentId) {
-        const { data } = await axios.get<RoomTypesResponse>(
-          `${backendUrl}/material-choices`,
-          {
-            headers: {
-              Accept: 'application/json',
-              Authorization: 'Bearer sometoken',
-            },
-            params: {
-              apartmentId: apartmentId,
-            },
-          }
-        )
-        return data
-      } else {
-        return {
-          data: {
-            roomTypes: undefined,
+      const { data } = await axios.get<RoomTypesResponse>(
+        `${backendUrl}/material-choices`,
+        {
+          headers: {
+            Accept: 'application/json',
+            Authorization: 'Bearer sometoken',
           },
         }
-      }
+      )
+      return data
     },
     retry: (failureCount: number, error: AxiosError) => {
       if (error.response?.status === 401) {
@@ -88,22 +79,46 @@ export const useMaterialChoices = ({ apartmentId }: { apartmentId: string }) =>
     },
   })
 
+export const useSaveMaterialChoices = (
+  onSuccess: () => void,
+  onError: () => void
+) => {
+  const client = useQueryClient()
+  return useMutation<any, any, any>({
+    mutationKey: ['useSaveChoices'],
+    mutationFn: async (choices) => {
+      return axios(`${backendUrl}/material-choices`, {
+        method: 'post',
+        data: {
+          choices: choices,
+        },
+      })
+        .then((result) => {
+          return { status: result.status }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    onSuccess: () => {
+      client.invalidateQueries(['materialChoices'])
+      onSuccess()
+    },
+    onError: () => {
+      onError()
+    },
+  })
+}
+
 export const useMaterialOptionDetails = ({
-  roomTypeId,
-  materialOptionGroupId,
   materialOptionId,
 }: {
-  roomTypeId?: string
-  materialOptionGroupId?: string
   materialOptionId?: string
 }) =>
   useQuery<MaterialOptionResponse, AxiosError>({
-    queryKey: [
-      'materialOptionDetails',
-      roomTypeId ?? '' + materialOptionGroupId + materialOptionId,
-    ],
+    queryKey: ['materialOptionDetails', materialOptionId],
     queryFn: async () => {
-      if (roomTypeId && materialOptionGroupId && materialOptionId) {
+      if (materialOptionId) {
         const { data } = await axios.get<MaterialOptionResponse>(
           `${backendUrl}/material-option-details`,
           {
@@ -112,8 +127,6 @@ export const useMaterialOptionDetails = ({
               Authorization: 'Bearer sometoken',
             },
             params: {
-              roomTypeId: roomTypeId,
-              materialOptionGroupId: materialOptionGroupId,
               materialOptionId: materialOptionId,
             },
           }
@@ -121,9 +134,7 @@ export const useMaterialOptionDetails = ({
         return data
       } else {
         return {
-          data: {
-            materialOption: undefined,
-          },
+          data: undefined,
         }
       }
     },

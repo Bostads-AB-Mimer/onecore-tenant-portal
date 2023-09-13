@@ -7,10 +7,15 @@ import {
   RadioGroup,
   Radio,
   Button,
+  Alert,
 } from '@mui/material'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { useMaterialOptions } from './hooks/useMaterialOptions'
+import {
+  useMaterialOptions,
+  useSaveMaterialChoices,
+} from './hooks/useMaterialOptions'
 import {
   MaterialOptionGroup,
   MaterialOption,
@@ -27,15 +32,74 @@ const MaterialOptions = () => {
       roomTypeId: string
     }>
   )
+  const [errorMessage, setErrorMessage] = useState('')
+  const [validationMessage, setValidationMessage] = useState('')
+  const navigate = useNavigate()
 
   const { data } = useMaterialOptions({ apartmentId: '123' })
   const roomTypes = data?.data?.roomTypes
 
   const defaultValue = '0'
 
+  /* TODO:
+   * Add extra confirm before save to make it clear this is final. BankID?
+   */
+
+  const { mutate } = useSaveMaterialChoices(
+    () => {
+      navigate('/materialval/val')
+      setErrorMessage('')
+    },
+    () => {
+      setErrorMessage('Ditt materialval kunde tyvärr inte sparas')
+    }
+  )
+
   const save = () => {
-    /* TODO: Save choices to apartment */
-    console.log('conceptChoices', conceptChoices)
+    if (!validateChoices(conceptChoices)) return
+
+    mutate(conceptChoices)
+  }
+
+  const validateChoices = (choices: Array<any>) => {
+    let valid = true
+
+    roomTypes?.forEach((roomType) => {
+      roomType.materialOptionGroups?.forEach((materialOptionGroup) => {
+        let groupIsValid = false
+
+        //valid oavsett om typ är tillval
+        if (materialOptionGroup.type == 'AddOn') groupIsValid = true
+
+        //valid om det inte finns alternativ eller bara ett alternativ
+        if (
+          !materialOptionGroup.materialOptions ||
+          materialOptionGroup.materialOptions.length <= 1
+        )
+          groupIsValid = true
+
+        if (!groupIsValid) {
+          //valid = om choices innehåller en matchande materialOptionGroupId
+          groupIsValid =
+            choices.filter(
+              (choice) =>
+                choice.materialOptionGroupId ==
+                materialOptionGroup.materialOptionGroupId
+            ).length > 0
+
+          if (!groupIsValid) valid = false
+        }
+      })
+    })
+
+    if (!valid) {
+      setValidationMessage(
+        'Oj det verkar som du missat något val, se över dina val innan du sparar'
+      )
+      return false
+    }
+    setValidationMessage('')
+    return true
   }
 
   const saveChoiceToState = ({
@@ -63,6 +127,8 @@ const MaterialOptions = () => {
     })
 
     setConceptChoices(newChoices)
+
+    if (validationMessage != '') validateChoices(newChoices)
   }
 
   const removeChoiceFromState = ({
@@ -75,10 +141,10 @@ const MaterialOptions = () => {
     const newChoices =
       conceptChoices.filter(
         (choice) =>
-          (choice.materialOptionGroupId &&
-            choice.materialOptionGroupId != materialOptionGroupId) ||
-          (choice.materialOptionId &&
-            choice.materialOptionId != materialOptionId)
+          choice.materialOptionGroupId &&
+          choice.materialOptionGroupId != materialOptionGroupId &&
+          choice.materialOptionId &&
+          choice.materialOptionId != materialOptionId
       ) ?? []
 
     setConceptChoices(newChoices)
@@ -111,10 +177,6 @@ const MaterialOptions = () => {
                               materialOption.images ||
                               materialOption.description
                                 ? '/materialval/detaljer/' +
-                                  roomType.roomTypeId +
-                                  '/' +
-                                  materialOptionGroup.materialOptionGroupId +
-                                  '/' +
                                   materialOption.materialOptionId
                                 : '',
                             image:
@@ -139,7 +201,7 @@ const MaterialOptions = () => {
                           }
                           defaultValue={defaultValue}
                           options={
-                            materialOptionGroup.materialOptions?.map(
+                            materialOptionGroup.materialOptions.map(
                               (materialOption: MaterialOption) => {
                                 return {
                                   value: materialOption.materialOptionId,
@@ -149,13 +211,6 @@ const MaterialOptions = () => {
                             ) ?? []
                           }
                           onSelect={(value: string) => {
-                            // const newChoices =
-                            //   conceptChoices.filter(
-                            //     (choice) =>
-                            //       choice.materialOptionGroupId !=
-                            //       materialOptionGroup.materialOptionGroupId
-                            //   ) ?? []
-
                             if (value == defaultValue) {
                               removeChoiceFromState({
                                 materialOptionGroupId:
@@ -170,17 +225,6 @@ const MaterialOptions = () => {
                                 roomTypeId: roomType.roomTypeId,
                               })
                             }
-
-                            // if (value != defaultValue) {
-                            //   newChoices.push({
-                            //     materialOptionId: value,
-                            //     materialOptionGroupId:
-                            //       materialOptionGroup.materialOptionGroupId,
-                            //     roomTypeId: materialOptionGroup.roomTypeId,
-                            //   })
-                            // }
-
-                            // setConceptChoices(newChoices)
                           }}
                         />
                       )}
@@ -195,7 +239,6 @@ const MaterialOptions = () => {
                     </Typography>
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"
-                      // defaultValue="female"
                       name="radio-buttons-group"
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>
@@ -218,11 +261,7 @@ const MaterialOptions = () => {
                           <Box key={i}>
                             <FormControlLabel
                               control={<Radio />}
-                              label={
-                                materialOption.caption +
-                                ' - ' +
-                                materialOption.materialOptionId
-                              }
+                              label={materialOption.caption}
                               value={materialOption.materialOptionId}
                             ></FormControlLabel>
                             {materialOption.shortDescription}
@@ -276,6 +315,16 @@ const MaterialOptions = () => {
                 ))}
             </Box>
           ))}
+        {validationMessage != '' && (
+          <Box sx={{ marginTop: 2 }}>
+            <Alert severity="warning">{validationMessage}</Alert>
+          </Box>
+        )}
+        {errorMessage != '' && (
+          <Box sx={{ marginTop: 2 }}>
+            <Alert severity="error">{errorMessage}</Alert>
+          </Box>
+        )}
         <Box sx={styles.actionContainer}>
           <Button variant="contained" onClick={save}>
             Spara materialval
