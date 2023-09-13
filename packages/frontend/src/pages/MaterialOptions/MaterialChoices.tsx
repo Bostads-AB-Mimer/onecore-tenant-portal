@@ -7,6 +7,7 @@ import {
   RadioGroup,
   Radio,
 } from '@mui/material'
+import { useEffect } from 'react'
 
 import { useMaterialChoices } from './hooks/useMaterialOptions'
 import {
@@ -20,13 +21,24 @@ const MaterialChoices = () => {
   const { data } = useMaterialChoices()
   const roomTypes = data?.data.roomTypes
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <>
       <Box>
         <Typography variant="h1">Beställda materialval</Typography>
-        <Typography variant="body1">
-          Här är materialvalen för ditt boende
-        </Typography>
+
+        {roomTypes == null ? (
+          <Typography variant="body1">
+            Du har ännu inte genomfört några val
+          </Typography>
+        ) : (
+          <Typography variant="body1">
+            Här är materialvalen för ditt boende
+          </Typography>
+        )}
         {roomTypes?.map((roomType: RoomType, i) => (
           <Box key={i}>
             <Divider />

@@ -10,6 +10,7 @@ import {
   Alert,
 } from '@mui/material'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import {
   useMaterialOptions,
@@ -22,7 +23,6 @@ import {
 } from '../../common/types'
 import DropDown from '../../components/DropDown'
 import Carousel from '../../components/Carousel'
-import { useNavigate } from 'react-router-dom'
 
 const MaterialOptions = () => {
   const [conceptChoices, setConceptChoices] = useState(
@@ -331,18 +331,6 @@ const MaterialOptions = () => {
           </Button>
         </Box>
       </Box>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
     </>
   )
 }

@@ -80,14 +80,14 @@ export const useMaterialChoices = () =>
   })
 
 export const useSaveMaterialChoices = (
-  onSuccess: Function,
-  onError: Function
+  onSuccess: () => void,
+  onError: () => void
 ) => {
   const client = useQueryClient()
   return useMutation<any, any, any>({
     mutationKey: ['useSaveChoices'],
     mutationFn: async (choices) => {
-      axios(`${backendUrl}/material-choices`, {
+      return axios(`${backendUrl}/material-choices`, {
         method: 'post',
         data: {
           choices: choices,
@@ -100,9 +100,9 @@ export const useSaveMaterialChoices = (
           console.error(error)
         })
     },
-    onSuccess: (result: any) => {
+    onSuccess: () => {
       client.invalidateQueries(['materialChoices'])
-      onSuccess(result)
+      onSuccess()
     },
     onError: () => {
       onError()
