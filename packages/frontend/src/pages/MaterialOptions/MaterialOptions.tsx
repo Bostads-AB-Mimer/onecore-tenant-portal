@@ -9,9 +9,12 @@ import {
   Button,
   Alert,
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { useMaterialOptions } from './hooks/useMaterialOptions'
+import {
+  useMaterialOptions,
+  useSaveMaterialChoices,
+} from './hooks/useMaterialOptions'
 import {
   MaterialOptionGroup,
   MaterialOption,
@@ -19,10 +22,7 @@ import {
 } from '../../common/types'
 import DropDown from '../../components/DropDown'
 import Carousel from '../../components/Carousel'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-
-const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
 const MaterialOptions = () => {
   const [conceptChoices, setConceptChoices] = useState(
@@ -41,36 +41,24 @@ const MaterialOptions = () => {
 
   const defaultValue = '0'
 
-  useEffect(() => {
-    // console.log('choices', conceptChoices)
-  }, [conceptChoices])
-
   /* TODO:
    * Add extra confirm before save to make it clear this is final. BankID?
    */
 
+  const { mutate } = useSaveMaterialChoices(
+    () => {
+      navigate('/materialval/val')
+      setErrorMessage('')
+    },
+    () => {
+      setErrorMessage('Ditt materialval kunde tyvärr inte sparas')
+    }
+  )
+
   const save = () => {
     if (!validateChoices(conceptChoices)) return
 
-    axios(`${backendUrl}/material-choices`, {
-      method: 'post',
-      data: {
-        choices: conceptChoices,
-      },
-    })
-      .then((result) => {
-        if (result.status === 200) {
-          navigate('/materialval/val')
-          // console.log('Tjohoo ditt materialval har sparats')
-          setErrorMessage('')
-        } else {
-          setErrorMessage('Ditt materialval kunde tyvärr inte sparas')
-        }
-      })
-      .catch((error) => {
-        setErrorMessage('Ditt materialval kunde tyvärr inte sparas')
-        console.error(error)
-      })
+    mutate(conceptChoices)
   }
 
   const validateChoices = (choices: Array<any>) => {
@@ -343,6 +331,18 @@ const MaterialOptions = () => {
           </Button>
         </Box>
       </Box>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   )
 }

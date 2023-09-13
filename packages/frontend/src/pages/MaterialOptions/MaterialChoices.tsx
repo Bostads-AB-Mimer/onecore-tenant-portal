@@ -12,13 +12,13 @@ import { useMaterialChoices } from './hooks/useMaterialOptions'
 import {
   MaterialOptionGroup,
   RoomType,
-  MaterialChoice,
+  MaterialOption,
 } from '../../common/types'
 import Carousel from '../../components/Carousel'
 
 const MaterialChoices = () => {
-  const { data } = useMaterialChoices({ apartmentId: '123' })
-  const roomTypes = data?.data?.roomTypes
+  const { data } = useMaterialChoices()
+  const roomTypes = data?.data.roomTypes
 
   return (
     <>
@@ -41,8 +41,8 @@ const MaterialChoices = () => {
                     {materialOptionGroup.name}
                   </Typography>
                   <Carousel
-                    links={materialOptionGroup.materialChoices?.map(
-                      (materialChoice: MaterialChoice) => {
+                    links={materialOptionGroup.materialOptions?.map(
+                      (materialOption: MaterialOption) => {
                         return {
                           link:
                             '/materialval/detaljer/' +
@@ -50,22 +50,22 @@ const MaterialChoices = () => {
                             '/' +
                             materialOptionGroup.materialOptionGroupId +
                             '/' +
-                            materialChoice.materialOption?.materialOptionId,
-                          image: materialChoice.materialOption?.coverImage
+                            materialOption?.materialOptionId,
+                          image: materialOption?.coverImage
                             ? '/api/material-options/assets/' +
-                              materialChoice.materialOption?.coverImage
+                              materialOption?.coverImage
                             : undefined,
-                          caption: materialChoice.materialOption?.caption,
+                          caption: materialOption?.caption,
                         }
                       }
                     )}
                   ></Carousel>
-                  {materialOptionGroup.materialChoices?.map(
-                    (materialChoice: MaterialChoice, i: number) => (
+                  {materialOptionGroup.materialOptions?.map(
+                    (materialOption: MaterialOption, i: number) => (
                       <FormControlLabel
                         key={i}
                         control={<Checkbox disabled={true} checked={true} />}
-                        label={materialChoice.materialOption?.caption}
+                        label={materialOption?.caption}
                       ></FormControlLabel>
                     )
                   )}
@@ -79,21 +79,15 @@ const MaterialChoices = () => {
                     aria-labelledby="demo-radio-buttons-group-label"
                     name="radio-buttons-group"
                   >
-                    {materialOptionGroup.materialChoices?.map(
-                      (materialChoice: MaterialChoice, i) => (
+                    {materialOptionGroup.materialOptions?.map(
+                      (materialOption: MaterialOption, i) => (
                         <Box key={i}>
                           <FormControlLabel
                             control={<Radio checked={true} disabled={true} />}
-                            label={
-                              materialChoice.materialOption?.caption +
-                              ' - ' +
-                              materialChoice.materialOption?.materialOptionId
-                            }
-                            value={
-                              materialChoice.materialOption?.materialOptionId
-                            }
+                            label={materialOption?.caption}
+                            value={materialOption?.materialOptionId}
                           ></FormControlLabel>
-                          {materialChoice.materialOption?.shortDescription}
+                          {materialOption?.shortDescription}
                         </Box>
                       )
                     )}
@@ -107,15 +101,15 @@ const MaterialChoices = () => {
                   <Typography variant="body1">
                     {materialOptionGroup.actionName}
                   </Typography>
-                  {materialOptionGroup.materialChoices?.map(
-                    (materialChoice: MaterialChoice, i) => (
+                  {materialOptionGroup.materialOptions?.map(
+                    (materialOption: MaterialOption, i) => (
                       <FormControlLabel
                         key={i}
                         control={<Checkbox checked={true} disabled={true} />}
                         label={
-                          materialChoice.materialOption?.caption +
+                          materialOption?.caption +
                           ' ' +
-                          materialChoice.materialOption?.shortDescription
+                          materialOption?.shortDescription
                         }
                       ></FormControlLabel>
                     )

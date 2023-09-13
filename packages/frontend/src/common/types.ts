@@ -70,13 +70,10 @@ enum LeaseStatus {
 
 interface MaterialChoice {
   materialChoiceId: string
-  // materialOptionId: string
-  // materialOptionGroupId: string
+  materialOptionId: string
+  materialOptionGroupId: string
   apartmentId: string
-  // roomTypeId: string
-  materialOption?: MaterialOption | undefined
-  materialOptionGroup?: MaterialOptionGroup | undefined
-  roomType?: RoomType | undefined
+  roomTypeId: string
   status: string //TODO enum of Draft/Submitted/Cancelled
   dateOfSubmission?: Date
   dateOfCancellation?: Date

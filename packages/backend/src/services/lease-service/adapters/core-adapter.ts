@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Contact, Lease, MaterialChoice, MaterialOption } from '../types'
 import Config from '../../../common/config'
-import { RentalProperty, RoomType, MaterialOptionGroup } from '../types'
+import { RentalProperty, MaterialOptionGroup } from '../types'
 
 const coreBaseUrl = Config.core.url
 const coreUsername = Config.core.username
@@ -111,18 +111,6 @@ const getMaterialOptions = async (
   return materialOptionsResponse.data
 }
 
-// const getMaterialOptionGroup = async (
-//   roomTypeId: string,
-//   materialOptionGroupId: string
-// ): Promise<MaterialOptionGroup | undefined> => {
-//   const materialOptionGroupResponse = await getFromCore({
-//     method: 'get',
-//     url: `${coreBaseUrl}/room-types/${roomTypeId}/material-option-groups/${materialOptionGroupId}`,
-//   })
-
-//   return materialOptionGroupResponse.data
-// }
-
 const getMaterialOption = async (
   rentalPropertyId: string,
   materialOptionId: string
@@ -134,37 +122,6 @@ const getMaterialOption = async (
 
   return materialOptionsResponse.data
 }
-
-// const getRoomTypes = async (apartmentId: string): Promise<Array<RoomType>> => {
-//   const roomTypesResponse = await getFromCore({
-//     method: 'get',
-//     url: `${coreBaseUrl}/rentalproperties/${apartmentId}/room-types`,
-//   })
-
-//   return roomTypesResponse.data
-// }
-
-// const getRoomType = async (
-//   apartmentId: string,
-//   roomTypeId: string
-// ): Promise<RoomType | undefined> => {
-//   const roomTypes = await getRoomTypes(apartmentId)
-
-//   return roomTypes.find(
-//     (roomType: RoomType) => roomType.roomTypeId == roomTypeId
-//   )
-// }
-
-// const getMaterialOptionGroupsByRoomType = async (
-//   roomTypeId: string
-// ): Promise<Array<MaterialOptionGroup>> => {
-//   const roomTypesResponse = await getFromCore({
-//     method: 'get',
-//     url: `${coreBaseUrl}/room-types/${roomTypeId}/material-option-groups`,
-//   })
-
-//   return roomTypesResponse.data
-// }
 
 const getMaterialChoices = async (rentalPropertyId: string) => {
   const materialChoicesResponse = await getFromCore({
@@ -191,8 +148,6 @@ export {
   getApartment,
   getFloorPlanStream,
   getLease,
-  // getRoomType,
-  // getRoomTypes,
   getContact,
   getMaterialOptions,
   getMaterialOption,

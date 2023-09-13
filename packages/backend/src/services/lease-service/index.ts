@@ -93,9 +93,7 @@ export const routes = (router: KoaRouter) => {
 
     const roomTypes = await getMaterialChoices(lease.rentalPropertyId)
 
-    ctx.body = {
-      data: { roomTypes: roomTypes },
-    }
+    ctx.body = { data: roomTypes }
   })
 
   router.post('(.*)/material-choices', async (ctx) => {
@@ -104,7 +102,7 @@ export const routes = (router: KoaRouter) => {
 
     if (ctx.request.body) {
       const choices: Array<MaterialChoice> = ctx.request.body?.choices.map(
-        (choice: any) => {
+        (choice: MaterialChoice) => {
           return {
             materialOptionId: choice.materialOptionId,
             roomTypeId: choice.roomTypeId,
