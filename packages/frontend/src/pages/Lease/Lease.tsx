@@ -1,13 +1,28 @@
 import { Typography, Divider, Grid, Box } from '@mui/material'
 
 import { useLease } from './hooks/useLease'
-import { Contact, Rent } from '../../common/types'
+import { Contact, Lease as LeaseType, Rent } from '../../common/types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
 const Lease = () => {
   const { data } = useLease()
   const lease = data?.data
+
+  const getLeaseStatus = (lease: LeaseType) => {
+    if (lease.status == 0) {
+      if (
+        lease.leaseStartDate &&
+        Date.parse(lease.leaseStartDate.toString()) <= Date.now()
+      ) {
+        return 'Gällande'
+      } else {
+        return 'Kommande'
+      }
+    }
+
+    return 'Uppsagt'
+  }
 
   return (
     <>
@@ -69,7 +84,7 @@ const Lease = () => {
                 Status kontrakt
               </Grid>
               <Grid item xs={6}>
-                <b>{lease.status}</b>
+                <b>{getLeaseStatus(lease)}</b>
               </Grid>
               <Grid item xs={6}>
                 Gäller till och med
