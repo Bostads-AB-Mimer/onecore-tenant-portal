@@ -18,7 +18,7 @@ import {
 import Carousel from '../../components/Carousel'
 
 const MaterialChoices = () => {
-  const { data } = useMaterialChoices()
+  const { data, isLoading } = useMaterialChoices()
   const roomTypes = data?.data.roomTypes
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const MaterialChoices = () => {
       <Box>
         <Typography variant="h1">Beställda materialval</Typography>
 
-        {roomTypes == null ? (
+        {roomTypes == null && !isLoading ? (
           <Typography variant="body1">
             Du har ännu inte genomfört några val
           </Typography>
