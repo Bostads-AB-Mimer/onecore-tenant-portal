@@ -10,7 +10,6 @@ const Lease = () => {
   const lease = data?.data
 
   const getLeaseStatus = (lease: LeaseType) => {
-    console.log(lease.leaseStartDate)
     if (lease.status == 0) {
       if (
         lease.leaseStartDate &&
