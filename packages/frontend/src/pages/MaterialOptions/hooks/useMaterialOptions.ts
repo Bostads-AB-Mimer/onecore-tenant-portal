@@ -92,13 +92,9 @@ export const useSaveMaterialChoices = (
         data: {
           choices: choices,
         },
+      }).then((result) => {
+        return { status: result.status }
       })
-        .then((result) => {
-          return { status: result.status }
-        })
-        .catch((error) => {
-          console.error(error)
-        })
     },
     onSuccess: () => {
       client.invalidateQueries(['materialChoices'])
