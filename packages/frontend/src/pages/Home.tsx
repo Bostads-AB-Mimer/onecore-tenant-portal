@@ -5,14 +5,18 @@ import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined'
 import materialChoiceCover from '../../assets/images/Materialval.png'
 import Carousel from '../components/Carousel'
 import { useLease } from '../pages/Lease/hooks/useLease'
+import { useContact } from '../pages/Details/hooks/useContact'
 
 const HomePage = () => {
   const { data } = useLease()
+  const contactData = useContact().data
+
   const lease = data?.data
+  const contact = contactData?.data
 
   return (
     <div>
-      <Typography variant="title">Välkommen!</Typography>
+      <Typography variant="title">Välkommen {contact?.firstName}!</Typography>
       <Typography variant="body1">
         Det här är mina sidor för ombyggnationen i området Gryta
       </Typography>

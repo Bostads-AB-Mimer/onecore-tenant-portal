@@ -154,21 +154,32 @@ const MaterialOptions = () => {
     <>
       <Box>
         <Typography variant="h1">Dags för materialval</Typography>
-        <Typography variant="body1">
+        <Typography variant="body1" sx={{ marginTop: 1 }}>
           Det har nu blivit dags att göra materialval för ditt kommande boende!
         </Typography>
+        <Box sx={styles.infoBox}>
+          <Typography variant="body2">
+            Kom ihåg! Färgåtergivning på bilder av material och väggfärger kan
+            variera beroende på dina skärminställningar. För exakta färger
+            hänvisar vi till vår utställning.
+          </Typography>
+        </Box>
         {conceptChoices &&
           roomTypes?.map((roomType: RoomType, i) => (
             <Box key={i}>
               <Divider />
-              <Typography variant="h2">{roomType.name}</Typography>
+              <Typography variant="h2" sx={{ marginBottom: 0 }}>
+                {roomType.name}
+              </Typography>
               {roomType.materialOptionGroups
                 ?.filter((group) => group.type == 'Concept')
                 .map((materialOptionGroup: MaterialOptionGroup, i) => (
-                  <Box key={i}>
-                    <Typography variant="body1">
-                      {materialOptionGroup.name}
-                    </Typography>
+                  <Box key={i} sx={styles.groupBox}>
+                    {materialOptionGroup.name && (
+                      <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                        {materialOptionGroup.name}
+                      </Typography>
+                    )}
                     <Carousel
                       links={materialOptionGroup.materialOptions?.map(
                         (materialOption: MaterialOption) => {
@@ -233,7 +244,7 @@ const MaterialOptions = () => {
               {roomType.materialOptionGroups
                 ?.filter((group) => group.type == 'SingleChoice')
                 .map((materialOptionGroup: MaterialOptionGroup, i) => (
-                  <Box key={i}>
+                  <Box key={i} sx={styles.groupBox}>
                     <Typography variant="body1">
                       {materialOptionGroup.actionName}
                     </Typography>
@@ -258,13 +269,18 @@ const MaterialOptions = () => {
                     >
                       {materialOptionGroup.materialOptions?.map(
                         (materialOption: MaterialOption, i) => (
-                          <Box key={i}>
+                          <Box key={i} sx={styles.optionBox}>
                             <FormControlLabel
                               control={<Radio />}
                               label={materialOption.caption}
                               value={materialOption.materialOptionId}
                             ></FormControlLabel>
-                            {materialOption.shortDescription}
+                            <Typography
+                              variant="body2"
+                              sx={styles.shortDesc.singleChoice}
+                            >
+                              {materialOption.shortDescription}
+                            </Typography>
                           </Box>
                         )
                       )}
@@ -274,41 +290,45 @@ const MaterialOptions = () => {
               {roomType.materialOptionGroups
                 ?.filter((group) => group.type == 'AddOn')
                 .map((materialOptionGroup: MaterialOptionGroup, i) => (
-                  <Box key={i}>
+                  <Box key={i} sx={styles.groupBox}>
                     <Typography variant="body1">
                       {materialOptionGroup.actionName}
                     </Typography>
                     {materialOptionGroup.materialOptions?.map(
                       (materialOption: MaterialOption, i) => (
-                        <FormControlLabel
-                          key={i}
-                          control={
-                            <Checkbox
-                              onChange={(event, checked) => {
-                                if (checked) {
-                                  saveChoiceToState({
-                                    multipleChoice: true,
-                                    materialOptionId:
-                                      materialOption.materialOptionId,
-                                    materialOptionGroupId:
-                                      materialOptionGroup.materialOptionGroupId,
-                                    roomTypeId: roomType.roomTypeId,
-                                  })
-                                } else {
-                                  removeChoiceFromState({
-                                    materialOptionId:
-                                      materialOption.materialOptionId,
-                                  })
-                                }
-                              }}
-                            />
-                          }
-                          label={
-                            materialOption.caption +
-                            ' ' +
-                            materialOption.shortDescription
-                          }
-                        ></FormControlLabel>
+                        <Box key={i} sx={styles.optionBox}>
+                          <FormControlLabel
+                            key={i}
+                            control={
+                              <Checkbox
+                                onChange={(event, checked) => {
+                                  if (checked) {
+                                    saveChoiceToState({
+                                      multipleChoice: true,
+                                      materialOptionId:
+                                        materialOption.materialOptionId,
+                                      materialOptionGroupId:
+                                        materialOptionGroup.materialOptionGroupId,
+                                      roomTypeId: roomType.roomTypeId,
+                                    })
+                                  } else {
+                                    removeChoiceFromState({
+                                      materialOptionId:
+                                        materialOption.materialOptionId,
+                                    })
+                                  }
+                                }}
+                              />
+                            }
+                            label={materialOption.caption}
+                          ></FormControlLabel>
+                          <Typography
+                            variant="body2"
+                            sx={styles.shortDesc.addOn}
+                          >
+                            {materialOption.shortDescription}
+                          </Typography>
+                        </Box>
                       )
                     )}
                   </Box>
@@ -339,6 +359,30 @@ const styles = {
   actionContainer: {
     display: 'flex',
     justifyContent: 'center',
+  },
+  infoBox: {
+    backgroundColor: '#F4EFE9',
+    marginTop: 2,
+    marginBottom: 1,
+    padding: 1,
+  },
+  groupBox: {
+    marginTop: 1,
+    marginBottom: 1,
+  },
+  optionBox: {
+    marginLeft: 2,
+  },
+  shortDesc: {
+    singleChoice: {
+      paddingLeft: 4,
+      marginTop: -1,
+    },
+    addOn: {
+      display: 'inline-block',
+      paddingBottom: 1.25,
+      verticalAlign: 'bottom',
+    },
   },
 }
 
