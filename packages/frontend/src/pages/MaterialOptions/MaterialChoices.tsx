@@ -30,15 +30,11 @@ const MaterialChoices = () => {
       <Box>
         <Typography variant="h1">Beställda materialval</Typography>
 
-        {roomTypes == null && !isLoading ? (
-          <Typography variant="body1">
-            Du har ännu inte genomfört några val
-          </Typography>
-        ) : (
-          <Typography variant="body1">
-            Här är materialvalen för ditt boende
-          </Typography>
-        )}
+        <Typography variant="body1" sx={{ marginTop: 1 }}>
+          {roomTypes == null && !isLoading
+            ? 'Du har ännu inte genomfört några val'
+            : 'Här är materialvalen för ditt boende'}
+        </Typography>
         {roomTypes?.map((roomType: RoomType, i) => (
           <Box key={i}>
             <Divider />
@@ -48,10 +44,12 @@ const MaterialChoices = () => {
                 (group) => group.type == 'Concept' && group.materialChoices
               )
               .map((materialOptionGroup: MaterialOptionGroup, i) => (
-                <Box key={i}>
-                  <Typography variant="body1">
-                    {materialOptionGroup.name}
-                  </Typography>
+                <Box key={i} sx={styles.groupBox}>
+                  {materialOptionGroup.name && (
+                    <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                      {materialOptionGroup.name}
+                    </Typography>
+                  )}
                   <Carousel
                     links={materialOptionGroup.materialOptions?.map(
                       (materialOption: MaterialOption) => {
@@ -74,11 +72,14 @@ const MaterialChoices = () => {
                   ></Carousel>
                   {materialOptionGroup.materialOptions?.map(
                     (materialOption: MaterialOption, i: number) => (
-                      <FormControlLabel
-                        key={i}
-                        control={<Checkbox disabled={true} checked={true} />}
-                        label={materialOption?.caption}
-                      ></FormControlLabel>
+                      <Box key={i} sx={styles.optionBox}>
+                        <FormControlLabel
+                          key={i}
+                          control={<Checkbox disabled={true} checked={true} />}
+                          label={materialOption?.caption}
+                          sx={styles.labelDisabled}
+                        ></FormControlLabel>
+                      </Box>
                     )
                   )}
                 </Box>
@@ -86,20 +87,26 @@ const MaterialChoices = () => {
             {roomType.materialOptionGroups
               ?.filter((group) => group.type == 'SingleChoice')
               .map((materialOptionGroup: MaterialOptionGroup, i) => (
-                <Box key={i}>
+                <Box key={i} sx={styles.groupBox}>
                   <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
                     name="radio-buttons-group"
                   >
                     {materialOptionGroup.materialOptions?.map(
                       (materialOption: MaterialOption, i) => (
-                        <Box key={i}>
+                        <Box key={i} sx={styles.optionBox}>
                           <FormControlLabel
                             control={<Radio checked={true} disabled={true} />}
                             label={materialOption?.caption}
                             value={materialOption?.materialOptionId}
+                            sx={styles.labelDisabled}
                           ></FormControlLabel>
-                          {materialOption?.shortDescription}
+                          <Typography
+                            variant="body2"
+                            sx={styles.shortDesc.singleChoice}
+                          >
+                            {materialOption.shortDescription}
+                          </Typography>
                         </Box>
                       )
                     )}
@@ -109,21 +116,23 @@ const MaterialChoices = () => {
             {roomType.materialOptionGroups
               ?.filter((group) => group.type == 'AddOn')
               .map((materialOptionGroup: MaterialOptionGroup, i) => (
-                <Box key={i}>
+                <Box key={i} sx={styles.groupBox}>
                   <Typography variant="body1">
                     {materialOptionGroup.actionName}
                   </Typography>
                   {materialOptionGroup.materialOptions?.map(
                     (materialOption: MaterialOption, i) => (
-                      <FormControlLabel
-                        key={i}
-                        control={<Checkbox checked={true} disabled={true} />}
-                        label={
-                          materialOption?.caption +
-                          ' ' +
-                          materialOption?.shortDescription
-                        }
-                      ></FormControlLabel>
+                      <Box key={i} sx={styles.optionBox}>
+                        <FormControlLabel
+                          key={i}
+                          control={<Checkbox checked={true} disabled={true} />}
+                          label={materialOption?.caption}
+                          sx={styles.labelDisabled}
+                        ></FormControlLabel>
+                        <Typography variant="body2" sx={styles.shortDesc.addOn}>
+                          {materialOption.shortDescription}
+                        </Typography>
+                      </Box>
                     )
                   )}
                 </Box>
@@ -133,6 +142,32 @@ const MaterialChoices = () => {
       </Box>
     </>
   )
+}
+
+const styles = {
+  groupBox: {
+    marginTop: 1,
+    marginBottom: 1,
+  },
+  optionBox: {
+    marginLeft: 2,
+  },
+  shortDesc: {
+    singleChoice: {
+      paddingLeft: 4,
+      marginTop: -1,
+    },
+    addOn: {
+      display: 'inline-block',
+      paddingBottom: 1.25,
+      verticalAlign: 'bottom',
+    },
+  },
+  labelDisabled: {
+    '& .MuiFormControlLabel-label.Mui-disabled': {
+      WebkitTextFillColor: '#000000',
+    },
+  },
 }
 
 export default MaterialChoices

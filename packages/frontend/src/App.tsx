@@ -84,6 +84,7 @@ const mdTheme = createTheme({
     },
     divider: '#951B81',
   },
+
   typography: {
     title: {
       fontSize: 36,
@@ -157,6 +158,22 @@ const mdTheme = createTheme({
         variantMapping: {
           title: 'h1',
           hMenu: 'h4',
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: 12,
+          paddingBottom: 3,
+        },
+      },
+    },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          fontWeight: 700,
+          fontFamily: 'graphikRegular',
         },
       },
     },

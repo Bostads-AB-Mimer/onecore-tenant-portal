@@ -32,11 +32,15 @@ const DropDown = ({
         onChange={handleSelection}
         sx={{ width: '240px' }}
       >
-        <MenuItem key={id + '-0'} value={'0'}>
+        <MenuItem key={id + '-0'} value={'0'} sx={{ fontSize: 12 }}>
           Välj ur lista
         </MenuItem>
         {options?.map((option: DropDownOption) => (
-          <MenuItem key={id + '-' + option.value} value={option.value}>
+          <MenuItem
+            key={id + '-' + option.value}
+            value={option.value}
+            sx={{ fontSize: 12 }}
+          >
             {option.label}
           </MenuItem>
         ))}

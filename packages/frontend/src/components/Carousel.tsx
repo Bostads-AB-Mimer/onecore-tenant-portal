@@ -25,7 +25,6 @@ const Carousel = ({
         >
           <Box
             sx={{
-              marginTop: 1,
               marginBottom: 2,
               marginRight: 2,
             }}
