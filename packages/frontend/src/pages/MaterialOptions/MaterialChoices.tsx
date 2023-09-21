@@ -31,7 +31,9 @@ const MaterialChoices = () => {
         <Typography variant="h1">Beställda materialval</Typography>
 
         <Typography variant="body1" sx={{ marginTop: 1 }}>
-          {roomTypes == null && !isLoading
+          {roomTypes == null && isLoading
+            ? 'Dina beställda materialval hämtas...'
+            : roomTypes == null && !isLoading
             ? 'Du har ännu inte genomfört några val'
             : 'Här är materialvalen för ditt boende'}
         </Typography>

@@ -90,6 +90,7 @@ const styles = {
   menuItem: {
     minHeight: 20,
     marginRight: 20,
+    width: '100%',
   },
 }
 

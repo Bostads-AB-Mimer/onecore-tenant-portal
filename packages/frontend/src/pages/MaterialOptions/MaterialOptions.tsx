@@ -36,7 +36,7 @@ const MaterialOptions = () => {
   const [validationMessage, setValidationMessage] = useState('')
   const navigate = useNavigate()
 
-  const { data } = useMaterialOptions({ apartmentId: '123' })
+  const { data, isLoading } = useMaterialOptions({ apartmentId: '123' })
   const roomTypes = data?.data?.roomTypes
 
   const defaultValue = '0'
@@ -155,7 +155,11 @@ const MaterialOptions = () => {
       <Box>
         <Typography variant="h1">Dags för materialval</Typography>
         <Typography variant="body1" sx={{ marginTop: 1 }}>
-          Det har nu blivit dags att göra materialval för ditt kommande boende!
+          {roomTypes == null && isLoading
+            ? 'Materialval hämtas...'
+            : roomTypes == null && !isLoading
+            ? 'Det är ännu inte möjligt att göra materialval för ditt boende'
+            : 'Det har nu blivit dags att göra materialval för ditt boende!'}
         </Typography>
         <Box sx={styles.infoBox}>
           <Typography variant="body2">
