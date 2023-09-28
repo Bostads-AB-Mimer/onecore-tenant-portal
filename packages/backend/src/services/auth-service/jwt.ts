@@ -1,22 +1,20 @@
 import jwt from 'jsonwebtoken'
 import createHttpError from 'http-errors'
 
-import hash from './hash'
 import config from '../../common/config'
+import { getContact } from '../lease-service/adapters/core-adapter'
 
-const getUser = async (username: string) => {
-  const testuser = config.auth.testAccount /*s?.find((account: any) => {
-    return account.username === username
-  })*/
+const getUser = async (personalNumber: string) => {
+  const contact = await getContact(personalNumber)
 
-  if (testuser) {
+  if (contact) {
     const user = {
-      id: testuser.id,
+      id: contact.contactId, // testuser.id,
       locked: false,
       disabled: false,
       failedLoginAttempts: 0,
-      passwordHash: testuser.hash,
-      salt: testuser.salt,
+      // passwordHash: testuser.hash,
+      // salt: testuser.salt,
     }
 
     return user
@@ -33,33 +31,34 @@ const setUserLocked = async (userId: string, locked: boolean) => {
   return
 }
 
-export const createToken = async (username: string, password: string) => {
+// export const createToken = async (username: string, password: string) => {
+export const createToken = async (personalNumber: string) => {
   try {
-    const user = await getUser(username)
+    const user = await getUser(personalNumber)
 
     if (!user) {
-      throw createHttpError(401, new Error(`Unknown user or invalid password.`))
+      throw createHttpError(401, new Error(`Unknown user.`))
     }
 
     if (user.locked === true) {
-      throw createHttpError(403, new Error(`User locked: ${username}.`))
+      throw createHttpError(403, new Error(`User locked: ${personalNumber}.`))
     }
 
     if (user.disabled === true) {
-      throw createHttpError(403, new Error(`User disabled: ${username}.`))
+      throw createHttpError(403, new Error(`User disabled: ${personalNumber}.`))
     }
 
-    if (user.passwordHash !== (await hash.hashPassword(password, user.salt))) {
-      const fails = user.failedLoginAttempts + 1
+    // if (user.passwordHash !== (await hash.hashPassword(password, user.salt))) {
+    //   const fails = user.failedLoginAttempts + 1
 
-      await setUserFailedLoginAttempts(user.id, fails)
+    //   await setUserFailedLoginAttempts(user.id, fails)
 
-      if (fails >= config.auth.maxFailedLoginAttempts) {
-        await setUserLocked(user.id, true)
-      }
+    //   if (fails >= config.auth.maxFailedLoginAttempts) {
+    //     await setUserLocked(user.id, true)
+    //   }
 
-      throw createHttpError(401, new Error(`Unknown user or invalid password.`))
-    }
+    //   throw createHttpError(401, new Error(`Unknown user or invalid password.`))
+    // }
 
     // Clear failed login attempts
     await setUserFailedLoginAttempts(user.id, 0)
