@@ -78,7 +78,7 @@ const login = () => {
       method: 'Auth',
       transactionParameters: {
         auth: {
-          endUserIp: ctx.request.ip,
+          endUserIp: /*ctx.request.ip*/ '127.0.0.1',
           requirement: {
             pinCode: null,
             machineReadableTravelDocument: null,
@@ -100,7 +100,6 @@ const login = () => {
         url: Config.bankId.url + '/transactions',
         data,
       })
-      console.log('response', response)
 
       ctx.redirect(response.data.accessUrl)
     } catch (error) {
@@ -115,7 +114,7 @@ const login = () => {
  */
 const authenticate = () => {
   return async (ctx: Context) => {
-    const transactionId = ctx.param.transactionId
+    const transactionId = ctx.query.transaction_id
 
     //get transaction by transactionId
     try {
@@ -123,10 +122,14 @@ const authenticate = () => {
         method: 'get',
         url: Config.bankId.url + '/transactions/' + transactionId,
       })
-      console.log('response', response)
       if (response.data?.status == 'Complete') {
         const personalNumber =
-          response.data?.processingInfo?.completionData.personalNumber
+          response.data?.processingInfo?.completionData.user.personalNumber
+
+        console.log(
+          'processingInfo',
+          response.data.processingInfo.completionData.user
+        )
 
         return personalNumber
       } else {

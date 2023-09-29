@@ -83,6 +83,8 @@ export const routes = (router: KoaRouter) => {
     try {
       const token = await createToken(personalNumber)
 
+      console.log('token', token, 'for', personalNumber)
+
       ctx.cookies.set('yggdrasil', token.token, {
         httpOnly: true,
         overwrite: true,
