@@ -28,6 +28,9 @@ jobs:
       - name: 🔧 Build and push Docker Image
         uses: docker/build-push-action@v4
         with:
+          build-args: |
+            BACKEND_URL=/api
+          context: ./packages/${{ matrix.context }}
           push: true
           tags: |
             ghcr.io/bostads-ab-mimer/yggdrasil-tenant-portal-${{ matrix.context }}:release-${{ github.event.release.tag_name }}
