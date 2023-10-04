@@ -9,12 +9,10 @@ const getUser = async (personalNumber: string) => {
 
   if (contact) {
     const user = {
-      id: contact.contactId, // testuser.id,
+      id: contact.contactId,
       locked: false,
       disabled: false,
       failedLoginAttempts: 0,
-      // passwordHash: testuser.hash,
-      // salt: testuser.salt,
     }
 
     return user
@@ -31,7 +29,6 @@ const setUserLocked = async (userId: string, locked: boolean) => {
   return
 }
 
-// export const createToken = async (username: string, password: string) => {
 export const createToken = async (personalNumber: string) => {
   try {
     const user = await getUser(personalNumber)
@@ -41,11 +38,11 @@ export const createToken = async (personalNumber: string) => {
     }
 
     if (user.locked === true) {
-      throw createHttpError(403, new Error(`User locked: ${personalNumber}.`))
+      throw createHttpError(403, new Error(`User locked.`))
     }
 
     if (user.disabled === true) {
-      throw createHttpError(403, new Error(`User disabled: ${personalNumber}.`))
+      throw createHttpError(403, new Error(`User disabled.`))
     }
 
     await setUserFailedLoginAttempts(user.id, 0)

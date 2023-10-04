@@ -1,6 +1,7 @@
 import { Context } from 'koa'
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import qs from 'qs'
+import createHttpError from 'http-errors'
 import Config from '../../../common/config'
 
 let accessToken: string | undefined = undefined
@@ -26,13 +27,11 @@ const getAccessToken = async () => {
 
     return result.data.access_token
   } catch (error) {
-    console.log('couldnt get token')
     console.error(error)
     return ''
   }
 }
 
-//fix this subscription key
 const createHeaders = (accessToken: string) => {
   const headers = {
     Authorization: 'Bearer ' + accessToken,
@@ -46,14 +45,11 @@ const bankIdAPI = async (
   params: AxiosRequestConfig
 ): Promise<AxiosResponse<any, any>> => {
   if (!accessToken) {
-    console.log('get access token')
     accessToken = await getAccessToken()
-    console.log('accessToken', accessToken)
   }
 
   try {
     params.headers = createHeaders(accessToken ?? '')
-    console.log('params before api call', JSON.stringify(params))
     return await axios(params)
   } catch (error) {
     const axiosErr = error as AxiosError
@@ -67,18 +63,14 @@ const bankIdAPI = async (
   }
 }
 
-/* TODO
- * Replace with BankID-inloggning:
- * - POST to BankID API - Test
- * - url: /transactions
- */
 const login = () => {
   return async (ctx: Context) => {
+    const endUserIp = '::1' ? '127.0.0.1' : ctx.request.ip
     const data = {
       method: 'Auth',
       transactionParameters: {
         auth: {
-          endUserIp: /*ctx.request.ip*/ '127.0.0.1',
+          endUserIp: endUserIp,
           requirement: {
             pinCode: null,
             machineReadableTravelDocument: null,
@@ -86,8 +78,8 @@ const login = () => {
             certificatePolicies: null,
             personalNumber: null,
           },
-          userNonVisibleData: 'Jag autentiserar mig hos mimer',
-          userVisibleData: 'Jag autentiserar mig hos mimer.',
+          userNonVisibleData: 'Jag autentiserar mig hos Mimer Bostads AB',
+          userVisibleData: 'Jag autentiserar mig hos Mimer Bostads AB.',
           userVisibleDataFormat: 'simpleMarkdownV1',
         },
       },
@@ -103,20 +95,15 @@ const login = () => {
 
       ctx.redirect(response.data.accessUrl)
     } catch (error) {
-      console.error(error)
-      //   ctx.next(error)
+      ctx.next(error)
     }
   }
 }
 
-/*
- * TODO: Get transaction from BankID-api
- */
 const authenticate = () => {
   return async (ctx: Context) => {
     const transactionId = ctx.query.transaction_id
 
-    //get transaction by transactionId
     try {
       const response = await bankIdAPI({
         method: 'get',
@@ -126,14 +113,9 @@ const authenticate = () => {
         const personalNumber =
           response.data?.processingInfo?.completionData.user.personalNumber
 
-        console.log(
-          'processingInfo',
-          response.data.processingInfo.completionData.user
-        )
-
         return personalNumber
       } else {
-        //TODO: Handle request not complete
+        throw createHttpError(401, new Error('Login failed'))
       }
     } catch (error) {
       ctx.next(error)

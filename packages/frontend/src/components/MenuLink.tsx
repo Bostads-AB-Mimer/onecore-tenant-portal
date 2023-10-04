@@ -1,7 +1,19 @@
 import { Box } from '@mui/material'
 import { Link } from 'react-router-dom'
-const MenuLink = ({ href, title }: { href: string; title: string }) => (
-  <Link to={href} style={styles.link}>
+const MenuLink = ({
+  href,
+  title,
+  reloadDocument = false,
+}: {
+  href: string
+  title: string
+  reloadDocument?: boolean
+}) => (
+  <Link
+    {...(reloadDocument && { reloadDocument: true })}
+    to={href}
+    style={styles.link}
+  >
     <Box sx={styles.text}>{title}</Box>
   </Link>
 )
