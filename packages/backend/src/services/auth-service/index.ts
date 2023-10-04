@@ -18,9 +18,9 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/auth/authenticate', async (ctx) => {
-    const personalNumber = await authenticate()(ctx)
-
     try {
+      const personalNumber = await authenticate()(ctx)
+
       const token = await createToken(personalNumber)
 
       ctx.cookies.set('yggdrasil', token.token, {
@@ -33,7 +33,9 @@ export const routes = (router: KoaRouter) => {
 
       ctx.body = { message: 'Login successful' }
 
-      return ctx.redirect('/')
+      if (ctx.query.redirectUrl && ctx.query.redirectUrl != '')
+        return ctx.redirect(ctx.query.redirectUrl.toString())
+      else return ctx.redirect('/')
     } catch (error) {
       if (createHttpError.isHttpError(error)) {
         return ctx.redirect(

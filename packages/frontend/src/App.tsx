@@ -254,7 +254,7 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => {
       if ((error as AxiosError).response?.status === 401) {
-        location.replace('/logga-in')
+        location.replace('/logga-in?redirectUrl=' + location.pathname)
       } else {
         console.log('An error occurred fetching data', error)
       }

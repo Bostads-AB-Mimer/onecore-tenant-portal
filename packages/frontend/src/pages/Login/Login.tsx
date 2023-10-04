@@ -30,7 +30,11 @@ const Login = () => {
       <Button
         variant="text"
         onClick={() => {
-          location.href = '/api/auth/login'
+          const redirectQuery =
+            params.get('redirectUrl') && params.get('redirectUrl') != ''
+              ? '?redirectUrl=' + params.get('redirectUrl')
+              : ''
+          location.href = '/api/auth/login' + redirectQuery
         }}
         sx={{
           marginTop: 2,

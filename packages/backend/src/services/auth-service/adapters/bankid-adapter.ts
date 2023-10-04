@@ -66,6 +66,11 @@ const bankIdAPI = async (
 const login = () => {
   return async (ctx: Context) => {
     const endUserIp = '::1' ? '127.0.0.1' : ctx.request.ip
+    const redirectQuery =
+      ctx.query.redirectUrl && ctx.query.redirectUrl != ''
+        ? '?redirectUrl=' + ctx.query.redirectUrl.toString()
+        : ''
+
     const data = {
       method: 'Auth',
       transactionParameters: {
@@ -83,7 +88,7 @@ const login = () => {
           userVisibleDataFormat: 'simpleMarkdownV1',
         },
       },
-      redirectUrl: Config.bankId.redirectUrl,
+      redirectUrl: Config.bankId.redirectUrl + redirectQuery,
     }
 
     try {
@@ -118,7 +123,8 @@ const authenticate = () => {
         throw createHttpError(401, new Error('Login failed'))
       }
     } catch (error) {
-      ctx.next(error)
+      console.error(error)
+      throw error
     }
   }
 }
