@@ -14,6 +14,7 @@ const getUser = async (personalNumber: string) => {
       locked: false,
       disabled: false,
       failedLoginAttempts: 0,
+      rentalPropertyId: lease.rentalPropertyId,
     }
 
     return user
@@ -48,14 +49,12 @@ export const createToken = async (personalNumber: string) => {
 
     await setUserFailedLoginAttempts(user.id, 0)
 
-    const lease = await getLease(personalNumber)
-
     // Create token
     const token = jwt.sign(
       {
         sub: user.id,
         username: personalNumber,
-        rentalPropertyId: lease.rentalPropertyId,
+        rentalPropertyId: user.rentalPropertyId,
       },
       config.auth.secret,
       {
