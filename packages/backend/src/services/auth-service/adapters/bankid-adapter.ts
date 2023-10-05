@@ -65,7 +65,7 @@ const bankIdAPI = async (
 
 const login = () => {
   return async (ctx: Context) => {
-    const endUserIp = '::1' ? '127.0.0.1' : ctx.request.ip
+    const endUserIp = ctx.request.ip == '::1' ? '127.0.0.1' : ctx.request.ip
     const redirectQuery =
       ctx.query.redirectUrl && ctx.query.redirectUrl != ''
         ? '?redirectUrl=' + ctx.query.redirectUrl.toString()

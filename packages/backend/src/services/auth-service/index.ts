@@ -1,8 +1,7 @@
 import KoaRouter from '@koa/router'
-
-import hash from './hash'
-import { createToken } from './jwt'
 import createHttpError from 'http-errors'
+
+import { createToken } from './jwt'
 import { login, authenticate } from './adapters/bankid-adapter'
 import config from '../../common/config'
 
