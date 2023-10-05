@@ -6,8 +6,9 @@ import { getContact, getLease } from '../lease-service/adapters/core-adapter'
 
 const getUser = async (personalNumber: string) => {
   const contact = await getContact(personalNumber)
+  const lease = await getLease(personalNumber)
 
-  if (contact) {
+  if (contact && lease) {
     const user = {
       id: contact.contactId,
       locked: false,
