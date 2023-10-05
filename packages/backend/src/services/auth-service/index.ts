@@ -11,7 +11,13 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/auth/logout', async (ctx) => {
-    ctx.cookies.set('yggdrasil', null)
+    ctx.cookies.set('yggdrasil', null, {
+      httpOnly: true,
+      overwrite: true,
+      sameSite: 'lax',
+      secure: false,
+      domain: config.auth.cookieDomain,
+    })
 
     ctx.redirect('/logga-in')
   })
