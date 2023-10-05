@@ -1,62 +1,41 @@
-import { Alert, Button, Stack, TextField, Typography } from '@mui/material'
-import { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-
-const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
+import { Alert, Button, Stack, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 const Login = () => {
-  const [username, setUsername] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [error, setError] = useState<boolean>(false)
-  const navigate = useNavigate()
+  const [error, setError] = useState<string>('')
+  const [params] = useSearchParams()
 
-  const doLogin = async () => {
-    try {
-      const result = await axios(`${backendUrl}/auth/login`, {
-        method: 'post',
-        data: {
-          username,
-          password,
-        },
-      })
-
-      if (result.status === 200) {
-        history.replaceState
-        navigate('/')
-      } else {
-        setError(true)
-      }
-    } catch (error) {
-      setError(true)
+  useEffect(() => {
+    switch (params.get('error')) {
+      case null:
+      case '':
+        setError('')
+        break
+      case '401':
+        setError('Tyvärr hittades inte ditt kontrakt.')
+        break
+      default:
+        setError('Inloggning misslyckades!')
+        break
     }
-  }
+  }, [params])
 
   return (
-    <Stack rowGap={4} justifyContent="flex-start">
-      <Typography variant="h1">Login</Typography>
-      <TextField
-        id="username"
-        onChange={(e) => {
-          setUsername(e.target.value)
-        }}
-        value={username}
-        label="Användarnamn"
-        variant="standard"
-      />
-      <TextField
-        id="password"
-        onChange={(e) => {
-          setPassword(e.target.value)
-        }}
-        value={password}
-        label="Lösenord"
-        variant="standard"
-        type="password"
-      />
+    <Stack rowGap={1} justifyContent="flex-start">
+      <Typography variant="h1">Välkommen!</Typography>
+      <Typography variant="body1">
+        Vänligen logga in för att komma åt ditt kontrakt
+      </Typography>
       <Button
         variant="text"
-        onClick={doLogin}
+        onClick={() => {
+          const redirectQuery =
+            params.get('redirectUrl') && params.get('redirectUrl') != ''
+              ? '?redirectUrl=' + params.get('redirectUrl')
+              : ''
+          location.href = '/api/auth/login' + redirectQuery
+        }}
         sx={{
           marginTop: 2,
           borderRadius: 0,
@@ -65,9 +44,9 @@ const Login = () => {
           '&:hover': { backgroundColor: 'secondary.main', color: 'white' },
         }}
       >
-        Logga in
+        Logga in med BankID
       </Button>
-      {error && <Alert severity="error">Inloggning misslyckades!</Alert>}
+      {error != '' && <Alert severity="error">{error}</Alert>}
     </Stack>
   )
 }

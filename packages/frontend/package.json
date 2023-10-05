@@ -20,7 +20,8 @@
     "react-dom": "18.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.11.1",
-    "react-snap-carousel": "^0.3.2"
+    "react-snap-carousel": "^0.3.2",
+    "react-spinners": "^0.13.8"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.21.8",

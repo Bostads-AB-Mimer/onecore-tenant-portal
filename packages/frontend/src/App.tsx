@@ -254,7 +254,7 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => {
       if ((error as AxiosError).response?.status === 401) {
-        location.replace('/login')
+        location.replace('/logga-in?redirectUrl=' + location.pathname)
       } else {
         console.log('An error occurred fetching data', error)
       }
@@ -276,7 +276,7 @@ function App() {
             <SiteHeader />
             <Routes>
               <Route path="/" element={<Home></Home>} />
-              <Route path="/login" element={<Login></Login>} />
+              <Route path="/logga-in" element={<Login></Login>} />
               <Route path="/mitt-boende" element={<Lease></Lease>} />
               <Route path="/mina-uppgifter" element={<Details></Details>} />
               <Route path="/att-gora" element={<Progress></Progress>} />

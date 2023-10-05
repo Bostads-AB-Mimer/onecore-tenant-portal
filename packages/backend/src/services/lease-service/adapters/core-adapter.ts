@@ -64,7 +64,6 @@ const getContact = async (
     method: 'get',
     url: coreBaseUrl + '/contact/' + nationalRegistrationNumber,
   })
-
   return contactResponse.data.data
 }
 

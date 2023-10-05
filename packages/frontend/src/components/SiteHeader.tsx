@@ -78,6 +78,13 @@ const SiteHeader = () => (
                   title="Beställda materialval"
                 />
               </MenuItem>
+              <MenuItem onClick={popupState.close} sx={styles.menuItem}>
+                <MenuLink
+                  href="/api/auth/logout"
+                  reloadDocument={true}
+                  title="Logga ut"
+                />
+              </MenuItem>
             </Menu>
           </Backdrop>
         </>

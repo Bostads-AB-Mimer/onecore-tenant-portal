@@ -23,6 +23,15 @@ export interface Config {
     cookieDomain: string
     testAccount: Account
   }
+  bankId: {
+    url: string
+    redirectUrl: 'http://localhost:7000/api/auth/redirect'
+    clientId: string
+    clientSecret: string
+    scope: string
+    tenantId: string
+    subscriptionKey: string
+  }
 }
 
 const config = configPackage({
@@ -45,4 +54,5 @@ export default {
   port: config.get('port'),
   core: config.get('core'),
   auth: config.get('auth'),
+  bankId: config.get('bankId'),
 } as Config

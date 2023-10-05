@@ -53,10 +53,9 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/material-options', async (ctx) => {
-    const nationalRegistrationNumber = ctx.state.user.username
-    const lease = await getAccommodation(nationalRegistrationNumber)
-
-    const materialOptions = await getMaterialOptions(lease.rentalPropertyId)
+    const materialOptions = await getMaterialOptions(
+      ctx.state.user.rentalPropertyId
+    )
 
     ctx.body = {
       data: materialOptions,
@@ -65,11 +64,8 @@ export const routes = (router: KoaRouter) => {
 
   router.get('(.*)/material-option-details', async (ctx) => {
     if (ctx.request.query.materialOptionId) {
-      const nationalRegistrationNumber = ctx.state.user.username
-      const lease = await getAccommodation(nationalRegistrationNumber)
-
       const option = await getMaterialOption(
-        lease.rentalPropertyId,
+        ctx.state.user.rentalPropertyId,
         ctx.request.query.materialOptionId.toString()
       )
 
@@ -88,29 +84,23 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/material-choices', async (ctx) => {
-    const nationalRegistrationNumber = ctx.state.user.username
-    const lease = await getAccommodation(nationalRegistrationNumber)
-
-    const roomTypes = await getMaterialChoices(lease.rentalPropertyId)
+    const roomTypes = await getMaterialChoices(ctx.state.user.rentalPropertyId)
 
     ctx.body = { data: roomTypes }
   })
 
   router.post('(.*)/material-choices', async (ctx) => {
-    const nationalRegistrationNumber = ctx.state.user.username
-    const lease = await getAccommodation(nationalRegistrationNumber)
-
     if (ctx.request.body) {
       const choices: Array<MaterialChoice> = ctx.request.body?.choices.map(
         (choice: MaterialChoice) => {
           return {
             materialOptionId: choice.materialOptionId,
             roomTypeId: choice.roomTypeId,
-            apartmentId: lease.rentalPropertyId,
+            apartmentId: ctx.state.user.rentalPropertyId,
           }
         }
       )
-      await saveMaterialChoice(lease.rentalPropertyId, choices)
+      await saveMaterialChoice(ctx.state.user.rentalPropertyId, choices)
 
       ctx.body = { message: 'Save successful' }
     } else {
@@ -122,12 +112,7 @@ export const routes = (router: KoaRouter) => {
    * Streams the floor plan of the logged in user as an image binary
    */
   router.get('(.*)/my-lease/floorplan', async (ctx) => {
-    const nationalRegistrationNumber = ctx.state.user.username
-    const rentalPropertyId = (
-      await getAccommodation(nationalRegistrationNumber)
-    ).rentalPropertyId
-
-    const response = await getFloorPlanStream(rentalPropertyId)
+    const response = await getFloorPlanStream(ctx.state.user.rentalPropertyId)
     ctx.type = response.headers['content-type']?.toString() ?? 'image/jpeg'
     ctx.headers['cache-control'] = 'public, max-age=600'
     ctx.body = response.data
