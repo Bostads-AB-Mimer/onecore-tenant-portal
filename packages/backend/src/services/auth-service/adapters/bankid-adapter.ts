@@ -65,7 +65,12 @@ const bankIdAPI = async (
 
 const login = () => {
   return async (ctx: Context) => {
-    const endUserIp = ctx.request.ip == '::1' ? '127.0.0.1' : ctx.request.ip
+    //Replacing ::ffff: is a fix since the bankID micro service doesn't allow for the IPv6 kind of IP addresses
+    const endUserIp =
+      ctx.request.ip == '::1'
+        ? '127.0.0.1'
+        : ctx.request.ip.replace('::ffff:', '')
+
     const redirectQuery =
       ctx.query.redirectUrl && ctx.query.redirectUrl != ''
         ? '?redirectUrl=' + ctx.query.redirectUrl.toString()
