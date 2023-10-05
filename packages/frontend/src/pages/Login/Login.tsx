@@ -16,7 +16,7 @@ const Login = () => {
         setError('Tyvärr hittades inte ditt kontrakt.')
         break
       default:
-        setError('Inloggning misslyckades!')
+        setError('Inloggning misslyckades.')
         break
     }
   }, [params])

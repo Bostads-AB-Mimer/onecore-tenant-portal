@@ -2,19 +2,21 @@ import jwt from 'jsonwebtoken'
 import createHttpError from 'http-errors'
 
 import config from '../../common/config'
-import { getContact, getLease } from '../lease-service/adapters/core-adapter'
+import {
+  getApartment,
+  getContact,
+  getLease,
+} from '../lease-service/adapters/core-adapter'
 
 const getUser = async (personalNumber: string) => {
   const contact = await getContact(personalNumber)
-  const lease = await getLease(personalNumber)
 
-  if (contact && lease) {
+  if (contact) {
     const user = {
       id: contact.contactId,
       locked: false,
       disabled: false,
       failedLoginAttempts: 0,
-      rentalPropertyId: lease.rentalPropertyId,
     }
 
     return user
@@ -47,6 +49,21 @@ export const createToken = async (personalNumber: string) => {
       throw createHttpError(403, new Error(`User disabled.`))
     }
 
+    const lease = await getLease(personalNumber)
+
+    if (!lease) {
+      throw createHttpError(401, new Error(`User doesn't have a lease.`))
+    }
+
+    const rentalProperty = await getApartment(lease.rentalPropertyId)
+
+    if (!rentalProperty) {
+      throw createHttpError(
+        401,
+        new Error(`User doesn't have a rental property.`)
+      )
+    }
+
     await setUserFailedLoginAttempts(user.id, 0)
 
     // Create token
@@ -54,7 +71,7 @@ export const createToken = async (personalNumber: string) => {
       {
         sub: user.id,
         username: personalNumber,
-        rentalPropertyId: user.rentalPropertyId,
+        rentalPropertyId: lease.rentalPropertyId,
       },
       config.auth.secret,
       {
