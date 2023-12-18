@@ -125,7 +125,7 @@ const getMaterialOption = async (
 const getMaterialChoices = async (rentalPropertyId: string) => {
   const materialChoicesResponse = await getFromCore({
     method: 'get',
-    url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/material-choices`,
+    url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/rooms-with-material-choices`,
   })
 
   return materialChoicesResponse.data

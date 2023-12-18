@@ -84,7 +84,8 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/material-choices', async (ctx) => {
-    const roomTypes = await getMaterialChoices(ctx.state.user.rentalPropertyId)
+    const roomTypes = await getMaterialChoices('406-097-11-0201')
+    // const roomTypes = await getMaterialChoices(ctx.state.user.rentalPropertyId)
 
     ctx.body = { data: roomTypes }
   })
@@ -113,6 +114,7 @@ export const routes = (router: KoaRouter) => {
    */
   router.get('(.*)/my-lease/floorplan', async (ctx) => {
     const response = await getFloorPlanStream(ctx.state.user.rentalPropertyId)
+
     ctx.type = response.headers['content-type']?.toString() ?? 'image/jpeg'
     ctx.headers['cache-control'] = 'public, max-age=600'
     ctx.body = response.data
