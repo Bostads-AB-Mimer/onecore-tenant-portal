@@ -84,8 +84,7 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/material-choices', async (ctx) => {
-    const roomTypes = await getMaterialChoices('406-097-11-0201')
-    // const roomTypes = await getMaterialChoices(ctx.state.user.rentalPropertyId)
+    const roomTypes = await getMaterialChoices(ctx.state.user.rentalPropertyId)
 
     ctx.body = { data: roomTypes }
   })
