@@ -27,11 +27,9 @@ const getAccessToken = async () => {
 }
 
 const createHeaders = (accessToken: string) => {
-  const headers = {
+  return {
     Authorization: 'Bearer ' + accessToken,
   }
-
-  return headers
 }
 
 const getFromCore = async (
@@ -90,13 +88,11 @@ const getApartment = async (
 const getFloorPlanStream = async (rentalPropertyId: string) => {
   const url = `${Config.core.url}/rentalproperties/${rentalPropertyId}/floorplan`
 
-  const response = await getFromCore({
+  return await getFromCore({
     method: 'get',
     url: url,
     responseType: 'stream',
   })
-
-  return response
 }
 
 const getMaterialOptions = async (
@@ -135,12 +131,11 @@ const saveMaterialChoice = async (
   rentalPropertyId: string,
   materialChoices: Array<MaterialChoice>
 ) => {
-  const result = await getFromCore({
+  return await getFromCore({
     method: 'post',
     url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/material-choices`,
     data: materialChoices,
   })
-  return result
 }
 
 export {

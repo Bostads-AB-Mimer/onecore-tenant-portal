@@ -33,12 +33,10 @@ const getAccessToken = async () => {
 }
 
 const createHeaders = (accessToken: string) => {
-  const headers = {
+  return {
     Authorization: 'Bearer ' + accessToken,
     'Ocp-Apim-Subscription-Key': Config.bankId.subscriptionKey,
   }
-
-  return headers
 }
 
 const bankIdAPI = async (
@@ -65,7 +63,7 @@ const bankIdAPI = async (
 
 const login = () => {
   return async (ctx: Context) => {
-    //Replacing ::ffff: is a fix since the bankID micro service doesn't allow for the IPv6 kind of IP addresses
+    //Replacing ::ffff: is a fix since the bankID microservice doesn't allow for the IPv6 kind of IP addresses
     const endUserIp =
       ctx.request.ip == '::1'
         ? '127.0.0.1'
@@ -120,10 +118,7 @@ const authenticate = () => {
         url: Config.bankId.url + '/transactions/' + transactionId,
       })
       if (response.data?.status == 'Complete') {
-        const personalNumber =
-          response.data?.processingInfo?.completionData.user.personalNumber
-
-        return personalNumber
+          return response.data?.processingInfo?.completionData.user.personalNumber
       } else {
         throw createHttpError(401, new Error('Login failed'))
       }

@@ -11,8 +11,8 @@ import { MoonLoader } from 'react-spinners'
 
 import materialChoiceCover from '../../assets/images/Materialval.png'
 import Carousel from '../components/Carousel'
-import { useLease } from '../pages/Lease/hooks/useLease'
-import { useContact } from '../pages/Details/hooks/useContact'
+import { useLease } from './Lease/hooks/useLease'
+import { useContact } from './Details/hooks/useContact'
 
 const HomePage = () => {
   const { data } = useLease()
