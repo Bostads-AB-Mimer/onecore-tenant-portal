@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios'
 import { Contact, Lease, MaterialChoice, MaterialOption } from '../types'
 import Config from '../../../common/config'
 import { RentalProperty, MaterialOptionGroup } from '../types'
@@ -140,6 +140,7 @@ const saveMaterialChoice = async (
     url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/material-choices`,
     data: materialChoices,
   })
+
   return result
 }
 

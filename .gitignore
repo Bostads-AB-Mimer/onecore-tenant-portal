@@ -31,3 +31,6 @@ Thumbs.db
 # Thumbnails
 packages/thumbnails/*
 !packages/thumbnails/README.md
+
+# Jetbrains IDE
+.idea/

@@ -20,7 +20,7 @@ Note: You need to have yggdrasil-core and yggdrasil-tenants-leases running for t
 ## Env
 
 - CORE\_\_URL - Url to yggdrasil-core
-- CORE\_\_USERNAME - User name for service account in yggdrasil-core (configured in that application)
+- CORE\_\_USERNAME - Username for service account in yggdrasil-core (configured in that application)
 - CORE\_\_PASSWORD - Password for service account in yggdrasil-core (configured in that application)
 - AUTH\_\_COOKIE_DOMAIN - Set to "localhost" for local dev environment
 - AUTH**TEST_ACCOUNT**ID - National registration number of a contact present in the database for yggdrasil-tenants-leases

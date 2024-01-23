@@ -1,4 +1,4 @@
-import { Rent, RentInfo } from '../types'
+import { RentInfo } from '../types'
 
 const getRentsForLease = async (leaseId: string): Promise<RentInfo> => {
   const applianceNames = ['tapet', 'torktumlare']

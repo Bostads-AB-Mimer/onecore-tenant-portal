@@ -24,4 +24,4 @@ npm install
 
 ## Configuration
 
-This template comes with a basic setup of Github Actions to lint and test code on PR:s made against `main`.
+This template comes with a basic setup of GitHub Actions to lint and test code on PR:s made against `main`.

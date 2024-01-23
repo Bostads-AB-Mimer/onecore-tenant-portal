@@ -41,11 +41,11 @@ export const createToken = async (personalNumber: string) => {
       throw createHttpError(401, new Error(`Unknown user.`))
     }
 
-    if (user.locked === true) {
+    if (user.locked) {
       throw createHttpError(403, new Error(`User locked.`))
     }
 
-    if (user.disabled === true) {
+    if (user.disabled) {
       throw createHttpError(403, new Error(`User disabled.`))
     }
 
