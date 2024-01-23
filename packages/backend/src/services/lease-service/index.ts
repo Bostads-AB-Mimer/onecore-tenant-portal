@@ -78,7 +78,9 @@ export const routes = (router: KoaRouter) => {
   router.get('(.*)/material-options/assets/:id', async (ctx) => {
     const filename = ctx.params.id
     const path = process.cwd() + '/assets/' + filename
-    ctx.body = await fs.readFile(path)
+    const data = await fs.readFile(path)
+
+    ctx.body = data
   })
 
   router.get('(.*)/material-choices', async (ctx) => {

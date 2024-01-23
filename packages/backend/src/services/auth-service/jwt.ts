@@ -12,12 +12,14 @@ const getUser = async (personalNumber: string) => {
   const contact = await getContact(personalNumber)
 
   if (contact) {
-    return {
+    const user = {
       id: contact.contactId,
       locked: false,
       disabled: false,
       failedLoginAttempts: 0,
     }
+
+    return user
   } else {
     return null
   }

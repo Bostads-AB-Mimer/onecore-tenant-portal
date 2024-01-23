@@ -33,10 +33,12 @@ const getAccessToken = async () => {
 }
 
 const createHeaders = (accessToken: string) => {
-  return {
+  const headers = {
     Authorization: 'Bearer ' + accessToken,
     'Ocp-Apim-Subscription-Key': Config.bankId.subscriptionKey,
   }
+
+  return headers
 }
 
 const bankIdAPI = async (
@@ -118,7 +120,9 @@ const authenticate = () => {
         url: Config.bankId.url + '/transactions/' + transactionId,
       })
       if (response.data?.status == 'Complete') {
-          return response.data?.processingInfo?.completionData.user.personalNumber
+        const personalNumber = response.data?.processingInfo?.completionData.user.personalNumber
+
+        return personalNumber
       } else {
         throw createHttpError(401, new Error('Login failed'))
       }

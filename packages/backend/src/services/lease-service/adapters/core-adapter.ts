@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, {AxiosError, AxiosRequestConfig, AxiosResponse, head} from 'axios'
 import { Contact, Lease, MaterialChoice, MaterialOption } from '../types'
 import Config from '../../../common/config'
 import { RentalProperty, MaterialOptionGroup } from '../types'
@@ -27,9 +27,11 @@ const getAccessToken = async () => {
 }
 
 const createHeaders = (accessToken: string) => {
-  return {
+  const headers = {
     Authorization: 'Bearer ' + accessToken,
   }
+
+  return headers
 }
 
 const getFromCore = async (
@@ -88,11 +90,13 @@ const getApartment = async (
 const getFloorPlanStream = async (rentalPropertyId: string) => {
   const url = `${Config.core.url}/rentalproperties/${rentalPropertyId}/floorplan`
 
-  return await getFromCore({
+  const response = getFromCore({
     method: 'get',
     url: url,
     responseType: 'stream',
   })
+
+  return response
 }
 
 const getMaterialOptions = async (
@@ -131,11 +135,13 @@ const saveMaterialChoice = async (
   rentalPropertyId: string,
   materialChoices: Array<MaterialChoice>
 ) => {
-  return await getFromCore({
+  const result = getFromCore({
     method: 'post',
     url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/material-choices`,
     data: materialChoices,
   })
+
+  return result
 }
 
 export {
