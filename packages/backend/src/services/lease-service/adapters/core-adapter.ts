@@ -1,4 +1,4 @@
-import axios, {AxiosError, AxiosRequestConfig, AxiosResponse, head} from 'axios'
+import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios'
 import { Contact, Lease, MaterialChoice, MaterialOption } from '../types'
 import Config from '../../../common/config'
 import { RentalProperty, MaterialOptionGroup } from '../types'
@@ -90,7 +90,7 @@ const getApartment = async (
 const getFloorPlanStream = async (rentalPropertyId: string) => {
   const url = `${Config.core.url}/rentalproperties/${rentalPropertyId}/floorplan`
 
-  const response = getFromCore({
+  const response = await getFromCore({
     method: 'get',
     url: url,
     responseType: 'stream',
@@ -135,7 +135,7 @@ const saveMaterialChoice = async (
   rentalPropertyId: string,
   materialChoices: Array<MaterialChoice>
 ) => {
-  const result = getFromCore({
+  const result = await getFromCore({
     method: 'post',
     url: `${coreBaseUrl}/rentalproperties/${rentalPropertyId}/material-choices`,
     data: materialChoices,
