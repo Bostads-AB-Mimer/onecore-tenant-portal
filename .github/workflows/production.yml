@@ -33,4 +33,4 @@ jobs:
           context: ./packages/${{ matrix.context }}
           push: true
           tags: |
-            ghcr.io/bostads-ab-mimer/yggdrasil-tenant-portal-${{ matrix.context }}:release-${{ github.event.release.tag_name }}
+            ghcr.io/bostads-ab-mimer/onecore-tenant-portal-${{ matrix.context }}:release-${{ github.event.release.tag_name }}

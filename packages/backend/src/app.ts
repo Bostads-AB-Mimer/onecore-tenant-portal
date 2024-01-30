@@ -23,7 +23,7 @@ const publicRouter = new KoaRouter()
 authRoutes(publicRouter)
 app.use(publicRouter.routes())
 
-app.use(jwt({ secret: config.auth.secret, cookie: 'yggdrasil' }))
+app.use(jwt({ secret: config.auth.secret, cookie: 'onecore' }))
 
 app.use(api.routes())
 
