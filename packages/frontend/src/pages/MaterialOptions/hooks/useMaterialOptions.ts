@@ -1,7 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-
-import { MaterialOption, RoomType } from '../../../common/types'
+import { MaterialOption, RoomType } from 'onecore-types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 
