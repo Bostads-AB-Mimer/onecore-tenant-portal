@@ -11,7 +11,7 @@ export const routes = (router: KoaRouter) => {
   })
 
   router.get('(.*)/auth/logout', async (ctx) => {
-    ctx.cookies.set('yggdrasil', null, {
+    ctx.cookies.set('onecore', null, {
       httpOnly: true,
       overwrite: true,
       sameSite: 'lax',
@@ -28,7 +28,7 @@ export const routes = (router: KoaRouter) => {
 
       const token = await createToken(personalNumber)
 
-      ctx.cookies.set('yggdrasil', token.token, {
+      ctx.cookies.set('onecore', token.token, {
         httpOnly: true,
         overwrite: true,
         sameSite: 'lax',

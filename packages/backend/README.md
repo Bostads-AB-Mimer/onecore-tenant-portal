@@ -15,15 +15,15 @@ Backend for the tenant portal for Mimer.
 
 Start the development server: `npm run dev`
 
-Note: You need to have yggdrasil-core and yggdrasil-tenants-leases running for this application to work.
+Note: You need to have onecore-core, onecore-leasing and onecore-property-management running for this application to work.
 
 ## Env
 
-- CORE\_\_URL - Url to yggdrasil-core
-- CORE\_\_USERNAME - Username for service account in yggdrasil-core (configured in that application)
-- CORE\_\_PASSWORD - Password for service account in yggdrasil-core (configured in that application)
+- CORE\_\_URL - Url to onecore-core
+- CORE\_\_USERNAME - Username for service account in onecore-core (configured in that application)
+- CORE\_\_PASSWORD - Password for service account in onecore-core (configured in that application)
 - AUTH\_\_COOKIE_DOMAIN - Set to "localhost" for local dev environment
-- AUTH**TEST_ACCOUNT**ID - National registration number of a contact present in the database for yggdrasil-tenants-leases
+- AUTH**TEST_ACCOUNT**ID - National registration number of a contact present in the database for onecore-leasing
 - AUTH**TEST_ACCOUNT**USERNAME - Login username for the (currently only) user in the portal
 - AUTH**TEST_ACCOUNT**SALT - Salt for portal user (create with /auth/generate-hash)
 - AUTH**TEST_ACCOUNT**HASH - Password hash for user (create with /auth/generate-hash)

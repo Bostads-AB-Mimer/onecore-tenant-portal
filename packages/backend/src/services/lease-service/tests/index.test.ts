@@ -13,7 +13,7 @@ const app = new Koa()
 const router = new KoaRouter()
 routes(router)
 app.use(bodyParser())
-app.use(koaJwt({ secret: config.auth.secret, cookie: 'yggdrasil' }))
+app.use(koaJwt({ secret: config.auth.secret, cookie: 'onecore' }))
 app.use(router.routes())
 
 describe('lease-service index', () => {
