@@ -8,13 +8,9 @@ import {
   Radio,
 } from '@mui/material'
 import { useEffect } from 'react'
+import { MaterialOptionGroup, RoomType, MaterialOption } from 'onecore-types'
 
 import { useMaterialChoices } from './hooks/useMaterialOptions'
-import {
-  MaterialOptionGroup,
-  RoomType,
-  MaterialOption,
-} from '../../common/types'
 import Carousel from '../../components/Carousel'
 
 const MaterialChoices = () => {

@@ -15,6 +15,10 @@
   "bugs": {
     "url": "https://github.com/Bostads-AB-Mimer/onecore-tenant-portal/issues"
   },
+<<<<<<< HEAD
   "homepage": "https://github.com/Bostads-AB-Mimer/onecore-tenant-portal#readme",
   "dependencies": {}
+=======
+  "homepage": "https://github.com/Bostads-AB-Mimer/yggdrasil-tenant-portal#readme"
+>>>>>>> 901cccb (feat: Use types from onecore-types)
 }

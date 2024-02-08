@@ -1,7 +1,7 @@
 import { Typography, Divider, Grid, Box } from '@mui/material'
+import { Contact, Lease as LeaseType, Rent } from 'onecore-types'
 
 import { useLease } from './hooks/useLease'
-import { Contact, Lease as LeaseType, Rent } from '../../common/types'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api'
 

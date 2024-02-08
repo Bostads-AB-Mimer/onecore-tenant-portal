@@ -11,16 +11,12 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { MaterialOptionGroup, MaterialOption, RoomType } from 'onecore-types'
 
 import {
   useMaterialOptions,
   useSaveMaterialChoices,
 } from './hooks/useMaterialOptions'
-import {
-  MaterialOptionGroup,
-  MaterialOption,
-  RoomType,
-} from '../../common/types'
 import DropDown from '../../components/DropDown'
 import Carousel from '../../components/Carousel'
 
