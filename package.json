@@ -1,6 +1,6 @@
 {
   "name": "onecore-tenant-portal",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "Tenant web portal",
   "main": "index.js",
   "scripts": {
