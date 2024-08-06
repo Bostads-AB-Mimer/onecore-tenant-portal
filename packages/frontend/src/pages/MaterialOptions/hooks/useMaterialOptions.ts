@@ -27,7 +27,7 @@ export const useMaterialOptions = ({
     queryKey: ['apartmentId', apartmentId],
     queryFn: async () => {
       if (apartmentId) {
-        const { data } = await axios.get<RoomTypesResponse>(
+        const { data } = await axios.get<{ content: RoomTypesResponse }>(
           `${backendUrl}/material-options`,
           {
             headers: {
@@ -36,7 +36,7 @@ export const useMaterialOptions = ({
             },
           }
         )
-        return data
+        return data.content
       } else {
         return {
           data: {
@@ -58,7 +58,7 @@ export const useMaterialChoices = () =>
   useQuery<RoomTypesResponse, AxiosError>({
     queryKey: ['materialChoices'],
     queryFn: async () => {
-      const { data } = await axios.get<RoomTypesResponse>(
+      const { data } = await axios.get<{ content: RoomTypesResponse }>(
         `${backendUrl}/material-choices`,
         {
           headers: {
@@ -67,7 +67,7 @@ export const useMaterialChoices = () =>
           },
         }
       )
-      return data
+      return data.content
     },
     retry: (failureCount: number, error: AxiosError) => {
       if (error.response?.status === 401) {
@@ -114,7 +114,7 @@ export const useMaterialOptionDetails = ({
     queryKey: ['materialOptionDetails', materialOptionId],
     queryFn: async () => {
       if (materialOptionId) {
-        const { data } = await axios.get<MaterialOptionResponse>(
+        const { data } = await axios.get<{ content: MaterialOptionResponse }>(
           `${backendUrl}/material-option-details`,
           {
             headers: {
@@ -126,7 +126,7 @@ export const useMaterialOptionDetails = ({
             },
           }
         )
-        return data
+        return data.content
       } else {
         return {
           data: undefined,
