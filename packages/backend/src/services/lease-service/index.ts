@@ -19,6 +19,7 @@ import {
 import { getRentsForLease } from './adapters/rent-adapter'
 import fs from 'fs/promises'
 import { MaterialChoice } from './types'
+import { generateRouteMetadata } from 'onecore-utilities'
 
 const getAccommodation = async (nationalRegistrationNumber: string) => {
   const lease = await getLease(nationalRegistrationNumber)
@@ -36,33 +37,39 @@ export const routes = (router: KoaRouter) => {
    * sub objects such as rental property, other tenants and rent.
    */
   router.get('(.*)/my-lease', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx)
     const nationalRegistrationNumber = ctx.state.user.username
 
     const lease = await getAccommodation(nationalRegistrationNumber)
 
     ctx.body = {
-      data: lease,
+      content: lease,
+      ...metadata,
     }
   })
 
   router.get('(.*)/my-details', async (ctx: any) => {
+    const metadata = generateRouteMetadata(ctx)
     const nationalRegistrationNumber = ctx.state.user.username
     const contact = await getContact(nationalRegistrationNumber)
 
-    ctx.body = { data: contact }
+    ctx.body = { content: contact, ...metadata }
   })
 
   router.get('(.*)/material-options', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx)
     const materialOptions = await getMaterialOptions(
       ctx.state.user.rentalPropertyId
     )
 
     ctx.body = {
-      data: materialOptions,
+      content: materialOptions,
+      ...metadata,
     }
   })
 
   router.get('(.*)/material-option-details', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx, ['materialOptionId'])
     if (ctx.request.query.materialOptionId) {
       const option = await getMaterialOption(
         ctx.state.user.rentalPropertyId,
@@ -70,26 +77,30 @@ export const routes = (router: KoaRouter) => {
       )
 
       ctx.body = {
-        data: option,
+        content: option,
+        ...metadata,
       }
     }
   })
 
   router.get('(.*)/material-options/assets/:id', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx)
     const filename = ctx.params.id
     const path = process.cwd() + '/assets/' + filename
     const data = await fs.readFile(path)
 
-    ctx.body = data
+    ctx.body = { content: data, ...metadata }
   })
 
   router.get('(.*)/material-choices', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx)
     const roomTypes = await getMaterialChoices(ctx.state.user.rentalPropertyId)
 
-    ctx.body = { data: roomTypes }
+    ctx.body = { content: roomTypes, ...metadata }
   })
 
   router.post('(.*)/material-choices', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx)
     if (ctx.request.body) {
       const choices: Array<MaterialChoice> = ctx.request.body?.choices.map(
         (choice: MaterialChoice) => {
@@ -102,9 +113,9 @@ export const routes = (router: KoaRouter) => {
       )
       await saveMaterialChoice(ctx.state.user.rentalPropertyId, choices)
 
-      ctx.body = { message: 'Save successful' }
+      ctx.body = { message: 'Save successful', ...metadata }
     } else {
-      ctx.body = { message: 'No choices proviced' }
+      ctx.body = { message: 'No choices proviced', ...metadata }
     }
   })
 
@@ -112,10 +123,11 @@ export const routes = (router: KoaRouter) => {
    * Streams the floor plan of the logged in user as an image binary
    */
   router.get('(.*)/my-lease/floorplan', async (ctx) => {
+    const metadata = generateRouteMetadata(ctx)
     const response = await getFloorPlanStream(ctx.state.user.rentalPropertyId)
 
     ctx.type = response.headers['content-type']?.toString() ?? 'image/jpeg'
     ctx.headers['cache-control'] = 'public, max-age=600'
-    ctx.body = response.data
+    ctx.body = { content: response.data, ...metadata }
   })
 }

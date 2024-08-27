@@ -60,7 +60,7 @@ describe('lease-service index', () => {
 
       expect(res.status).toBe(200)
       expect(materialChoicesSpy).toHaveBeenCalled()
-      expect(res.body.data.roomTypes).toBeDefined()
+      expect(res.body.content.roomTypes).toBeDefined()
     })
   })
 })
