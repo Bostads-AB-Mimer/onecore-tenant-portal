@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",
-    "axios": "^1.6.5",
+    "axios": "^1.7.4",
     "material-ui-popup-state": "^5.0.10",
     "onecore-types": "^1.25.1",
     "react": "18.2.0",
